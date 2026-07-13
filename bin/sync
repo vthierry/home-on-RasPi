@@ -1,0 +1,39 @@
+#!/bin/bash
+if [ -f ~/.bashrc ] ; then . ~/.bashrc ; fi
+
+(
+  echo "Syncs git repositories"
+  (for d in ~/gits/* ; do pushd $d ; gitsync ; popd ; done)
+
+  echo "Syncs local data"
+  SMT="/run/user/1000/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF"
+  GDR=""
+  SSD="/media/vthierry/SSD"
+  if [ -d "$SMT" ] ; then
+      if [ -d "$SMT/Stockage interne/DCIM" ] ; then
+	  rsync -a -z --info=progress2 --archive "$DISK2/Stockage interne/DCIM" ~/Desktop
+          if [ \! -z "`ls -A  ~/Desktop/DCIM/Camera/*.jpg 2> /dev/null`" ] ; then					  
+              mkdir -p ~/Desktop/DCIM/Camera400
+	      mogrify -auto-orient -resize 400 -path ~/Desktop/DCIM/Camera400 ~/Desktop/DCIM/Camera/*.jpg
+	  fi
+	  SRC="$SMT/Stockage interne/Android/media/com.whatsapp/WhatsApp/Media/"
+	  DST="$GDR/vthierry-perso/Mes Médias/WhatsAppp/Media"
+	  if [ -d "$DST" ] ; then
+	      rsync -a -z --info=progress2 --archive "$SRC/WhatsApp Images" "$DST"
+	      rsync -a -z --info=progress2 --archive "$SRC/WhatsApp Video" "$DST"
+	      rsync -a -z --info=progress2 --archive "$SRC/WhatsApp Video" "$DST"
+	  fi
+	  SRC="/home/vthierry"
+	  if [ -d "$DST" ] ; then
+	      rsync -a -z --info=progress2 --archive "$SRC  $SSD"
+	  fi
+      fi
+  fi
+
+  echo "Updates apt"
+  (sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y)
+
+) | tee /tmp/vthierry-sync.log
+
+
+

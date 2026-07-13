@@ -1,0 +1,42 @@
+#!/bin/bash
+
+usage () {
+ cat << EOF
+  Usage: text2voice [-v voice] [-s speed] [-i text-document] [-o wav-document]
+  -v voice: fr1, fr3 french male voices, fr2, fr4 french female voices
+     other voices can be installed using, to find the package to install:
+     > apt search mbrola-
+ -s speed: number of words / minut, 90 by default, 30 to 150 are reasonnable values
+ -i text-document: uses this text document as input, otherwise uses stdin
+ -o wav-document: uses this wavtext document as input, otherwise play the sound
+EOF
+}
+
+voice=fr1
+speed=90
+input=
+output=
+
+while [ \! -z "$1" ] ; do case "$1" in
+   -v ) shift ; voice="$1" ;;			   
+   -s ) shift ; speed="$1" ;;			   
+   -i ) shift ; input="$1" ;;			   
+   -o ) shift ; output="$1" ;;
+   * ) usage ; exit 0;;
+esac ; shift; done
+
+echo "v=$voice s=$speed i=$input o=$output"
+
+if [ -z "$input" ] ; then
+  while true ; do
+    read -p "Input? " line
+    if [ -z "$line" ] ; then exit 0 ; fi
+    if [ -z "$output" ] ; then echo "$line" | espeak -v mb/mb-$voice -s $speed
+    else  echo "$line" | espeak -v mb/mb-$voice -s $speed -w $output ; exit 0 ;
+    fi
+  done
+elif [ -z "$output" ] ; then espeak -v mb/mb-$voice -s $speed -f $input
+else espeak -v mb/mb-$voice -s $speed -f $input -w $output			     
+fi
+
+

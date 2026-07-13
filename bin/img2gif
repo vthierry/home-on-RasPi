@@ -1,0 +1,22 @@
+#!/bin/bash
+
+usage () {
+ cat << EOF
+  Usage: img2gif $0 images …
+    Generates the output.gif and output.mp4 files concatenating the image sequence at 1 sec frame-rate
+EOF
+}
+
+if [ -z "$*" ] ; then
+ usage ; exit
+else
+   ## Creates a numbering compatible with ffmpeg
+   e=${1#*.}  ;  /bin/rm -f  input-img-*.$e  output.gif output.mp4 ; n='0' ; for f in $* ; do ln -s $f input-img-$n.$e ; n=$((n+1)) ; done
+   ## Creates a gif and mp4 with 1 sec frame-rate
+   ffmpeg -loglevel quiet -framerate 1 -i input-img-%d.$e output.gif
+   ffmpeg -loglevel quiet -framerate 1 -i input-img-%d.$e -c:v libx264 -pix_fmt yuv420p output.mp4
+   ## Cleans files
+   /bin/rm -f  input-img-*.$e
+fi
+   
+

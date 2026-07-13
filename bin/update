@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Usage: update ; Installs or updates the home directory to work as a tiny workstation.
+
+# THIS IS MY OWN PERSONAL PARTICULAR UPDATE MECHANISM PLEASE ADAPT BEFORE USE
+#  (unless nothing is catastrophic if you do not)
+
+## TBD:
+## - Configurer rclone en disque virtuel
+## - Pereniser le mecanisme de wget
+## - Ok reception disque
+## - Ok micro USB
+## - Tester micro et camera
+## - Retester batterie
+## - Copier les écrans de config dans doc
+## - Voir si gs, pwgen, espeak, ou si leger sinon virer
+
+# Updates the present system installation
+
+## Ensures the ~/bin scripts are executable
+chmod a+rx ~/bin/[a-z]*
+
+## Cleans unused or temporary home directories and files
+rmdir --ignore-fail-on-non-empty ~/{Documents,Downloads,Music,Pictures,Public,Templates,Videos,.emacs.d}
+/bin/rm -rf ~/{.profile,.bash_logout,.xsession-errors,.Xauthority,.cache}
+~/bin/clean ~
+
+## Removes unused packages
+sudo apt remove firefox raspberryconnect squeekboard geany thonny eom piclone rpi-imager rp-bookshelf rp-prefapps userguide
+
+## Installs used packages
+sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y ; sudo apt-file update
+## - Installs file manipulation used packages
+sudo apt install emacs rclone
+## - Installs media and document manipulation packages
+sudo apt install pdftk gimp simple-scan imagemagick audacity shotcut ffmpeg simplescreenrecorder
+## - Installs the https://github.com/vthierry/idnai packages
+sudo apt install git nodejs arduino kicad 
+
+
