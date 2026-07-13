@@ -21,7 +21,7 @@ popd() { # Usage: ppopd : Silent popd.
 }
 gitsync() { #Usage: gitsync $message ; Synchronizes with the current repository adding a commit message.
     if [ -z "$*" ] ; then m="minor modification" ; else m="$*" ; fi
-    git -q pull ; git commit -a -m "$m" ; git -q push ; git status -s
+    git pull -q ; git commit -a -m "$m" ; git push -q ; git status -s
 }
 alias c='$HOME/clean; clear' # Usage: c ; Cleans temporary files and clean the terminal screen.
 alias s='xdg-open' # Usage: s $file ; Opens a file with the default application
@@ -33,6 +33,10 @@ m() { # Usage: m $target-or-file ; Makes a target file using the current or a pa
    echo "make.sh: *** No rule to make target '$1'.  Stop." ; exit -1
    ## - Only makefile file is considered here (allowing one to skip the command using a Makefile file).
    ## - The make command is used without echo
+}
+nospace() { # Usage: nospace $filename ; Removes blanks and hiding-dot in file name.
+    f="`echo $* | sed 's/ /_/g' | sed 's/\/\./\//g'`"
+    if [ "$*" \!= "$f" ] ; then mv "$*" "$f" ; fi
 }
 pdfcompress() { # Usage: pdfcompress $pdf-file ; Compresses a pdf file.
     gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile="compressed_$1" "$1"
