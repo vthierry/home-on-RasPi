@@ -31,10 +31,10 @@ sudo apt remove firefox raspberryconnect squeekboard geany thonny eom piclone rp
 ## Installs used packages
 sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y ; sudo apt-file update
 ## - Installs file manipulation used packages
-sudo apt install emacs rclone
+sudo apt install git nodejs rclone
 ## - Installs media and document manipulation packages
 sudo apt install pdftk gimp simple-scan imagemagick audacity shotcut ffmpeg simplescreenrecorder
 ## - Installs the https://github.com/vthierry/idnai packages
-sudo apt install git nodejs arduino kicad 
+sudo apt install emacs arduino kicad 
 
 

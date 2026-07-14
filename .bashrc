@@ -21,7 +21,7 @@ popd() { # Usage: ppopd : Silent popd.
 }
 gitsync() { #Usage: gitsync $message ; Synchronizes with the current repository adding a commit message.
     if [ -z "$*" ] ; then m="minor modification" ; else m="$*" ; fi
-    git pull -q ; git commit -a -m "$m" ; git push -q ; git status -s
+    git pull -q ; git commit -q -a -m "$m" ; git push -q ; git status -s
 }
 alias c='$HOME/clean; clear' # Usage: c ; Cleans temporary files and clean the terminal screen.
 alias s='xdg-open' # Usage: s $file ; Opens a file with the default application
