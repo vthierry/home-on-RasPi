@@ -19,7 +19,7 @@ pushd() { # Usage: pushd $directory ; Silent pushd.
 popd() { # Usage: ppopd : Silent popd.
     command popd > /dev/null
 }
-gitsync() { #Usage: gitsync $message ; Synchronizes with the current repository adding a commit message.
+gitsync() { # Usage: gitsync $message ; Synchronizes with the current repository adding a commit message.
     if [ -z "$*" ] ; then m="minor modification" ; else m="$*" ; fi
     git pull -q ; git commit -q -a -m "$m" ; git push -q ; git status -s
 }
@@ -39,13 +39,14 @@ nospace() { # Usage: nospace $filename ; Removes blanks and hiding-dot in file n
     if [ "$*" \!= "$f" ] ; then mv "$*" "$f" ; fi
 }
 pdfcompress() { # Usage: pdfcompress $pdf-file ; Compresses a pdf file.
-    gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile="compressed_$1" "$1"
+    pdftk "$1" output "$2" compress
+    ## Alternativev: gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile="compressed_$1" "$1"
 }
 videocompress() { # Usage: videocompress $video-file ; Compresses a video file.
     ffmpeg -i "$1" -vcodec libx265 -tag:v hvc1 "compressed_$1"
 }
-subst() { # Usage: subst $pattern $replacement < $input > $output ; Replaces a string using Javascript regular expressions.
-    nodejs --eval 'console.log(require("fs").readFileSync(require("process").stdin.fd, "utf-8").replace(new RegExp(process.argv[1], "gms"), process.argv[2]).trim());' "$1" "$2"
+subst() { # Usage: subst $pattern $replacement < $input > $output ; Replaces a string using Javascript regular expressions, newline is treated as a standard char.
+    nodejs --eval 'console.log(require("fs").readFileSync(require("process").stdin.fd, "utf-8").replace(new RegExp(process.argv[1], "gs"), process.argv[2]).trim());' "$1" "$2"
 }
 html2wp() { # Usage: html2wp < $input > $output ; Converts a complex html styles file to simple html to be used in wordpress.
     subst '</?(span|font)[^>]*>' '' | subst ' (class|style|align) *= *"[^"]*"' ''
@@ -54,3 +55,10 @@ videodownload() { # Usage: videodownload $url ; Downloads a video
     ~/bin/yt-dlp $*
     ## Uses the https://github.com/yt-dlp/yt-dlp software
 }
+needfor() { # Usage: needfor package ; Tests if a package is installed before used, and proposes to install otherwise.
+    if ! dpkg-query -Wf'${db:Status}' "$1" 2>/dev/null ; then
+	read -p "The '$1' package is not installed ? Shall we ? (y/N): " -n 1 -e rep ; if [ "$rep" = "y" ] ; then
+	    apt install "$1" ; else exit ; fi
+    fi
+}
+											   

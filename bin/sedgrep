@@ -1,7 +1,8 @@
 #!/bin/sh
+if [ -f ~/.bashrc ] ; then . ~/.bashrc ; fi
 
 usage() {
- cat <<EOD
+ cat <<EO
 Usage: sedgrep [-dir 'directory'] [-name 'pattern'] [-in in [-out out | [-js | -js0] js] | -list ]
  Find in the given directory (default is '.') and sub-directories files 
     - matching the -name pattern (default is '*') and containing the -in regular expression
@@ -12,7 +13,7 @@ Usage: sedgrep [-dir 'directory'] [-name 'pattern'] [-in in [-out out | [-js | -
     - with the js0 option tests on the 1st file, output on stdout and exit 
 CAUTION : You MUST escape regular-expression as for sed, e.g. use \/ instead of / when replacing
  *::: *{.admonition}\n([^:]*):
-EOD
+EOF
 }
 
 dir="."; name="*"

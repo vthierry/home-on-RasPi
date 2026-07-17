@@ -7,34 +7,71 @@
 
 ## TBD:
 ## - Configurer rclone en disque virtuel
-## - Pereniser le mecanisme de wget
-## - Ok reception disque
+## - Ok usage disque
 ## - Ok micro USB
 ## - Tester micro et camera
 ## - Retester batterie
 ## - Copier les écrans de config dans doc
-## - Voir si gs, pwgen, espeak, ou si leger sinon virer
+## - Voit si yt-dlp s'installe pas apt
 
 # Updates the present system installation
 
 ## Ensures the ~/bin scripts are executable
 chmod a+rx ~/bin/[a-z]*
 
+## Generates the scripts documentation
+is_a_bash() { ### Returns the file name if it is a bash file
+    if [ \! -z "`head -1 $1 | grep '#!/bin/bash'`" ] ; then echo $1 ; fi
+}
+### Extracts the usages from the files
+(
+    echo -e "# Added script´s usage\n"
+    for f in ~/.bashrc `for g in ~/bin/[a-z]* ; do is_a_bash $g ; done`
+    do
+	#### Extracts usage line of the form '# Usage: …'
+	if [ \! -z "`grep < $f '# *Usage'`" ] ; then grep < $f '# *Usage *:' | sed 's/[^#]*#/-/g' ;
+	#### Extracts bloc of the form 'EOF\n…\nEOF'
+	elif [ \! -z "`grep < $f 'EOF'`" ] ; then subst < $f '.*EOF\n(.*)\nEOF.*' '- $1' ; fi
+    done
+) > ~/bin/usages.md
+
 ## Cleans unused or temporary home directories and files
-rmdir --ignore-fail-on-non-empty ~/{Documents,Downloads,Music,Pictures,Public,Templates,Videos,.emacs.d}
-/bin/rm -rf ~/{.profile,.bash_logout,.xsession-errors,.Xauthority,.cache}
+rmdir --ignore-fail-on-non-empty ~/{Documents,Downloads,Music,Pictures,Public,Templates,Videos}
+/bin/rm -rf ~/{.profile,.bash_logout,.xsession-errors,.Xauthority,.cache,.emacs.d}
 ~/bin/clean ~
 
-## Removes unused packages
-sudo apt remove firefox raspberryconnect squeekboard geany thonny eom piclone rpi-imager rp-bookshelf rp-prefapps userguide
+## Prepares package's update.
+sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y
 
-## Installs used packages
-sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y ; sudo apt-file update
-## - Installs file manipulation used packages
-sudo apt install git nodejs rclone
-## - Installs media and document manipulation packages
-sudo apt install pdftk gimp simple-scan imagemagick audacity shotcut ffmpeg simplescreenrecorder
-## - Installs the https://github.com/vthierry/idnai packages
-sudo apt install emacs arduino kicad 
+## Removes unused packages.
+sudo apt remove firefox			# Chromium has better performances on the RasPi.
+sudo apt remove raspberryconnect 	# No need a priori to remote control this Raspi, while it is possible via ssh.
+sudo apt remove squeekboard 		# No need to have a virtual keyboard on the screen.
+sudo apt remove geany 			# A programmer's IDE, not very useful when using makefiles (see below).
+sudo apt remove thonny 			# A Python IDE for beginners only useful for .. Python beginners.
+sudo apt remove piclone rpi-imager  # No need to manipulate SD-card in this context.
+sudo apt remove rp-bookshelf            # No need to browse the Raspberry Pi Press  in this context.
+sudo apt remove rp-prefapps 		# Better not choose to install applications from a menu, but in this file, for reproductibility.
+sudo apt remove userguide		# No need to have a local user guide, documentation is inline.
+## Note: The goal is to save place, but also to clean the menu, for easier use.
 
+## Adds useful system packages.
+sudo apt install git				# Git is mandatory, but preinstalled (thusm a simple reminder here).
+sudo apt install nodejs			# Javascript is used for Web interaction and many useful tools.
+sudo apt install rclone				# Rclone is used for file interaction with on0line systems.
+## Adds useful multimedia packages.
+sudo apt install pdftk				# Every day PDF file manipulation.
+sudo apt install gimp				# A reference for image edition.
+sudo apt install audacity			# The reference for audio edition.
+sudo apt install shotcut 			# A good solution for video edition.
+sudo apt install ffmpeg  			# Every day video/audio file manipulation (needed ny shotcut).
+sudo apt install simple-scan		# A suitable image scanner.
+sudo apt install simplescreenrecorder # A … simple screen recorder.
+## Adds useful development packages, in the https://github.com/vthierry/idnai context.
+sudo apt install emacs				# The best universal computer editor of the … XXe century :), choose your one.
+sudo apt install arduino			# The tool to develop akso on the ESP32 processor.
+sudo apt install kicad				# The tool to develop printed circuit board.
+
+## Finalizes package's update
+sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y
 

@@ -1,26 +1,48 @@
-; To reload this configuration file: M-x eval-buffer
+;; To reload: M-x eval-buffer
 
+;; Adjusts emacs aspect
 
+(setq inhibit-splash-screen t)
 (setq bell-volume 0)
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
-(setq-default c-basic-offset 2)
-(setq-default js-indent-level 2)
+(custom-set-variables
+ '(custom-enabled-themes '(tango-dark))
+ '(tool-bar-mode nil))
+(custom-set-faces
+ '(default ((t (:family "Ubuntu Sans Mono" :foundry "DAMA" :slant normal :weight medium :height 181 :width normal)))))
+
+;; Compilation and command options
+
+(setq compile-command "make -s")
+(setq compilation-scroll-output 'first-error)
+(add-to-list  'display-buffer-alist  '("\\*compilation\\*"  (display-buffer-no-window)))
 
 (setq-default async-shell-command-buffer 'new-buffer)
 
 (setq ispell-program-name "aspell")
 
-; (setq compilation-scroll-output t)
-(setq compilation-scroll-output 'first-error)
+(recentf-mode 1)
+(setq recentf-max-menu-items 32)
+(setq recentf-max-saved-items 32)
 
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+;; Code formating option
 
- (defun my-ongoing ()
+(setq set-default-coding-systems 'utf-8)
+(setq require-final-newline t)
+
+(setq-default bash-indent-level 2)
+(setq-default c-basic-offset 2)
+(setq-default js-indent-level 2)
+
+;; Customized menu
+
+(define-key global-map "\M-&" 'replace-regexp)
+(define-key global-map "\C-g" 'ispell-continue)
+
+(defun my-ongoing ()
   (interactive)  
-  (my-whole-screen)
-  (my-whole-screen)
+  (my-clean)
   (switch-to-buffer (find-file-noselect "/home/vthierry/Desktop/gits"))
 )
 
@@ -42,7 +64,7 @@
 
 (defun my-reload ()
   (interactive)  
-  (revert-buffer)
+  (revert-buffer :ignore-auto :noconfirm)
 )
 
 (defun my-term ()
@@ -63,19 +85,15 @@
   (shell-command "(nohup thunar ; /bin/rm -f nohup.out) &")
 )
 
-(defun my-whole-screen ()
-  (interactive)
-  (set-frame-width (selected-frame) 170)
-  (set-frame-height (selected-frame) 50)
-  (set-frame-position (selected-frame) -1 10)
-  (tool-bar-mode -1)
-  (my-clean-buffers)
-)
-
 (defun my-emacs ()
   (interactive)  
   (switch-to-buffer (find-file-noselect "/home/vthierry/.emacs"))
   (load-file user-init-file)
+)
+
+(defun my-clean ()
+  (interactive)
+  (my-clean-buffers)
 )
 
 (defun my-clean-buffers ()
@@ -117,18 +135,6 @@
   (if (member buffer (mapcar 'buffer-name (buffer-list))) (kill-buffer buffer))
 )
 
-(setq set-default-coding-systems 'utf-8)
-(setq require-final-newline t)
-(setq compile-command "make -s")
-(setq bell-volume 0)
-
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(setq recentf-max-saved-items 25)
-
-(define-key global-map "\M-&" 'replace-regexp)
-(define-key global-map "\C-g" 'ispell-continue)
-
 (define-key global-map (kbd "<f1>") 'my-term)
 (define-key global-map (kbd "<f2>") 'ispell)
 (define-key global-map (kbd "<f3>") 'my-show-file)
@@ -140,7 +146,7 @@
 ;(define-key global-map (kbd "<f9>") 'my-ongoing)
 ;(define-key global-map (kbd "<f10>") 'menu-bar-open)
 ;(define-key global-map (kbd "<f11>") 'toggle-frame-fullscreen)
-(define-key global-map (kbd "<f12>") 'my-whole-screen)
+(define-key global-map (kbd "<f12>") 'my-clean)
 
 (require 'easymenu)
 (easy-menu-define my-menu nil "vthierry"
@@ -158,7 +164,7 @@
     "----------------"
     ["<f10> Menu" menu-bar-open t]
     ["<f11> Fullscreen" toggle-frame-fullscreen t]
-    ["<f12> Clean" my-whole-screen t]
+    ["<f12> Clean" my-clean t]
     "----------------"
     [".emacs" my-emacs t]
  ))
@@ -166,22 +172,3 @@
   [openflow]
   (cons "Vthierry" my-menu) nil)
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Noto Sans" :size "18pt" :foundry "GOOG" :slant normal :weight regular :height 162 :width normal)))))
-
-(add-to-list 'load-path "~/.emacs.d/lisp")
-;(require 'edit-server)
-;(edit-server-start)
-(require 'abbrev)
-;(autoload 'maplev-mode "maplev" "Maple editing mode" t)
-;(setq auto-mode-alist (cons `("\\.mpl\\'" . maplev-mode) auto-mode-alist))
-;(byte-recompile-directory "~/.emacs.d/lisp")
-
-(setq inhibit-splash-screen t)
-(my-whole-screen)
-
-(put 'downcase-region 'disabled nil)
