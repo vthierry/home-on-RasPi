@@ -1,0 +1,14 @@
+#!/bin/bash
+. ~/.bashrc
+needfor ffmpeg
+
+usage () {
+ cat << EOF
+  Usage: videocompress $video-file
+    Compresses a video file.
+EOF
+}
+if [ -z "$*" ] ; then usage ; exit ; fi
+
+ffmpeg -i "$1" -vcodec libx265 -tag:v hvc1 "compressed_$1"
+

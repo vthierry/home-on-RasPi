@@ -1,0 +1,7 @@
+#!/bin/bash
+. ~/.bashrc
+
+# Usage: html2wp < $input > $output ; Converts a complex html styles file to simple html to be used, e.g., in wordpress.
+
+subst '</?(span|font)[^>]*>' '' | subst ' (class|style|align) *= *"[^"]*"' ''
+

@@ -1,0 +1,15 @@
+#!/bin/bash
+. ~/.bashrc
+needfor yt-dlp
+
+usage () {
+ cat << EOF
+  Usage: videodownload $url
+    Downloads a video.
+EOF
+}
+if [ -z "$*" ] ; then usage ; exit ; fi
+
+yt-dlp $*
+
+

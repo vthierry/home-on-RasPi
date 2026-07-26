@@ -1,12 +1,9 @@
 #!/bin/bash
-#if [ -f ~/.bashrc ] ; then . ~/.bashrc ; fi
-#needfor wget
-
-. ../.bashrc
+. ~/.bashrc
 
 usage() {
  cat <<EOF
-Usage: gget [-o $basename] [ -f $format] $url
+Usage: gdocget [-o $basename] [ -f $format] $url
  Download a public google-drive document, spreadsheet, presentation, drawings or file.
  url: The whole google-drive URL, of the form 'https://docs.google.com/..'.
   -o: A local file name, the document google-drive id by default.
@@ -15,7 +12,7 @@ EOF
 }
 
 fatal_error() {
-    echo -e "gget error: $1." ; exit -1
+    echo -e "gdocget error: $1." ; exit -1
 }
 
 f="pdf"
@@ -33,6 +30,8 @@ t="`echo $url | subst 'https://docs.google.com/([^/]*)/.*' '\$1'`"
 if [ -z "$o" ] ; then o="$id" ; fi
 
 if [ "$t" = "file" ]
-then wget -nv -O "$o" --no-check-certificate "https://drive.usercontent.google.com/download?id=$id"
-else wget -nv -O "$o.$f" --no-check-certificate "https://docs.google.com/$t/export?format=$f&id=$id"
+then urlget "https://drive.usercontent.google.com/download?id=$id" "$0"
+else urlget "https://docs.google.com/$t/export?format=$f&id=$id" "$o.$f" 
+#then wget -nv -O "$o" --no-check-certificate "https://drive.usercontent.google.com/download?id=$id"
+#else wget -nv -O "$o.$f" --no-check-certificate "https://docs.google.com/$t/export?format=$f&id=$id"
 fi

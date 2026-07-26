@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Cleans all known temporary files
+# Usage: cleans [$directory] ; Cleans all known temporary files.
 
 ## Changes directory if given
 
