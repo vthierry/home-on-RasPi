@@ -25,6 +25,7 @@ sudo apt remove -q -y thonny 			# A Python IDE for beginners only useful for .. 
 sudo apt remove -q -y piclone rpi-imager      # No need to manipulate SD-card in this context.
 sudo apt remove -q -y rp-bookshelf              # No need to browse the Raspberry Pi Press  in this context.
 sudo apt remove -q -y rp-prefapps pi-package	      # Better not choose to install applications from a menu, but in this file, for reproductibility.
+#sudo apt remove -q -y mousepad	  		      # Because i am an emacsoholic, better suppress after installing your prefered editor.
 sudo apt autoremove -q -y
 ## Note: The goal is to save place, but also to clean the menu, for easier use.
 
