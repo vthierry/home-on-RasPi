@@ -11,6 +11,7 @@ alias cp='cp -i' # Usage: cp $source $target ; Force interactive copy to avoid e
 alias mv='mv -i' # Usage: mv $source $target ; Force interactive move to avoid error.
 rm() { # Usage: rm $files ; Removes files by moving them to the desktop trask.
   TRASH=$HOME/.local/share/Trash/files
+  mkdir -p $TRASH
   /bin/mv $* $TRASH
 }
 pushd() { # Usage: pushd $directory ; Silent pushd.

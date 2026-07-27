@@ -1,5 +1,11 @@
+*~
 /Desktop
+/etc
 /gits
 /.ssh
-*~
-
+/.bash_history
+/.cache
+.emacs.d
+/.local
+/.sudo_as_admin_successful
+/.xsession-errors*
