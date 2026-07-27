@@ -5,9 +5,11 @@
 /.ssh
 /.gitconfig
 /.config/chromium
+/.config/GIMP
 /.bash_history
 /.cache
-.emacs.d
 /.local
+.emacs.d
+/.Xauthority
 /.sudo_as_admin_successful
 /.xsession-errors*
