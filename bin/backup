@@ -11,19 +11,19 @@ confirm() { # Usage: confirm $message $exit
 ## Performs the apt updates
 
 echo "Apt updates"
-sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y
+#sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y
 
 ## Performs the apt updates
 
 echo "Synchronizes the home configuration with respect to GitHub"
-gitsync
+#gitsync
 
 ## Detects the external disk
 
 if [ 0 = "`ls -1 /media/$USER | wc -l`" ] ; then echo "Upss: insert an external disk before running the script, bye." ; exit ;
 elif [ 1 = "`ls -1 /media/$USER | wc -l`" ] ; then SSD="`ls -1 /media/$USER`" ; confirm "Using the external disk '$SSD', OK" true ;
 else
-  for d in ls -1 /media/$USER do
+  for d in ls -1 /media/$USER ; do
     if confirm "Using the external disk '$d', OK" false ; then SSD="$d" ; break ; fi
   done
   if [ -z "$SSD" ] ; then echo "Upps: no any external disk validated, bye." ; exit ; fi
