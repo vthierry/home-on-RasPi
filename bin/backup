@@ -6,12 +6,17 @@
 confirm() { # Usage: confirm $message $exit
     read -p "$message (y/N)? : " -n 1 -e rep ; if [ "$rep" = "y" ] ; then true ; else if $exit ; then exit ; fi ; false ; fi
 }
-) | tee /tmp/vthierry-sync.log
+
 
 ## Performs the apt updates
 
 echo "Apt updates"
 sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y
+
+## Performs the apt updates
+
+echo "Synchronizes the home configuration with respect to GitHub"
+gitsync
 
 ## Detects the external disk
 
