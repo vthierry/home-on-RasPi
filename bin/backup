@@ -1,0 +1,63 @@
+#!/bin/bash
+. ~/.bashrc
+
+# Usage: backup ; Backups the whole system and the user home dir, after inserting the external disk.
+
+confirm() { # Usage: confirm $message $exit
+    read -p "$message (y/N)? : " -n 1 -e rep ; if [ "$rep" = "y" ] ; then true ; else if $exit ; then exit ; fi ; false ; fi
+}
+) | tee /tmp/vthierry-sync.log
+
+## Performs the apt updates
+
+echo "Apt updates"
+sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y
+
+## Detects the external disk
+
+if [ 0 = "`ls -1 /media/$USER | wc -l`" ] ; then echo "Upss: insert an external disk before running the script, bye." ; exit ; fi
+elif [ 1 = "`ls -1 /media/$USER | wc -l`" ] ; then SSD="`ls -1 /media/$USER`" ; confirm "Using the external disk '$SSD', OK" true ; fi
+else
+  for d in ls -1 /media/$USER do
+    if confirm "Using the external disk '$d', OK" false ; then SSD="$d" ; break ; fi
+  done
+  if [ -z "$SSD" ] ; then echo "Upps: no any external disk validated, bye." ; exit ; fi
+fi
+
+## Performs the backup
+	   
+mkdir -p /media/$USER/$SSD/backup
+
+echo "Creates an image of the SD-card on $SSD in the backup directory"
+sudo dd if=/dev/mmcblk0 of=/media/$USER/$SSD/backup/sd-card-copy.img bs=1M status=progress
+
+echo "Mirrors your home directory in the backup directory"
+rsync  -a -z --archive "/home/$USER" "/media/$USER/$SSD/backup"
+
+## The reminder is specific to the user `vthierry` you may get inspired
+
+if [ "$USER" = "vthierry" ]
+then   
+
+  echo "Syncs git repositories."
+  for d in ~/gits/* ; do pushd $d ; gitsync ; popd ; done
+
+  echo "Syncs smartphone data"
+  SSD="/run/user/1000/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
+  if [ -d "$SSD" ] ; then
+      echo "Uploads DCIM images for local use"
+      mkdir -p ~/Desktop/medias
+      for data in "$SSD/DCIM" "$SSD/Pictures" ; do if [ -d "$d" ] ; then 
+	rsync -a -z --info=progress2 --archive "$d" ~/Desktop/medias
+      fi ; done					       
+      echo "Backups Media files"
+      mkdir -p /media/$USER/$SSD/backup/medias
+      WhatsApp="$SSD/Stockage interne/Android/media/com.whatsapp/WhatsApp/Media/"
+      for data in "my-music" "$WhatsApp/WhatsApp Images" "$WhatsApp/WhatsApp Video" ; do
+        rsync -a -z --archive "$data" "/media/$USER/$SSD/backup/medias"
+      done
+  fi
+fi
+
+
+

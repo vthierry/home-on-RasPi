@@ -22,7 +22,7 @@ sudo apt remove -q -y rpi-connect 		# No need a priori to remote control this Ra
 sudo apt remove -q -y squeekboard 		# No need to have a virtual keyboard on the screen.
 sudo apt remove -q -y geany 			# A programmer's IDE, not very useful when using makefiles (see below).
 sudo apt remove -q -y thonny 			# A Python IDE for beginners only useful for .. Python beginners.
-sudo apt remove -q -y piclone rpi-imager      # No need to manipulate SD-card in this context.
+sudo apt remove -q -y piclone rpi-imager      # Using a better tool to backup/restore the SD-card.
 sudo apt remove -q -y rp-bookshelf              # No need to browse the Raspberry Pi Press  in this context.
 sudo apt remove -q -y rp-prefapps pi-package	      # Better not choose to install applications from a menu, but in this file, for reproductibility.
 #sudo apt remove -q -y mousepad	  		      # Because i am an emacsoholic, better suppress after installing your prefered editor.

@@ -5,6 +5,7 @@ x-scheme-handler/about=chromium.desktop
 x-scheme-handler/unknown=chromium.desktop
 text/html=chromium.desktop
 image/x-xcf=gimp.desktop
+x-scheme-handler/rpi-imager=com.raspberrypi.rpi-imager-uri-handler.desktop
 
 [Added Associations]
 image/x-xcf=gimp.desktop;
