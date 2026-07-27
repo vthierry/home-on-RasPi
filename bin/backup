@@ -20,8 +20,8 @@ gitsync
 
 ## Detects the external disk
 
-if [ 0 = "`ls -1 /media/$USER | wc -l`" ] ; then echo "Upss: insert an external disk before running the script, bye." ; exit ; fi
-elif [ 1 = "`ls -1 /media/$USER | wc -l`" ] ; then SSD="`ls -1 /media/$USER`" ; confirm "Using the external disk '$SSD', OK" true ; fi
+if [ 0 = "`ls -1 /media/$USER | wc -l`" ] ; then echo "Upss: insert an external disk before running the script, bye." ; exit ;
+elif [ 1 = "`ls -1 /media/$USER | wc -l`" ] ; then SSD="`ls -1 /media/$USER`" ; confirm "Using the external disk '$SSD', OK" true ;
 else
   for d in ls -1 /media/$USER do
     if confirm "Using the external disk '$d', OK" false ; then SSD="$d" ; break ; fi
