@@ -3,6 +3,8 @@
 /etc
 /gits
 /.ssh
+/.gitconfig
+/.config/chromium
 /.bash_history
 /.cache
 .emacs.d
