@@ -6,12 +6,6 @@
 
 if [ \! -z "$1" ] ; then cd "$1" ; fi
 
-## Runs a makefile clean command if any
-
-if [ \! -z "`grep '^clean[ ]*:' makefile 2>/dev/null`" ]
-then make -s clean 
-fi
-
 ## Cleans all known temporary files
 
 find . \( -type f -o -type d \) -a \( \

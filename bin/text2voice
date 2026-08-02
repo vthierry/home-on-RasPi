@@ -4,13 +4,13 @@ needfor espeak
 
 usage () {
  cat << EOF
-  Usage: text2voice [-v voice] [-s speed] [-i text-document] [-o wav-document]
+  Usage: text2voice [-v voice] [-s speed] [-i text-document] [-o wav-document] ; Renders a text as an audio.
   -v voice: fr1, fr3 french male voices, fr2, fr4 french female voices
-     other voices can be installed using, to find the package to install:
+     other voices can be installed and to find the package to install:
      > apt search mbrola-
- -s speed: number of words / minut, 90 by default, 30 to 150 are reasonnable values
- -i text-document: uses this text document as input, otherwise uses stdin
- -o wav-document: uses this wavtext document as input, otherwise play the sound
+ -s speed: number of words / minut, 90 by default, 30 to 150 are reasonnable values.
+ -i text-document: uses this text document as input, otherwise uses stdin.
+ -o wav-document: uses this wavtext document as input, otherwise play the sound.
 EOF
 }
 

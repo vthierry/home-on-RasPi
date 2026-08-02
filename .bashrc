@@ -20,11 +20,6 @@ pushd() { # Usage: pushd $directory ; Silent pushd.
 popd() { # Usage: ppopd : Silent popd.
   command popd > /dev/null
 }
-gitsync() { # Usage: gitsync $message ; Synchronizes with the current repository adding a commit message.
-  needfor git
-  if [ -z "$*" ] ; then m="minor modification" ; else m="$*" ; fi
-  git pull -q ; git commit -q -a -m "$m" ; git push -q ; git status -s
-}
 alias c='$HOME/clean; clear' # Usage: c ; Cleans temporary files and clean the terminal screen.
 alias s='xdg-open' # Usage: s $file ; Opens a file with the default application
 nospace() { # Usage: nospace $filename ; Removes blanks and hiding-dot in file name.
@@ -37,4 +32,6 @@ needfor() { # Usage: needfor package ; Tests if a package is installed before us
 										     apt install "$1" ; else exit ; fi
   fi
 }
-
+update() { # Usage: update ; Performs the proper apt update.
+  sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y
+}
