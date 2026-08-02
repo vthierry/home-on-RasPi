@@ -14,7 +14,7 @@
 
 ;; Compilation and command options
 
-(setq compile-command "/home/vthierry/bin/make.sh")
+(setq compile-command "~/bin/make")
 (setq compilation-scroll-output 'first-error)
 (add-to-list  'display-buffer-alist  '("\\*compilation\\*"  (display-buffer-no-window)))
 
@@ -56,7 +56,7 @@
 (defun my-make ()
   (interactive)  
   (my-kill-buffer "*compilation*")
-  (compile "/home/vthierry/bin/make.sh")
+  (compile "~/bin/make")
   )
 
 (defun my-show-compilation ()
@@ -66,12 +66,12 @@
 
 (defun my-terminal ()
   (interactive)
-  (shell-command "(nohup mate-terminal ; /bin/rm -f nohup.out) &")
+  (shell-command "(nohup terminal ; /bin/rm -f nohup.out) &")
 )
 
 (defun my-filer ()
   (interactive)
-  (shell-command "(nohup thunar ; /bin/rm -f nohup.out) &")
+  (shell-command "(nohup filer ; /bin/rm -f nohup.out) &")
 )
 
 (defun my-save ()
@@ -126,7 +126,7 @@
 
 (defun my-emacs ()
   (interactive)  
-  (switch-to-buffer (find-file-noselect "/home/vthierry/.emacs"))
+  (switch-to-buffer (find-file-noselect "/home/Functions/.emacs"))
   (load-file user-init-file)
 )
 
@@ -144,8 +144,8 @@
 (define-key global-map (kbd "<f12>") 'my-clean)
 
 (require 'easymenu)
-(easy-menu-define my-menu nil "vthierry"
-  `("vthierry"
+(easy-menu-define my-menu nil "Functions"
+  `("Functions"
     ["<f1> Shell" my-term t]
     ["<f2> Spell" ispell t]
     ["<f3> Reload" my-reload t]
@@ -164,5 +164,5 @@
  ))
 (define-key-after (lookup-key global-map [menu-bar])
   [openflow]
-  (cons "vthierry" my-menu) nil)
+  (cons "Functions" my-menu) nil)
 
