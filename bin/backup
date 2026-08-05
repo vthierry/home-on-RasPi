@@ -4,7 +4,7 @@
 # Usage: backup ; Backups the whole system and the user home dir, after inserting the external disk.
 
 confirm() { # Usage: confirm $message $exit
-    read -p "$message (y/N)? : " -n 1 -e rep ; if [ "$rep" = "y" ] ; then true ; else if $exit ; then exit ; fi ; false ; fi
+    read -p "$1 (y/N)? : " -n 1 -e rep ; if [ "$rep" = "y" ] ; then true ; else if $exit ; then exit ; fi ; false ; fi
 }
 
 ## Synchronizes the home configuration with respect to GitHub
