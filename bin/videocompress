@@ -3,10 +3,7 @@
 needfor ffmpeg
 
 usage () {
- cat << EOF
-  Usage: videocompress $video-file
-    Compresses a video file.
-EOF
+ echo "Usage: videocompress $video-file ; Compresses a video file."
 }
 if [ -z "$*" ] ; then usage ; exit ; fi
 

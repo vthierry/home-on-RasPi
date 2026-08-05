@@ -3,10 +3,7 @@
 needfor yt-dlp
 
 usage () {
- cat << EOF
-  Usage: videodownload $url
-    Downloads a video.
-EOF
+ echo "Usage: videodownload $url; Downloads a video."
 }
 if [ -z "$*" ] ; then usage ; exit ; fi
 

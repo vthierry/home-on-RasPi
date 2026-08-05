@@ -3,10 +3,9 @@
 
 usage() {
  cat <<EOF
-Usage: gdocget [-o $basename] [ -f $format] $url
- Download a public google-drive document, spreadsheet, presentation, drawings or file.
+Usage: gdocget [-o $basename] [ -f $format] $url ; Download a public google-drive document, spreadsheet, presentation, drawings or file.
  url: The whole google-drive URL, of the form 'https://docs.google.com/..'.
-  -o: A local file name, the document google-drive id by default.
+  -o: A local file name, the document google-drive ID by default.
   -f: The desired format, pdf by default, or, e.g., odt, ods, odp, odg for editable format.
 EOF
 }

@@ -7,16 +7,10 @@ confirm() { # Usage: confirm $message $exit
     read -p "$message (y/N)? : " -n 1 -e rep ; if [ "$rep" = "y" ] ; then true ; else if $exit ; then exit ; fi ; false ; fi
 }
 
-
-## Performs the apt updates
-
-echo "Apt updates"
-#sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y
-
-## Performs the apt updates
+## Synchronizes the home configuration with respect to GitHub
 
 echo "Synchronizes the home configuration with respect to GitHub"
-#gitsync
+cd ~ ; git_sync
 
 ## Detects the external disk
 
@@ -39,7 +33,7 @@ sudo dd if=/dev/mmcblk0 of=/media/$USER/$SSD/backup/sd-card-copy.img bs=1M statu
 echo "Mirrors your home directory in the backup directory"
 rsync  -a -z --archive "/home/$USER" "/media/$USER/$SSD/backup"
 
-## The reminder is specific to the user `vthierry` you may get inspired
+## The reminder is specific to the user `vthierry`, although you may get inspired
 
 if [ "$USER" = "vthierry" ]
 then   

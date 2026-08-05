@@ -51,5 +51,3 @@ sudo apt install -q -y kicad				# The tool to develop printed circuit board.
 
 ## Finalizes package's update
 sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y
-
-bin>

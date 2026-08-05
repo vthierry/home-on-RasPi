@@ -3,10 +3,7 @@
 needfor pdftk
 
 usage () {
- cat << EOF
-  Usage: pdfcompress $pdf-file 
-    Compresses a pdf file.
-EOF
+  echo "Usage: pdfcompress $pdf-file ; Compresses a pdf file."
 }
 if [ -z "$*" ] ; then usage ; exit ; fi
 

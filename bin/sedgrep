@@ -3,7 +3,7 @@
 
 usage() {
  cat <<EOF
-Usage: sedgrep [-dir 'directory'] [-name 'pattern'] [-in in [-out out | [-js | -js0] js] | -list ]
+Usage: sedgrep [-dir 'directory'] [-name 'pattern'] [-in in [-out out | [-js | -js0] js] | -list ] ; Multiple files replacement.
  Find in the given directory (default is '.') and sub-directories files 
     - matching the -name pattern (default is '*') and containing the -in regular expression
     - replaced by the -out regular expression, if specified
