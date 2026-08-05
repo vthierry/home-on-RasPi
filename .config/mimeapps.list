@@ -6,6 +6,8 @@ x-scheme-handler/unknown=chromium.desktop
 text/html=chromium.desktop
 image/x-xcf=gimp.desktop
 x-scheme-handler/rpi-imager=com.raspberrypi.rpi-imager-uri-handler.desktop
+text/plain=emacs.desktop
 
 [Added Associations]
 image/x-xcf=gimp.desktop;
+text/plain=emacs.desktop;

@@ -23,6 +23,9 @@ else
   if [ -z "$SSD" ] ; then echo "Upps: no any external disk validated, bye." ; exit ; fi
 fi
 
+echo $SDD
+exit
+
 ## Performs the backup
 	   
 mkdir -p /media/$USER/$SSD/backup
