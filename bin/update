@@ -22,6 +22,7 @@ sudo apt remove -q -y rpi-connect 		# No need a priori to remote control this Ra
 sudo apt remove -q -y squeekboard 		# No need to have a virtual keyboard on the screen.
 sudo apt remove -q -y geany 			# A programmer's IDE, not very useful when using makefiles (see below).
 sudo apt remove -q -y thonny 			# A Python IDE for beginners only useful for .. Python beginners.
+sudo apt remove -q -y eom			# An image viewer using eye of gnome is much interesting
 sudo apt remove -q -y piclone rpi-imager      # Using a better tool to backup/restore the SD-card.
 sudo apt remove -q -y rp-bookshelf              # No need to browse the Raspberry Pi Press  in this context.
 sudo apt remove -q -y rp-prefapps pi-package	      # Better not choose to install applications from a menu, but in this file, for reproductibility.
@@ -35,6 +36,7 @@ sudo apt install -q -y nodejs			# Javascript is used for Web interaction and man
 sudo apt install -q -y rclone				# Rclone is used for file interaction with on0line systems.
 ## Adds useful multimedia packages.
 sudo apt install -q -y pdftk				# Every day PDF file manipulation.
+sudo apt install -q -y eog			        # An image viewer with very interesting with image sequences.
 sudo apt install -q -y gimp				# A reference for image edition.
 sudo apt install -q -y audacity			# The reference for audio edition.
 sudo apt install -q -y shotcut 			# A good solution for video edition.
