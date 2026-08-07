@@ -32,6 +32,9 @@ needfor() { # Usage: needfor package ; Tests if a package is installed before us
 										     apt install "$1" ; else exit ; fi
   fi
 }
+confirm() { # Usage: confirm $message [$exit] ; Asks a true/false question ; returns the boolean answer ; exits if false, with $exit=y.
+    read -p "$1? (y/N) : " -n 1 -e rep ; if [ "$rep" = "y" ] ; then true ; else if [ \! -z "$exit" ] ; then exit ; fi ; false ; fi
+}
 update() { # Usage: update ; Performs the proper apt update.
   sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y
 }

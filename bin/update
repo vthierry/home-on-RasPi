@@ -6,11 +6,12 @@
 ##                     READ it and ADAPT it BEFORE running it
 ##     (unless nothing is catastrophic if you do not)
 ##
+## Note: The .bashrc update function prevents from unwanted run of this bin/update script.
 
 ## Cleans unused or temporary home directories and files to lighten the configuration.
 
 rmdir --ignore-fail-on-non-empty ~/{Documents,Downloads,Music,Pictures,Public,Templates,Videos}
-/bin/rm -rf ~/{README.md,.profile,.xsession-errors*,.Xauthority,.cache,.emacs.d}
+/bin/rm -rf ~/{README.md,.git,.gitignore,.profile,.xsession-errors*,.Xauthority,.cache,.emacs.d}
 
 ## Removes unused packages (in order to save place, and clean the menu, for easier use).
 

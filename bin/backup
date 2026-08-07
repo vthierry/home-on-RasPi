@@ -3,28 +3,12 @@
 
 # Usage: backup ; Backups the whole system and the user home dir, after inserting the external disk.
 
-confirm() { # Usage: confirm $message $exit
-    read -p "$1 (y/N)? : " -n 1 -e rep ; if [ "$rep" = "y" ] ; then true ; else if $exit ; then exit ; fi ; false ; fi
-}
-
-## Synchronizes the home configuration with respect to GitHub
-
-echo "Synchronizes the home configuration with respect to GitHub"
-cd ~ ; git_sync
-
 ## Detects the external disk
 
-if [ 0 = "`ls -1 /media/$USER | wc -l`" ] ; then echo "Upss: insert an external disk before running the script, bye." ; exit ;
-elif [ 1 = "`ls -1 /media/$USER | wc -l`" ] ; then SSD="`ls -1 /media/$USER`" ; confirm "Using the external disk '$SSD', OK" true ;
-else
-  for d in ls -1 /media/$USER ; do
-    if confirm "Using the external disk '$d', OK" false ; then SSD="$d" ; break ; fi
-  done
-  if [ -z "$SSD" ] ; then echo "Upps: no any external disk validated, bye." ; exit ; fi
-fi
-
-echo $SDD
-exit
+for d in "`ls -1 /media/$USER`" ; do
+  if confirm "Is '$d' the backup disk" ; then SSD="$d" ; break ; fi
+done
+if [ -z "$SSD" ] ; then echo "Upps: no backup disk, bye." ; exit ; fi
 
 ## Performs the backup
 	   
@@ -36,27 +20,27 @@ sudo dd if=/dev/mmcblk0 of=/media/$USER/$SSD/backup/sd-card-copy.img bs=1M statu
 echo "Mirrors your home directory in the backup directory"
 rsync  -a -z --archive "/home/$USER" "/media/$USER/$SSD/backup"
 
-## The reminder is specific to the user `vthierry`, although you may get inspired
+## The reminder is specific to the user `vthierry`, although you may get inspired and adapt
 
 if [ "$USER" = "vthierry" ]
 then   
 
   echo "Syncs git repositories."
-  for d in ~/gits/* ; do pushd $d ; gitsync ; popd ; done
+  bin/git_sync
 
   echo "Syncs smartphone data"
-  SSD="/run/user/1000/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
-  if [ -d "$SSD" ] ; then
+  SmartPhone="/run/user/1000/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
+  if [ -d "$SmartPhone" ] ; then
       echo "Uploads DCIM images for local use"
       mkdir -p ~/Desktop/medias
-      for data in "$SSD/DCIM" "$SSD/Pictures" ; do if [ -d "$d" ] ; then 
+      for data in "$SmartPhone/DCIM" "$SmartPhone/Pictures" ; do if [ -d "$d" ] ; then 
 	rsync -a -z --info=progress2 --archive "$d" ~/Desktop/medias
       fi ; done					       
       echo "Backups Media files"
-      mkdir -p /media/$USER/$SSD/backup/medias
-      WhatsApp="$SSD/Stockage interne/Android/media/com.whatsapp/WhatsApp/Media/"
+      mkdir -p /media/$USER/$SmartPhone/backup/medias
+      WhatsApp="$SmartPhone/Stockage interne/Android/media/com.whatsapp/WhatsApp/Media/"
       for data in "my-music" "$WhatsApp/WhatsApp Images" "$WhatsApp/WhatsApp Video" ; do
-        rsync -a -z --archive "$data" "/media/$USER/$SSD/backup/medias"
+        rsync -a -z --archive "$data" "/media/$USER/$SmartPhone/backup/medias"
       done
   fi
 fi
