@@ -1,5 +1,4 @@
+## Starts the ssh-agent to ease git manipulations
 ssh-agent
-lxterminal --profile=xterm --geometry=120x1 --command="bash -c 'ssh-add ; read cont'"
-
-
+ssh-add
 

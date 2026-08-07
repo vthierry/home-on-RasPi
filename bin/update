@@ -1,53 +1,55 @@
-bin>cat update 
 #!/bin/bash
 
 # Usage: update ; Installs or updates the home directory to work as a tiny workstation.
+##
+## - This is only a prototypical command list:
+##                     READ it and ADAPT it BEFORE running it
+##     (unless nothing is catastrophic if you do not)
+##
 
-# THIS IS MY OWN PERSONAL PARTICULAR UPDATE MECHANISM PLEASE ADAPT BEFORE USE
-#  (unless nothing is catastrophic if you do not)
+## Cleans unused or temporary home directories and files to lighten the configuration.
 
-## Ensures the ~/bin scripts are executable
-chmod a+rx ~/bin/[a-z]*
-
-## Cleans unused or temporary home directories and files
 rmdir --ignore-fail-on-non-empty ~/{Documents,Downloads,Music,Pictures,Public,Templates,Videos}
-/bin/rm -rf ~/{.profile,.bash_logout,.xsession-errors*,.Xauthority,.cache,.emacs.d}
+/bin/rm -rf ~/{.profile,.xsession-errors*,.Xauthority,.cache,.emacs.d}
 
-## Prepares package's update.
-sudo apt update -q -y  ; sudo apt full-upgrade -q -y
+## Removes unused packages (in order to save place, and clean the menu, for easier use).
 
-## Removes unused packages.
-sudo apt remove -q -y firefox			# Chromium has better performances on the RasPi.
-sudo apt remove -q -y rpi-connect 		# No need a priori to remote control this Raspi, while it is possible via ssh.
-sudo apt remove -q -y squeekboard 		# No need to have a virtual keyboard on the screen.
-sudo apt remove -q -y geany 			# A programmer's IDE, not very useful when using makefiles (see below).
-sudo apt remove -q -y thonny 			# A Python IDE for beginners only useful for .. Python beginners.
-sudo apt remove -q -y eom			# An image viewer using eye of gnome is much interesting
+sudo apt remove -q -y firefox                 # Chromium has better performances on the RasPi.
+sudo apt remove -q -y rpi-connect             # No need a priori to remote control this Raspi, while it is possible via ssh.
+sudo apt remove -q -y squeekboard             # No need to have a virtual keyboard on the screen.
+sudo apt remove -q -y geany                   # A programmer's IDE, not very useful when using makefiles (see below).
+sudo apt remove -q -y thonny                  # A Python IDE for beginners only useful for .. Python beginners.
 sudo apt remove -q -y piclone rpi-imager      # Using a better tool to backup/restore the SD-card.
-sudo apt remove -q -y rp-bookshelf              # No need to browse the Raspberry Pi Press  in this context.
-sudo apt remove -q -y rp-prefapps pi-package	      # Better not choose to install applications from a menu, but in this file, for reproductibility.
-#sudo apt remove -q -y mousepad	  		      # Because i am an emacsoholic, better suppress after installing your prefered editor.
+sudo apt remove -q -y rp-bookshelf            # No need to browse the Raspberry Pi Press  in this context.
+sudo apt remove -q -y rp-prefapps pi-package  # Better not choose to install applications from a menu, but in this file, for reproductibility.
+#sudo apt remove -q -y mousepad               # Do NOT suppress it unless you have chosen your favorite editor.
 sudo apt autoremove -q -y
-## Note: The goal is to save place, but also to clean the menu, for easier use.
 
 ## Adds useful system packages.
-sudo apt install -q -y git				# Git is mandatory, but preinstalled (thus a simple reminder here).
-sudo apt install -q -y nodejs			# Javascript is used for Web interaction and many useful tools.
-sudo apt install -q -y rclone				# Rclone is used for file interaction with on0line systems.
+sudo apt update -q -y
+sudo apt install -q -y git                    # Git is preinstalled (thus a simple reminder here).
+sudo apt install -q -y nodejs                 # Javascript is used for Web interaction and many useful tools.
+sudo apt install -q -y rclone                 # Rclone is used for file interaction with on-line cloud systems.
 ## Adds useful multimedia packages.
-sudo apt install -q -y pdftk				# Every day PDF file manipulation.
-sudo apt install -q -y eog			        # An image viewer with very interesting with image sequences.
-sudo apt install -q -y gimp				# A reference for image edition.
-sudo apt install -q -y audacity			# The reference for audio edition.
-sudo apt install -q -y shotcut 			# A good solution for video edition.
-sudo apt install -q -y ffmpeg  			# Every day video/audio file manipulation (needed ny shotcut).
-sudo apt install -q -y yt-dlp			# A tool for video downloading
-sudo apt install -q -y simple-scan		# A suitable image scanner.
-sudo apt install -q -y simplescreenrecorder # A … simple screen recorder.
+sudo apt install -q -y pdftk                  # Every day PDF file manipulation.
+sudo apt install -q -y gimp                   # A reference for image edition.
+sudo apt install -q -y audacity               # The reference for audio edition.
+sudo apt install -q -y shotcut                # A good solution for video edition.
+sudo apt install -q -y ffmpeg                 # Every day video/audio file manipulation (needed ny shotcut).
+sudo apt install -q -y yt-dlp                 # A tool for video downloading
+sudo apt install -q -y simple-scan            # A suitable image scanner.
+sudo apt install -q -y simplescreenrecorder   # A … simple screen recorder.
 ## Adds useful development packages, in the https://github.com/vthierry/idnai context.
-sudo apt install -q -y emacs				# The best universal computer editor of the … XXe century :), choose your one.
-sudo apt install -q -y arduino			# The tool to develop akso on the ESP32 processor.
-sudo apt install -q -y kicad				# The tool to develop printed circuit board.
+sudo apt install -q -y emacs                  # The best universal computer editor of the … XXe century :), choose your one.
+sudo apt install -q -y arduino                # The tool to develop akso on the ESP32 processor.
+sudo apt install -q -y kicad                  # The tool to develop printed circuit board.
 
 ## Finalizes package's update
 sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y
+
+## Cleans and enriches application's loaders
+### sudo /bin/rm -f /usr/share/applications/{../..}.desktop
+### sudo cp .config/etc/applications/*.desktop /usr/share/applications
+
+## Asks for reboot
+read -p "Shall we reboot ? (y/n): " -n 1 -e rep ; if [ "$rep" = y ] ; then sudo reboot ; fi

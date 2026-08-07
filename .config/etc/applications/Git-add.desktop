@@ -1,0 +1,8 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Terminal=false
+Exec=git add %f
+Comment=Adds the file to the git bundle
+Icon=git
+Name=Git-add
