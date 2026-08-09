@@ -55,7 +55,10 @@ sudo apt update -qq -y  ; sudo apt full-upgrade -qq -y ; sudo apt autoremove -qq
 
 ## Cleans and enriches application's loaders
 sudo /bin/rm -f /usr/share/applications/{emacsclient,emacsclient-mail,emacs-mail,emacs-term,org.kicad.{bitmap2component,eeschema,gerbview,pcbcalculator,pcbnew}}.desktop
-sudo cp ~/.config/etc/applications/*.desktop /usr/share/applications
+
+## Enrichs the PCManFM actions
+mkdir -p ~/.local/share/file-manager/actions
+cp ~/.config/etc/file-manager-actions/*.desktop ~/.local/share/file-manager/actions
 
 ## Asks for reboot
 read -p "Shall we reboot ? (y/n): " -n 1 -e rep ; if [ "$rep" = y ] ; then sudo reboot ; fi
