@@ -36,5 +36,6 @@ confirm() { # Usage: confirm $message [$exit] ; Asks a true/false question ; ret
     read -p "$1? (y/N) : " -n 1 -e rep ; if [ "$rep" = "y" ] ; then true ; else if [ \! -z "$exit" ] ; then exit ; fi ; false ; fi
 }
 update() { # Usage: update ; Performs the proper apt update.
+  ## Note: Also avoids to use bin/update by mistake.
   sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y
 }
