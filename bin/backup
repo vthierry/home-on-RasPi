@@ -20,7 +20,7 @@ fi
 
 echo "Mirrors your home directory in the backup directory"
 sudo /bin/rm -f /home/$USER/.config/chromium/Singleton*
-rsync  -a -z --archive "/home/$USER" "/media/$USER/$SSD/backup"
+rsync  -a -z --delete-excluded --archive "/home/$USER" "/media/$USER/$SSD/backup"
 
 ## The reminder is specific to the user `vthierry`, although you may get inspired and adapt
 
@@ -28,7 +28,7 @@ if [ "$USER" = "vthierry" ]
 then   
 
   echo "Syncs git repositories."
-  bin/git_sync
+  git_sync
 
   echo "Syncs smartphone data"
   SmartPhone="/run/user/1000/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
