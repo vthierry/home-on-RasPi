@@ -9,23 +9,24 @@
 ## Note: The .bashrc update function prevents from unwanted run of this bin/update script.
 
 ## Cleans unused or temporary home directories and files to lighten the configuration.
-
-rmdir ~/{Documents,Downloads,Music,Pictures,Public,Templates,Videos} 2>/dev/null
 /bin/rm -rf ~/{README.md,.git,.gitignore,.profile,.xsession-errors*,.Xauthority,.emacs.d}
 sudo /bin/rm -rf .cache
+
 ### Links the Documents and Downloads to the Desktop to have all working files at the same place
+mv ~/{Documents,Downloads,Music,Pictures,Public,Templates,Videos}/* ~/Desktop  2>/dev/null
+rmdir ~/{Documents,Downloads,Music,Pictures,Public,Templates,Videos} 2>/dev/null
 for d in Documents Downloads ; do ln -s ~/Desktop ~/$d ; done
 
 ## Removes unused packages (in order to save place, and clean the menu, for easier use).
 
-sudo apt remove -qq -y firefox                 # Chromium has better performances on the RasPi.
-sudo apt remove -qq -y rpi-connect             # No need a priori to remote control this Raspi, while it is possible via ssh.
+sudo apt remove -qq -y firefox                 # Chromium has better performance on the RasPi.
+sudo apt remove -qq -y rpi-connect # No need a priori to remotely control this Raspi, while it is possible via SSH.
 sudo apt remove -qq -y squeekboard             # No need to have a virtual keyboard on the screen.
 sudo apt remove -qq -y geany                   # A programmer's IDE, not very useful when using makefiles (see below).
 sudo apt remove -qq -y thonny                  # A Python IDE for beginners only useful for .. Python beginners.
 sudo apt remove -qq -y piclone rpi-imager      # Using a better tool to backup/restore the SD-card.
 sudo apt remove -qq -y rp-bookshelf yelp       # No need to browse the Raspberry Pi Press  in this context.
-sudo apt remove -qq -y rp-prefapps pi-package  # Better not choose to install applications from a menu, but in this file, for reproductibility.
+sudo apt remove -qq -y rp-prefapps pi-package  # Better not choose to install applications from a menu, but in this file, for reproducibility.
 sudo apt remove -qq -y realvnc-vnc-server         # No use of VNC in this context.
 sudo apt remove -qq -y libvncclient1 libneatvnc0 wayvnc
 #sudo apt remove -qq -y mousepad               # Do NOT suppress it unless you have chosen your favorite editor.
@@ -34,31 +35,33 @@ sudo apt autoremove -qq -y
 ## Adds useful system packages.
 sudo apt update -qq -y
 sudo apt install -qq -y git                    # Git is preinstalled (thus a simple reminder here).
-sudo apt install -qq -y nodejs                 # Javascript is used for Web interaction and many useful tools.
+sudo apt install -qq -y nodejs                 # JavaScript is used for Web interaction and many useful tools.
 sudo apt install -qq -y rclone                 # Rclone is used for file interaction with on-line cloud systems.
 ## Adds useful multimedia packages.
 sudo apt install -qq -y pdftk                  # Every day PDF file manipulation.
-sudo apt install -qq -y gimp                   # A reference for image edition.
-sudo apt install -qq -y audacity               # The reference for audio edition.
-sudo apt install -qq -y shotcut                # A good solution for video edition.
-sudo apt install -qq -y ffmpeg                 # Every day video/audio file manipulation (needed ny shotcut).
+sudo apt install -qq -y gimp                   # A reference for image editing.
+sudo apt install -qq -y audacity               # The reference for audio editing.
+sudo apt install -qq -y shotcut                # A good solution for video editing.
+sudo apt install -qq -y ffmpeg                 # Everyday video/audio file manipulation (needed by Shotcut).
 sudo apt install -qq -y yt-dlp                 # A tool for video downloading
 sudo apt install -qq -y simple-scan            # A suitable image scanner.
-sudo apt install -qq -y kazam                # A … simple poweful screen recorder.
+sudo apt install -qq -y kazam                # A … simple powerful screen recorder.
+## Adds office packages, if not working online.
+### Note: The key point is that there is no need to install the whole LibreOffice productivity software, if only partially used.
+#sudo apt install -q -y libreoffice-writer     # The reference textual document editor.
+#sudo apt install -q -y libreoffice-calc       # The spreadsheet document editor.
+#sudo apt install -q -y libreoffice-draw       # The reference drawing editor.
+#sudo apt install -q -y libreoffice-impress    # The reference slide presentation editor.
 ## Adds useful development packages, in the https://github.com/vthierry/idnai context.
 sudo apt install -qq -y emacs                  # The best universal computer editor of the … XXe century :), choose your one.
-sudo apt install -qq -y arduino                # The tool to develop akso on the ESP32 processor.
-sudo apt install -qq -y kicad                  # The tool to develop printed circuit board.
+sudo apt install -qq -y arduino                # The toolchain for developing on the ESP32 processor as well.
+sudo apt install -qq -y kicad                  # The tool to develop printed circuit boards.
 
-## Finalizes package's update
-sudo apt update -qq -y  ; sudo apt full-upgrade -qq -y ; sudo apt autoremove -qq -y
+## Finalizes package updates
+sudo apt update -qq -y ; sudo apt full-upgrade -qq -y; sudo apt autoremove -qq -y
 
-## Cleans and enriches application's loaders
+## Cleans application's loaders
 sudo /bin/rm -f /usr/share/applications/{emacsclient,emacsclient-mail,emacs-mail,emacs-term,org.kicad.{bitmap2component,eeschema,gerbview,pcbcalculator,pcbnew}}.desktop
-
-## Enrichs the PCManFM actions
-mkdir -p ~/.local/share/file-manager/actions
-cp ~/.config/etc/file-manager-actions/*.desktop ~/.local/share/file-manager/actions
 
 ## Asks for reboot
 read -p "Shall we reboot ? (y/n): " -n 1 -e rep ; if [ "$rep" = y ] ; then sudo reboot ; fi
