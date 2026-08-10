@@ -6,9 +6,16 @@
 /gits
 /.ssh
 /.gitconfig
-/.bash_history
+/.bash_history*
 /.cache
 /.emacs.d
 /.Xauthority
 /.sudo_as_admin_successful
 /.xsession-errors*
+/.config/*
+!/.config/lxterminal
+!/.config/pcmanfm
+!/.config/rpc
+!/.config/wf-panel-pi
+/.local/*
+!/.local/share/file-manager
