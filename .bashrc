@@ -6,6 +6,7 @@ export EDITOR=emacs
 export BROWSER=chromium
 unset  MAIL
 export TEXINPUTS=".:"
+if [ -f .ssh/SSH_ENV ] ; then . .ssh/SSH_ENV ; fi
 
 alias cp='cp -i' # Usage: cp $source $target ; Force interactive copy to avoid error.
 alias mv='mv -i' # Usage: mv $source $target ; Force interactive move to avoid error.
