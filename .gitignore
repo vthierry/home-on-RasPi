@@ -13,11 +13,11 @@
 /.sudo_as_admin_successful
 /.xsession-errors*
 /.local/*
-!/.local/share/file-manager/actions
+!/.local/share/file-manager/actions/*
 /.config/*
-!/.config/lxterminal
-!/.config/pcmanfm
-!/.config/rpcc
+!/.config/lxterminal/*
+!/.config/pcmanfm/*
+!/.config/rpcc/*
 !/.config/user-dirs.dirs
-!/.config/wf-panel-pi
+!/.config/wf-panel-pi/*
 
