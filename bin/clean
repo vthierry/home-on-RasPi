@@ -6,6 +6,12 @@
 
 if [ \! -z "$1" ] ; then cd "$1" ; fi
 
+## Cleans home files
+
+if [ "$PWD" = "$HOME" ]
+then  /bin/rm -rf  .bash_history-* .xsession-errors* .Xauthority .cache .emacs.d
+fi
+
 ## Cleans all known temporary files
 
 find . \( -type f -o -type d \) -a \( \
