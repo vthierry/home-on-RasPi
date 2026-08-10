@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Action
+Name=Make
+Exec=/home/vthierry/bin/make

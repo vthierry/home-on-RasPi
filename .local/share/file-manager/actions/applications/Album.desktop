@@ -1,0 +1,9 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Terminal=false
+Exec=eom *
+MimeType=image/*,inode/directory
+Comment=Views image(s)
+Icon=image-x-generic
+Name=Album

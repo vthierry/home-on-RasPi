@@ -1,0 +1,8 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Terminal=false
+Exec=zip -9qr ~/Desktop/%n.zip %N
+Comment=Builds an archive on desktop
+Icon=media-zip
+Name=Zip

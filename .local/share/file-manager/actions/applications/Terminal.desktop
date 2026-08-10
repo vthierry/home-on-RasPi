@@ -1,0 +1,9 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Terminal=false
+Exec=lxterminal %f
+MimeType=inode/directory
+Comment=Opens a terminal here
+Icon=gok
+Name=Terminal

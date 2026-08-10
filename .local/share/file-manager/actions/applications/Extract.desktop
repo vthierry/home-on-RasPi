@@ -1,0 +1,9 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Terminal=false
+Exec=unzip %f
+MimeType=application/zip
+Comment=Extracts all archive's file
+Icon=media-zip
+Name=Extract

@@ -12,12 +12,3 @@
 /.Xauthority
 /.sudo_as_admin_successful
 /.xsession-errors*
-/.local/*
-!/.local/share/file-manager/actions/*
-/.config/*
-!/.config/lxterminal/*
-!/.config/pcmanfm/*
-!/.config/rpcc/*
-!/.config/user-dirs.dirs
-!/.config/wf-panel-pi/*
-

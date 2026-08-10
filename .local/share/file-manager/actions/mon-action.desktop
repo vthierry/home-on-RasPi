@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Action
+Name=Nom affiché dans le clic droit
+Icon=utilities-terminal
+Profiles=profile-zero;
+
+[X-Action-Profile profile-zero]
+Exec=la-commande-a-lancer %F
+Name=Profil par défaut
+MimeTypes=all/all;

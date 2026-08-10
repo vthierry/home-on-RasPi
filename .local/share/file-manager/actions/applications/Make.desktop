@@ -1,0 +1,9 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Terminal=false
+Exec=lxterminal --profile=xterm --geometry=80x24 --command="bash -c '~/bin/make ; echo ... done ; read cont'"
+Comment=Makes the default target
+MimeType=inode/directory
+Icon=preferences-desktop-personal
+Name=Make
