@@ -19,7 +19,7 @@ then sudo dd if=/dev/mmcblk0 of=/media/$USER/$SSD/backup/sd-card-copy.img bs=1M 
 fi   
 
 if confirm "Mirrors your home directory in the backup directory"
-then rsync  -a -z --info=progress2 --delete-excluded --exclude '.config/chromium/Singleton*' --archive "/home/$USER" "/media/$USER/$SSD/backup"
+then rsync  -a -z --info=progress2 --delete-excluded --exclude '.config/chromium/Singleton*' --archive "/home/$USER/" "/media/$USER/$SSD/backup/"
 fi
 
 if confirm "Syncs git repositories"
@@ -35,15 +35,15 @@ then
       if confirm "Opens the smartphone data in filer" ; then pcmanfm "$SmartPhone" ; fi 
       if confirm "Uploads smart-phone pictures for local use" ; then
         mkdir -p ~/Desktop/medias
-        for d in "$SmartPhone/DCIM" "$SmartPhone/Pictures" ; do if [ -d "$d" ] ; then
-    	  rsync -a -z --info=progress2 --archive "$d" ~/Desktop/medias
+        for d in "$SmartPhone/DCIM/" "$SmartPhone/Pictures/" ; do if [ -d "$d" ] ; then
+    	  rsync -a -z --info=progress2 --archive "$d" ~/Desktop/medias/
 	fi ; done
       fi
       if confirm "Backups WhatsApp media   files" ; then
         WhatsApp="$SmartPhone/Android/media/com.whatsapp/WhatsApp/Media/"
-	rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Images" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media"
-	rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Audio" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media"
-	rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Video" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media"
+	rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Images/" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media/"
+	rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Audio/" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media/"
+	rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Video/" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media/"
       fi
     fi
 fi
