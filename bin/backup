@@ -18,33 +18,34 @@ if confirm "Creates an image of the SD-card on $SSD in the backup directory"
 then sudo dd if=/dev/mmcblk0 of=/media/$USER/$SSD/backup/sd-card-copy.img bs=1M status=progress
 fi   
 
-echo "Mirrors your home directory in the backup directory"
-sudo /bin/rm -f /home/$USER/.config/chromium/Singleton*
-rsync  -a -z --delete-excluded --archive "/home/$USER" "/media/$USER/$SSD/backup"
+if confirm "Mirrors your home directory in the backup directory"
+then rsync  -a -z --info=progress2 --delete-excluded --exclude '.config/chromium/Singleton*' --archive "/home/$USER" "/media/$USER/$SSD/backup"
+fi
 
-## The reminder is specific to the user `vthierry`, although you may get inspired and adapt
+if confirm "Syncs git repositories"
+then git_sync
+fi     
+   
+## The reminder is specific to the user `vthierry` smartphone, although you may get inspired and adapt to your usage
 
 if [ "$USER" = "vthierry" ]
 then   
-
-  echo "Syncs git repositories."
-  git_sync
-
-  echo "Syncs smartphone data"
-  SmartPhone="/run/user/1000/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
-  if [ -d "$SmartPhone" ] ; then
-      echo "Uploads DCIM images for local use"
-      mkdir -p ~/Desktop/medias
-      for data in "$SmartPhone/DCIM" "$SmartPhone/Pictures" ; do if [ -d "$d" ] ; then 
-	rsync -a -z --info=progress2 --archive "$d" ~/Desktop/medias
-      fi ; done					       
-      echo "Backups Media files"
-      mkdir -p /media/$USER/$SmartPhone/backup/medias
-      WhatsApp="$SmartPhone/Stockage interne/Android/media/com.whatsapp/WhatsApp/Media/"
-      for data in "my-music" "$WhatsApp/WhatsApp Images" "$WhatsApp/WhatsApp Video" ; do
-        rsync -a -z --archive "$data" "/media/$USER/$SmartPhone/backup/medias"
-      done
-  fi
+    SmartPhone="/run/user/1000/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
+    if [ -d "$SmartPhone" ] ; then
+      if confirm "Opens the smartphone data in filer" ; then pcmanfm "$SmartPhone" ; fi 
+      if confirm "Uploads smart-phone pictures for local use" ; then
+        mkdir -p ~/Desktop/medias
+        for d in "$SmartPhone/DCIM" "$SmartPhone/Pictures" ; do if [ -d "$d" ] ; then
+    	  rsync -a -z --info=progress2 --archive "$d" ~/Desktop/medias
+	fi ; done
+      fi
+      if confirm "Backups WhatsApp media   files" ; then
+        WhatsApp="$SmartPhone/Android/media/com.whatsapp/WhatsApp/Media/"
+	rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Images" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media"
+	rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Audio" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media"
+	rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Video" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media"
+      fi
+    fi
 fi
 
 
