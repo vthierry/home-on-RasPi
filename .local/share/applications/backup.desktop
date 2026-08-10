@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Backup
+Comment=Backups the user data
+Exec=lxterminal --profile=xterm --geometry=80x16 --command="bash -c '~/bin/backup ; echo ... done ; read cont'"
+StartupNotify=false
+Terminal=false
+Icon=xarchiver-extract
+Categories=Utility

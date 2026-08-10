@@ -19,3 +19,4 @@
 !/.config/wf-panel-pi
 /.local/*
 !/.local/share/file-manager
+!./.local/share/applications/backup.desktop
