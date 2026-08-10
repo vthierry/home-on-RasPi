@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Action
-Name=Make
-Icon=boxes
+Name=Noblank
+Icon=menu-edit
 Profiles=default;
 
 [X-Action-Profile default]

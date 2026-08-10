@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Action
 Name=Make
-Icon=utilities-terminal
+Icon=mate-desktop
 Profiles=default;
 
 [X-Action-Profile default]

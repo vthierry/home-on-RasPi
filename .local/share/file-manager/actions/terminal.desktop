@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Action
 Name=Terminal
-Icon=gok
+Icon=utilities-terminal
 Profiles=default;
 
 [X-Action-Profile default]

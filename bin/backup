@@ -19,6 +19,7 @@ then sudo dd if=/dev/mmcblk0 of=/media/$USER/$SSD/backup/sd-card-copy.img bs=1M 
 fi   
 
 echo "Mirrors your home directory in the backup directory"
+sudo /bin/rm -f /home/$USER/.config/chromium/Singleton*
 rsync  -a -z --archive "/home/$USER" "/media/$USER/$SSD/backup"
 
 ## The reminder is specific to the user `vthierry`, although you may get inspired and adapt

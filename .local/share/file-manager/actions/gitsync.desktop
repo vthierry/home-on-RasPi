@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Action
 Name=Git sync
-Icon=git
+Icon=/usr/share/icons/hicolor/scalable/actions/fm-thumbs.svg
 Profiles=default;
 
 [X-Action-Profile default]

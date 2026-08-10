@@ -22,7 +22,9 @@ popd() { # Usage: ppopd : Silent popd.
   command popd > /dev/null
 }
 alias c='$HOME/clean; clear' # Usage: c ; Cleans temporary files and clean the terminal screen.
-alias s='xdg-open' # Usage: s $file ; Opens a file with the default application
+alias s='xdg-open' # Usage: s $file ; Shows a file with the default application.
+alias f='pcmanfm' # Usage: f ; Opens the file manager for the current directory.
+alias m='~/bin/make' # Usage: m ; Runs makein the current directory.
 nospace() { # Usage: nospace $filename ; Removes blanks and hiding-dot in file name.
   f="`echo $* | sed 's/ /_/g' | sed 's/\/\./\//g'`"
   if [ "$*" \!= "$f" ] ; then mv "$*" "$f" ; fi

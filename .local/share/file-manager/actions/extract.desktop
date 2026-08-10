@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Action
 Name=Extract
-Icon=media-zip
+Icon=xarchiver-extract
 Profiles=default;
 
 [X-Action-Profile default]

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Action
 Name=Git add
-Icon=git
+Icon=/usr/share/icons/hicolor/scalable/actions/fm-new.svg
 Profiles=default;
 
 [X-Action-Profile default]

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Action
 Name=Zip
-Icon=media-zip
+Icon=xarchiver-add
 Profiles=default;
 
 [X-Action-Profile default]
