@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Backup
+Icon=file-manager
+Exec=lxterminal --profile=xterm --geometry=80x16 --command="bash -c '~/bin/backup ; echo ... done ; read cont'"
+Comment=Backups the user data
