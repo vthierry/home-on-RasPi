@@ -1,8 +1,0 @@
-#!/usr/bin/env xdg-open
-[Desktop Entry]
-Type=Application
-Terminal=false
-Exec=bash -c "noblank %f"
-Comment=Renames the file name with no space
-Icon=boxes
-Name=Noblank

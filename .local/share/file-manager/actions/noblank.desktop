@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Action
+Name=Make
+Icon=boxes
+Profiles=default;
+
+[X-Action-Profile default]
+Exec=bash -c "noblank %f"
+Name=Default profile
+MimeTypes=inode/directory;
+Comment=Renames the file name with no space

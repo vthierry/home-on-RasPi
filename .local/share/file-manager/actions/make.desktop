@@ -1,4 +1,11 @@
 [Desktop Entry]
 Type=Action
 Name=Make
-Exec=/home/vthierry/bin/make
+Icon=utilities-terminal
+Profiles=default;
+
+[X-Action-Profile default]
+Exec=lxterminal --profile=xterm --geometry=80x16 --command="bash -c '~/bin/make ; echo ... done ; read cont'"
+Name=Default profile
+MimeTypes=inode/directory;
+Comment=Makes the default target

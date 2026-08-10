@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Action
+Name=Zip
+Icon=media-zip
+Profiles=default;
+
+[X-Action-Profile default]
+Exec=zip -9qr ~/Desktop/%f.zip %F
+Name=Default profile
+MimeTypes=all/all;
+Comment=Builds an archive on desktop

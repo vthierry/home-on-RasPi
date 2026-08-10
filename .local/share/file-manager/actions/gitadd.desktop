@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Action
+Name=Git add
+Icon=git
+Profiles=default;
+
+[X-Action-Profile default]
+Exec=git add %F
+Name=Default profile
+MimeTypes=all/all;
+Comment=Adds to the git repository

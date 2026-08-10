@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Action
+Name=Git sync
+Icon=git
+Profiles=default;
+
+[X-Action-Profile default]
+Exec=lxterminal --profile=xterm --geometry=80x16 --command="bash -c '~/bin/git_sync ; echo ... done ; read cont'"
+Name=Default profile
+MimeTypes=inode/directory;
+Comment=Syncs the git repository

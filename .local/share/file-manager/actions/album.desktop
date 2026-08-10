@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Action
+Name=Album
+Icon=image-x-generic
+Profiles=default;
+
+[X-Action-Profile default]
+Exec=eom %F
+Name=Default profile
+MimeTypes=image/*;inode/directory;
+Comment=Views image(s)

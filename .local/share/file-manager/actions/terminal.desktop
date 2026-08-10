@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Action
+Name=Terminal
+Icon=gok
+Profiles=default;
+
+[X-Action-Profile default]
+Exec=lxterminal
+Name=Default profile
+MimeTypes=inode/directory;
+Comment=Opens a terminal here

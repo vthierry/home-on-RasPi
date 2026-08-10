@@ -66,12 +66,12 @@
 
 (defun my-terminal ()
   (interactive)
-  (shell-command "(nohup terminal ; /bin/rm -f nohup.out) &")
+  (shell-command "(nohup lxterminal ; /bin/rm -f nohup.out) &")
 )
 
 (defun my-filer ()
   (interactive)
-  (shell-command "(nohup filer ; /bin/rm -f nohup.out) &")
+  (shell-command "(nohup pcmanfm ; /bin/rm -f nohup.out) &")
 )
 
 (defun my-save ()
@@ -82,6 +82,7 @@
 (defun my-clean ()
   (interactive)
   (my-clean-buffers)
+  (redraw-display)
 )
 
 (defun my-clean-buffers ()
@@ -126,7 +127,7 @@
 
 (defun my-emacs ()
   (interactive)  
-  (switch-to-buffer (find-file-noselect "/home/Functions/.emacs"))
+  (switch-to-buffer (find-file-noselect "~/.emacs"))
   (load-file user-init-file)
 )
 

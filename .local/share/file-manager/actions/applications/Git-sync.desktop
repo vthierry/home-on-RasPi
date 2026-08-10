@@ -1,9 +1,0 @@
-#!/usr/bin/env xdg-open
-[Desktop Entry]
-Type=Application
-Terminal=false
-Exec=git_sync %f
-MimeType=inode/directory
-Comment=Synchronizes with the git repository
-Icon=im-chooser
-Name=Git-sync

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Action
+Name=Extract
+Icon=media-zip
+Profiles=default;
+
+[X-Action-Profile default]
+Exec=unzip %f
+Name=Default profile
+MimeTypes=application/zip;
+Comment=Extracts all archive's file
+
