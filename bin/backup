@@ -32,12 +32,17 @@ if [ "$USER" = "vthierry" ]
 then   
     SmartPhone="/run/user/1000/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
     if [ -d "$SmartPhone" ] ; then
-      if confirm "Opens the smartphone data in filer" ; then pcmanfm "$SmartPhone" ; fi 
+      if confirm "Opens the smartphone data in filer"
+      then pcmanfm "$SmartPhone"
+      fi 
       if confirm "Uploads smart-phone pictures for local use" ; then
         mkdir -p ~/Desktop/medias
         for d in "$SmartPhone/DCIM/" "$SmartPhone/Pictures/" ; do if [ -d "$d" ] ; then
     	  rsync -a -z --info=progress2 --archive "$d" ~/Desktop/medias/
 	fi ; done
+      fi
+      if confirm "Backups my music ?"
+      then rsync -a -z --archive --info=progress2 --delete-excluded "$SmartPhone/my-music" "/media/$USER/$SSD/backup/"
       fi
       if confirm "Backups WhatsApp media   files" ; then
         WhatsApp="$SmartPhone/Android/media/com.whatsapp/WhatsApp/Media/"
