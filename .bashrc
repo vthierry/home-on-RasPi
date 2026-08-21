@@ -2,7 +2,7 @@ PS1="\W>"
 
 export SHELL=/bin/bash
 export PATH=$HOME/bin:$PATH:$HOME/.local/bin
-export EDITOR=emacs
+export EDITOR=emacs # @TODO Adapt to your own choice
 export BROWSER=chromium
 unset  MAIL
 export TEXINPUTS=".:"
@@ -18,26 +18,13 @@ rm() { # Usage: rm $files ; Removes files by moving them to the desktop trask.
 pushd() { # Usage: pushd $directory ; Silent pushd.
   command pushd "$@" > /dev/null
 }
-popd() { # Usage: ppopd : Silent popd.
+popd() { # Usage: popd : Silent popd.
   command popd > /dev/null
 }
 alias c='$HOME/clean; clear' # Usage: c ; Cleans temporary files and clean the terminal screen.
 alias s='xdg-open' # Usage: s $file ; Shows a file with the default application.
 alias f='pcmanfm' # Usage: f ; Opens the file manager for the current directory.
-alias m='~/bin/make' # Usage: m ; Runs makein the current directory.
-nospace() { # Usage: nospace $filename ; Removes blanks and hiding-dot in file name.
-  f="`echo $* | sed 's/ /_/g' | sed 's/\/\./\//g'`"
-  if [ "$*" \!= "$f" ] ; then mv "$*" "$f" ; fi
-}
-needfor() { # Usage: needfor package ; Tests if a package is installed before used, and proposes to install otherwise.
-  if ! dpkg-query -Wf'${db:Status}' "$1" 2>/dev/null ; then
-    read -p "The '$1' package is not installed ? Shall we ? (y/N): " -n 1 -e rep ; if [ "$rep" = "y" ] ; then
-										     apt install "$1" ; else exit ; fi
-  fi
-}
-confirm() { # Usage: confirm $message [$exit] ; Asks a true/false question ; returns the boolean answer ; exits if false, with $exit=y.
-    read -p "$1? (y/N) : " -n 1 -e rep ; if [ "$rep" = "y" ] ; then true ; else if [ \! -z "$exit" ] ; then exit ; fi ; false ; fi
-}
+alias m='~/bin/make' # Usage: m ; Runs make in the current directory.
 update() { # Usage: update ; Performs the proper apt update.
   ## Note: Also avoids to use bin/update by mistake.
   sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y

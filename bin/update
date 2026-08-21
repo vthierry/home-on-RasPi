@@ -60,7 +60,7 @@ sudo apt install -qq -y kicad                  # The tool to develop printed cir
 ## Finalizes package updates
 sudo apt update -qq -y ; sudo apt full-upgrade -qq -y; sudo apt autoremove -qq -y
 
-## Cleans application's loaders
+## Cleans not useful application's loaders
 sudo /bin/rm -f /usr/share/applications/{emacsclient,emacsclient-mail,emacs-mail,emacs-term,org.kicad.{bitmap2component,eeschema,gerbview,pcbcalculator,pcbnew}}.desktop
 
 ## Asks for reboot
