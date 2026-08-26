@@ -1,7 +1,17 @@
 #!/bin/bash
 . ~/.bashrc
 
-# Usage: backup ; Backups the whole system and the user home dir, after inserting the external disk.
+## Script usage
+
+if [ "$1" = -h -o "$1" = --help ]
+then cat <<EOU
+Usage: backup
+- Backups the whole system and the user home dir, onto an external disk.
+EOU
+exit
+fi
+
+# Usage: backup ; 
 
 ## Detects the external disk
 

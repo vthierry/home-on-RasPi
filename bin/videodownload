@@ -1,0 +1,15 @@
+#!/bin/bash
+. ~/.bashrc
+needfor yt-dlp
+
+if [ -z "$1" -o "$1" = -h -o "$1" = --help ]
+then cat <<EOU
+Usage: videodownload \$url
+- Downloads a video.
+EOU
+exit
+fi
+
+yt-dlp $*
+
+
