@@ -1,7 +1,7 @@
 PS1="\W>"
 
 export SHELL=/bin/bash
-export PATH=$HOME/bin:$PATH:$HOME/.local/bin
+export PATH=.:$HOME/bin:$PATH:$HOME/.local/bin
 export EDITOR=emacs # @TODO Adapt to your own choice
 export BROWSER=chromium
 unset  MAIL

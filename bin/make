@@ -12,9 +12,17 @@ exit
 fi
 
 for d in "." ".." "../.." "../../.." "../../../.." 
-do if [ -f $d/makefile ]
-  then if [ \( -z "$1" \) -o \( \! -z "`grep -e '^$1:' $d/makefile`" \) ]
+do
+  if [ -f $d/makefile ]
+  then
+    if [ \( -z "$1" \) -o \( \! -z "`grep -e '^$1:' $d/makefile`" \) ]
     then make -s --no-print-directory -C $d $* ; exit $?
-fi ; fi ; done
+    fi
+  elif [ -x $d/make ]
+  then
+    $d/make $* ; exit $?
+  fi
+done
+
 echo "make: *** No rule to make target '$1'.  Stop." ; exit -1
 
