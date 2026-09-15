@@ -1,20 +1,54 @@
 #!/bin/bash
+. ~/.bashrc
 
-if [ -z "$1" -o "$1" = -h -o "$1" = --help ]
-then cat <<EOU
-Usage: backup [\$file] [-v]
-- Backups a file if it exists, appending a '~' suffix.
-  - -v: Output a message if the file exists and is renamed.
-EOU
-exit
+# Usage: backup ; 
+
+## Detects the external disk
+
+for d in "`ls -1 /media/$USER`" ; do
+  if confirm "Is '$d' the backup disk" ; then SSD="$d" ; break ; fi
+done
+if [ -z "$SSD" ] ; then echo "Upps: no backup disk, bye." ; exit ; fi
+
+## Performs the external disk backup
+	   
+mkdir -p /media/$USER/$SSD/backup
+
+if confirm "Creates an image of the SD-card on $SSD in the backup directory"
+then sudo dd if=/dev/mmcblk0 of=/media/$USER/$SSD/backup/sd-card-copy.img bs=1M status=progress
+fi   
+
+if confirm "Mirrors your home directory in the backup directory"
+then rsync  -a -z --info=progress2 --delete-excluded --exclude '.config/chromium/Singleton*' --archive "/home/$USER/" "/media/$USER/$SSD/backup/"
 fi
 
-backup() {
-  if [ -e "$1" ] ; then
-    if [ "$2" = "-v" ] ; then echo "The file '$1' exists and is renamed appendig a '~' suffix." ; fi
-    backup "$1~" ; mv "$1" "$1~"
+if confirm "Syncs git repositories"
+then git_sync
+fi     
+
+## The reminder is specific to the user `vthierry` smartphone, although you may get inspired and adapt to your usage
+
+if [ "$USER" = "vthierry" ]
+then   
+  SmartPhone="/run/user/1000/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
+  if [ -d "$SmartPhone" ] ; then
+    if confirm "Opens the smartphone data in filer"
+    then pcmanfm "$SmartPhone"
+    fi 
+    if confirm "Uploads smart-phone pictures for local use" ; then
+      mkdir -p ~/Desktop/medias
+      for d in "$SmartPhone/DCIM/" "$SmartPhone/Pictures/" ; do if [ -d "$d" ] ; then
+        rsync -a -z --info=progress2 --archive "$d" ~/Desktop/medias/
+      fi ; done
+    fi
+    if confirm "Backups my music ?"
+    then rsync -a -z --archive --info=progress2 --delete-excluded "$SmartPhone/my-music" "/media/$USER/$SSD/backup/"
+    fi
+    if confirm "Backups WhatsApp media   files" ; then
+      WhatsApp="$SmartPhone/Android/media/com.whatsapp/WhatsApp/Media/"
+      rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Images/" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media/"
+      rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Audio/" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media/"
+      rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Video/" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media/"
+    fi
   fi
-}
-
-backup $*
-
+fi
