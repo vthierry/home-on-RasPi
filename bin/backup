@@ -10,22 +10,35 @@ for d in "`ls -1 /media/$USER`" ; do
 done
 if [ -z "$SSD" ] ; then echo "Upps: no backup disk, bye." ; exit ; fi
 
+#=> sudo df -a -H --output=source,fstype,size,used,avail,pcent,target | grep -E '^(/dev|Filesystem)'
+
 ## Performs the backup
 	   
 mkdir -p /media/$USER/$SSD/backup
-
-if confirm "Creates an image of the SD-card on $SSD in the backup directory"
-then sudo dd if=/dev/mmcblk0 of=/media/$USER/$SSD/backup/sd-card-copy.img bs=1M status=progress
-fi   
 
 if confirm "Mirrors your home directory in the backup directory"
 then rsync  -a -z --info=progress2 --delete-excluded --exclude '.config/chromium/Singleton*' --archive "/home/$USER/" "/media/$USER/$SSD/backup/"
 fi
 
 if confirm "Syncs git repositories"
-then git_sync
+then cd ~ ; git_sync
 fi     
    
+#if confirm "Syncs rlcone repositories"
+#then cd ~ ;
+#fi     
+
+# Avec la détection automatique d'une carte SD
+#if confirm "Creates a spare SD-card ?"
+#then
+#fi   
+
+if confirm "Creates an image of the SD-card on $SSD in the backup directory"
+then
+    echo "This will take about half-an-hour for a 64GB card"
+    sudo dd if=/dev/mmcblk0 of=/media/$USER/$SSD/backup/sd-card-copy.img bs=1M status=progress
+fi   
+
 ## The reminder is specific to the user `vthierry` smartphone, although you may get inspired and adapt to your usage
 
 if [ "$USER" = "vthierry" ]

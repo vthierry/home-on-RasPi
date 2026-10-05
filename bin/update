@@ -12,7 +12,10 @@
 /bin/rm -rf ~/{README.md,.git,.gitignore,.profile,.xsession-errors*,.Xauthority,.emacs.d}
 sudo /bin/rm -rf .cache
 
-### Links the Documents and Downloads to the Desktop to have all working files at the same place
+## Creates the user main directories.
+mkdir -p etc sketchbook
+
+### Links the Documents and Downloads to the Desktop to have all working files at the same place.
 mv ~/{Documents,Downloads,Music,Pictures,Public,Templates,Videos}/* ~/Desktop  2>/dev/null
 rmdir ~/{Documents,Downloads,Music,Pictures,Public,Templates,Videos} 2>/dev/null
 for d in Documents Downloads ; do ln -s ~/Desktop ~/$d ; done
@@ -45,7 +48,7 @@ sudo apt install -qq -y shotcut                # A good solution for video editi
 sudo apt install -qq -y ffmpeg                 # Everyday video/audio file manipulation (needed by Shotcut).
 sudo apt install -qq -y yt-dlp                 # A tool for video downloading
 sudo apt install -qq -y simple-scan            # A suitable image scanner.
-sudo apt install -qq -y kazam                # A … simple powerful screen recorder.
+sudo apt install -qq -y wf-recorder        # A … simple powerful screen recorder.
 ## Adds office packages, if not working online.
 ### Note: The key point is that there is no need to install the whole LibreOffice productivity software, if only partially used.
 #sudo apt install -q -y libreoffice-writer     # The reference textual document editor.
