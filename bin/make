@@ -1,16 +1,28 @@
 #!/bin/bash
 . ~/.bashrc
 
-# Usage: make $target-or-file ; Makes a target file using the current or a parent makefile.
+if [ "$1" = -h -o "$1" = --help ]
+then cat <<EOU
+Usage: make [\$target]
+- Makes a target file using the current or a parent makefile.
+  - Only makefile file is considered here (Makefile file are not considered).
+  - The make command is used without echo.
+EOU
+exit
+fi
 
 for d in "." ".." "../.." "../../.." "../../../.." 
-do if [ -f $d/makefile ]
-  then if [ \( -z "$1" \) -o \( \! -z "`grep -e '^$1:' $d/makefile`" \) ]
+do
+  if [ -f $d/makefile ]
+  then
+    if [ \( -z "$1" \) -o \( \! -z "`grep -e '^$1:' $d/makefile`" \) ]
     then make -s --no-print-directory -C $d $* ; exit $?
-fi ; fi ; done
-echo "make: *** No rule to make target '$1'.  Stop." ; exit -1
+    fi
+  elif [ -x $d/make ]
+  then
+    $d/make $* ; exit $?
+  fi
+done
 
-## Note:
-## - Only makefile file is considered here (allowing one to skip the command using a Makefile file).
-## - The make command is used without echo
+echo "make: *** No rule to make target '$1'.  Stop." ; exit -1
 

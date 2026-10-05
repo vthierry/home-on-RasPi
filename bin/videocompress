@@ -2,10 +2,13 @@
 . ~/.bashrc
 needfor ffmpeg
 
-usage () {
- echo "Usage: videocompress $video-file ; Compresses a video file."
-}
-if [ -z "$*" ] ; then usage ; exit ; fi
+if [ -z "$1" -o "$1" = -h -o "$1" = --help ]
+then cat <<EOU
+Usage: videocompress \$video-file
+- Compresses a video file
+EOU
+exit
+fi
 
 ffmpeg -i "$1" -vcodec libx265 -tag:v hvc1 "compressed_$1"
 

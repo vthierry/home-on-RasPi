@@ -1,12 +1,18 @@
 #!/bin/bash
 
-# Usage: update ; Installs or updates the home directory to work as a tiny workstation.
-##
-## - This is only a prototypical command list:
-##                     READ it and ADAPT it BEFORE running it
-##     (unless nothing is catastrophic if you do not)
-##
-## Note: The .bashrc update function prevents from unwanted run of this bin/update script.
+## Script usage
+
+if [ "$1" = -h -o "$1" = --help ]
+then cat <<EOU
+Usage: update
+- Installs or updates the home directory to work as a tiny workstation.
+  - This is "your" personal update script allowing to maintain a reproducible configuration.
+  - You have to READ it and ADAPT it BEFORE running it (though nothing catastrophic happens, if not).
+  - The .bashrc 'update' function performs the proper 'apt update' without reviewing the whole configuration.
+    - It prevents from unwanted run of this 'bin/update' script.
+EOU
+exit
+fi
 
 ## Cleans unused or temporary home directories and files to lighten the configuration.
 /bin/rm -rf ~/{README.md,.git,.gitignore,.profile,.xsession-errors*,.Xauthority,.emacs.d}
@@ -15,13 +21,12 @@ sudo /bin/rm -rf .cache
 ## Creates the user main directories.
 mkdir -p etc sketchbook
 
-### Links the Documents and Downloads to the Desktop to have all working files at the same place.
+## Links the Documents and Downloads to the Desktop to have all working files at the same place.
 mv ~/{Documents,Downloads,Music,Pictures,Public,Templates,Videos}/* ~/Desktop  2>/dev/null
 rmdir ~/{Documents,Downloads,Music,Pictures,Public,Templates,Videos} 2>/dev/null
 for d in Documents Downloads ; do ln -s ~/Desktop ~/$d ; done
 
 ## Removes unused packages (in order to save place, and clean the menu, for easier use).
-
 sudo apt remove -qq -y firefox                 # Chromium has better performance on the RasPi.
 sudo apt remove -qq -y rpi-connect # No need a priori to remotely control this Raspi, while it is possible via SSH.
 sudo apt remove -qq -y squeekboard             # No need to have a virtual keyboard on the screen.
@@ -63,7 +68,7 @@ sudo apt install -qq -y kicad                  # The tool to develop printed cir
 ## Finalizes package updates
 sudo apt update -qq -y ; sudo apt full-upgrade -qq -y; sudo apt autoremove -qq -y
 
-## Cleans application's loaders
+## Cleans not useful application's loaders
 sudo /bin/rm -f /usr/share/applications/{emacsclient,emacsclient-mail,emacs-mail,emacs-term,org.kicad.{bitmap2component,eeschema,gerbview,pcbcalculator,pcbnew}}.desktop
 
 ## Asks for reboot

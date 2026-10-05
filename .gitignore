@@ -13,6 +13,7 @@
 /.sudo_as_admin_successful
 /.xsession-errors*
 /.config/*
+!/.config/labwc/rx.xml
 !/.config/lxterminal
 !/.config/pcmanfm
 !/.config/rpc
@@ -20,3 +21,4 @@
 /.local/*
 !/.local/share/file-manager
 !./.local/share/applications/backup.desktop
+/bin/.*
