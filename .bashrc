@@ -21,7 +21,7 @@ pushd() { # Usage: pushd $directory ; Silent pushd.
 popd() { # Usage: popd : Silent popd.
   command popd > /dev/null
 }
-alias c='$HOME/clean; clear' # Usage: c ; Cleans temporary files and clean the terminal screen.
+alias c='$HOME/bin/clean; clear' # Usage: c ; Cleans temporary files and clean the terminal screen.
 alias s='xdg-open' # Usage: s $file ; Shows a file with the default application.
 alias f='pcmanfm' # Usage: f ; Opens the file manager for the current directory.
 alias m='~/bin/make' # Usage: m ; Runs make in the current directory.
