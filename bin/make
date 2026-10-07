@@ -16,7 +16,7 @@ do
   if [ -f $d/makefile ]
   then
     if [ \( -z "$1" \) -o \( \! -z "`grep -e '^$1:' $d/makefile`" \) ]
-    then make -s --no-print-directory -C $d $* ; exit $?
+    then /usr/bin/make -s --no-print-directory -C $d $* ; exit $?
     fi
   elif [ -x $d/make ]
   then
