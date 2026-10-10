@@ -32,6 +32,7 @@
 (setq require-final-newline t)
 
 (setq-default bash-indent-level 2)
+(setq-default sh-basic-offset 2)
 (setq-default c-basic-offset 2)
 (setq-default js-indent-level 2)
 

@@ -1,8 +1,7 @@
 #!/bin/bash
 . ~/.bashrc
 
-
-if [ -z "$1" -o "$1" = -h -o "$1" = --help ]
+if [ \! -z "$1" ]
 then cat <<EOU
 Usage: html2wp < \$input > \$output 
 - Converts a complex html styles file to simple html to be used, e.g., in wordpress.

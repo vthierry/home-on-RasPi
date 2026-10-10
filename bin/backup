@@ -3,37 +3,24 @@
 
 # Usage: backup ; Backups user file on external devices
 
-## Manages a remanent key=value table [Not yet used …]
-
-dataFile="`dirname $0`/.backup" # Defines the data file of syntax `key=value\n…`.
-
-declare -A dataTable ; touch $dataFile ; while read line ; do setData $line ; done < $dataFile # Inits and loads the table.
-
-dataSet() { # dataSet [$key $value | $key=$value] $save ; Sets a key=value pair and saves it if $save=true.
-  if [ \! -z "$2" ] ; then
-      dataTable["$1"]="$2"
-      if save ; then  touch $dataFile ; mv $dataFile $dataFile~ ; (grep -v "^$1=" < $dataFile~ ; echo "$1=$2") > $data ; fi
-  elif [[ "$1" =~ ^[^=]+=.*$ ]] ; then dataSet "`echo $1 | sed 's/=.*$//'`" "`echo $1 | sed 's/^[^=]*=//'`" "$2"
-  else echo "Syntax Error: dataSet $*"
-  fi
-}
-dataGet() { # dataGet $key ; Gets a value by its key
-    if [ -v dataTable["$1"] ] ; then return dataTable["$1"] ; else return "" ; fi
-}
-
 ## Manages backup functions
 
-askForDisk() { # askForDisk $diskName ; Asks for a disk reference
+askForDisk() { # askForDisk $diskName; Asks for a disk reference
   while true ; do
-      (sudo df -a -H --output=source,used,avail,target | grep -E '^(/dev/sd|Filesystem)' | awk 'NR == 1 { print "   "  $0 } NR > 1 { print NR-1 ": "  $0 }' ; echo '0: Quit') | tee /tmp/df$$.txt
-      read -p "Select the $1 : " -n 1 -e rep
-      if [ "$rep" = 0 ] ; then exit ; fi
-      if [ "$rep" < "`cat /tmp/df$$.txt | wc -l`" ] ; then rep="`head /tmp/df$$.txt -n $((rep -1)) | tail -1 | awk '{print $2 $5}'`" ; echo $rep ; return ; fi
-done      
+    (sudo df -a -H --output=source,target,used,avail | grep -E '^(/dev/sd|Filesystem)' | awk 'NR == 1 { print "   "  $0 } NR > 1 { print NR-1 ": "  $0 }' ; echo '0: Quit') | tee /tmp/df$$.txt ; n="`cat /tmp/df$$.txt | wc -l`"
+    if [ "$n" -lt 3 ] ; then echo "No disk mounted, please proceed and rerun" ; exit ; fi
+    read -p "Select the $1 between 1 and $((n-2)) : " -n 1 -e rep
+    if [ "$rep" = 0 ] ; then exit ; fi
+    if [ \( 0 -lt "$rep" \) -a \( "$rep" -lt "$((n-1))" \) ] ; then 
+      diskSource="`head /tmp/df$$.txt -n $((rep+1)) | tail -1 | awk '{ print $2}'`"
+      diskTarget="`head /tmp/df$$.txt -n $((rep+1)) | tail -1 | awk '{ print $3}'`"
+      return
+    fi
+  done      
 }
 
 askForSSD() { # askForSSD ; Asks for the external backup disk, if not yet defined
-    if [ -z "$SSD" ] ; then SSD="`askForDisk 'external backup disk' | awk '{print $2}'`" ; fi
+  if [ -z "$SSD" ] ; then askForDisk 'external backup disk' ; SSD="$diskTarget" ; fi
 }
 
 ## Implements the backup menu
@@ -50,8 +37,8 @@ EOF
 
     b ) ### Backups the home directory to the external backup disk
 	askForSSD
-	mkdir -p /media/$USER/$SSD/home
-	rsync  -a -z --info=progress2 --delete-excluded --exclude '.config/chromium/Singleton*' --archive "/home/$USER/" "/media/$USER/$SSD/home/"
+	mkdir -p $SSD/home
+	rsync  -a -z --info=progress2 --delete-excluded --exclude '.config/chromium/Singleton*' --archive "/home/$USER/" "$SSD/home/"
 	;;
 
     s ) ### Syncs all git repositories with default message
@@ -61,39 +48,40 @@ EOF
     r ) ### [TO BE DONE] Rclone synchronize local and remote files
 	;;
 
-     c ) ### Creates a bootable spare SD-card.
-	SDC="`askForDisk 'Bootable SD-card (will be erased !)' | awk '{print $1}'`"
-	if confirm "Erases and make a bootable image on $SDC" "OK"
-	then sudo dd if=/dev/mmcblk0 of=$SDC bs=4M status=progress conv=fsync
+    c ) ### Creates a bootable spare SD-card.
+	askForDisk 'Bootable SD-card (will be erased !)'
+	if confirm "Erases and make a bootable image on $diskSource" "OK, bye"
+	then sudo dd if=/dev/mmcblk0 of=$diskSource bs=4M status=progress conv=fsync
 	fi
 	;;
 
-     i ) ### [Hidden] Creates an image of the SD-card on the external backup disk
+     i ) ### [Hidden, because to be tested] Creates an image of the SD-card on the external backup disk
 	 askForSSD
 	 if confirm "Creates an image of System SD-card on /media/$USER/$SSD/sd-card-copy.img\n\t (this will take about half-an-hour for a 64GB card)"
-	 then sudo dd if=/dev/mmcblk0 of=/media/$USER/$SSD/backup/sd-card-copy.img bs=1M status=progress
+	 then sudo dd if=/dev/mmcblk0 of=$SSD/backup/sd-card-copy.img bs=1M status=progress
 	 fi
 	 ;;
 	
     v ) ### [Hidden] The `vthierry` smartphone backup, specific to the user, although you may get inspired and adapt to your usage
-	SmartPhone="/run/user/1000/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
+	SmartPhone="/run/user/`id -u $USER`/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
 	if  [ \( "$USER" = "vthierry" \)   -a \( -d "$SmartPhone" \) ] ; then
-	    if confirm "Uploads smart-phone pictures for local use"
+	    if confirm 'Uploads smart-phone pictures for local use'
 	    then
 		bakfile ~/Desktop/medias -d
-		for d in "$SmartPhone/DCIM/" "$SmartPhone/Pictures/" ; do if [ -d "$d" ] ; then rsync -a -z --info=progress2 --archive "$d" ~/Desktop/medias ; fi ; done
+		for d in "$SmartPhone/DCIM/" "$SmartPhone/Pictures/" ; do if [ -d "$d" ] ; then rsync -a -z --info=progress2 --archive --exclude=".thumbnails" "$d" ~/Desktop/medias ; fi ; done
 	    fi
-	    if confirm "Backups my music ?"
+	    if confirm 'Backups my music'
 	    then
 		askForSSD
-		rsync -a -z --archive --info=progress2 --delete-excluded "$SmartPhone/my-music" "/media/$USER/$SSD/backup/"
+		rsync -a -z --archive --info=progress2 --delete-excluded "$SmartPhone/my-music" "$SSD"
 	    fi
-	    if confirm "Backups WhatsApp media files" ; then
+	    if confirm 'Backups WhatsApp media files' ; then
 		askForSSD
 		WhatsApp="$SmartPhone/Android/media/com.whatsapp/WhatsApp/Media/"
-		rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Images/" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media/"
-		rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Audio/" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media/"
-		rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Video/" "/media/$USER/$SSD/backup/my-medias/WhatsApp/Media/"
+		mkdir -p  "$SSD/my-medias/WhatsApp"
+		rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Images/" "$SSD/my-medias/WhatsApp/Media/"
+		rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Audio/" "$SSD/my-medias/WhatsApp/Media/"
+		rsync -a -z --archive --info=progress2 "$WhatsApp/WhatsApp Video/" "$SSD/my-medias/WhatsApp/Media/"
 	    fi
 	fi
 	;;

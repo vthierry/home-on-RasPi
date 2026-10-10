@@ -4,12 +4,14 @@ needfor pdftk
 
 if [ -z "$1" -o "$1" = -h -o "$1" = --help ]
 then cat <<EOU
-Usage: pdfcompress \$pdf_file
+Usage: pdfcompress \$input_pdf_file \$output_pdf_file
 - Compresses a pdf file.
 EOU
 exit
 fi
 
-pdftk "$1" output "$2" compress
+bakfile $2
+if [ "$1" = "$2" ] ; then i="$1~" ; else i="$1" ; fi   
+pdftk "$i" output "$2" compress
 
 ## Note: Alternative is gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile="compressed_$1" "$1"
