@@ -12,6 +12,13 @@
 (custom-set-faces
  '(default ((t (:family "Ubuntu Sans Mono" :foundry "DAMA" :slant normal :weight medium :height 181 :width normal)))))
 
+;; Initial frame geometry
+
+(defun my-set-initial-frame ()
+  (set-frame-position (selected-frame) -2 -1)
+  (set-frame-size (selected-frame) 128 36))
+(my-set-initial-frame)
+
 ;; Compilation and command options
 
 (setq compile-command "~/bin/make")
@@ -84,6 +91,7 @@
   (interactive)
   (my-clean-buffers)
   (redraw-display)
+  (my-set-initial-frame)
 )
 
 (defun my-clean-buffers ()

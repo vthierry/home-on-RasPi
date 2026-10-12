@@ -5,7 +5,7 @@ Icon=mate-desktop
 Profiles=default;
 
 [X-Action-Profile default]
-Exec=lxterminal --profile=xterm --geometry=80x16 --command="bash -c '~/bin/make ; echo ... done ; read cont'"
+Exec=lxterminal --profile=xterm --geometry=64x16 --title="Make" --command="bash -c '~/bin/make ; echo ... done ; read cont'"
 Name=Default profile
 MimeTypes=inode/directory;
 Comment=Makes the default target

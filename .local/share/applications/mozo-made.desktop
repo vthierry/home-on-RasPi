@@ -1,0 +1,8 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Exec=lxterminal --profile=xterm --geometry=80x16 --title="Backup" --command="bash -c '~/bin/backup'"
+Icon=xarchiver-extract
+Name=Backup

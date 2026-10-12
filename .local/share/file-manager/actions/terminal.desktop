@@ -5,7 +5,7 @@ Icon=utilities-terminal
 Profiles=default;
 
 [X-Action-Profile default]
-Exec=lxterminal
+Exec=lxterminal --title="Terminal"
 Name=Default profile
 MimeTypes=inode/directory;
 Comment=Opens a terminal here

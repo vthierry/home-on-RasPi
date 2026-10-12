@@ -1,11 +1,11 @@
 [Desktop Entry]
 Type=Action
-Name=Noblank
-Icon=menu-edit
+Name=NoSpace
+Icon=libreoffice-main
 Profiles=default;
 
 [X-Action-Profile default]
-Exec=bash -c "noblank %f"
+Exec=bash -c "nospace %F"
 Name=Default profile
 MimeTypes=inode/directory;
 Comment=Renames the file name with no space

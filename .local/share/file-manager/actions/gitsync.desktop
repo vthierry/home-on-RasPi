@@ -1,11 +1,11 @@
 [Desktop Entry]
 Type=Action
 Name=Git sync
-Icon=/usr/share/icons/hicolor/scalable/actions/fm-thumbs.svg
+Icon=pcmanfm-qt
 Profiles=default;
 
 [X-Action-Profile default]
-Exec=lxterminal --profile=xterm --geometry=80x16 --command="bash -c '~/bin/git_sync ; echo ... done ; read cont'"
+Exec=lxterminal --profile=xterm --geometry=64x4 --title='git sync' --command='bash -c "git_sync ; echo done ; read cont"'
 Name=Default profile
 MimeTypes=inode/directory;
 Comment=Syncs the git repository

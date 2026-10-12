@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Action
 Name=Git add
-Icon=/usr/share/icons/hicolor/scalable/actions/fm-new.svg
+Icon=pcmanfm-qt
 Profiles=default;
 
 [X-Action-Profile default]

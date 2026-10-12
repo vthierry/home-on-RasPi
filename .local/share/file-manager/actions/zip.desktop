@@ -5,7 +5,9 @@ Icon=xarchiver-add
 Profiles=default;
 
 [X-Action-Profile default]
-Exec=zip -9qr ~/Desktop/%f.zip %F
+Terminal=true
+Exec=zip -9qr %f.zip %F
+
 Name=Default profile
 MimeTypes=all/all;
 Comment=Builds an archive on desktop
