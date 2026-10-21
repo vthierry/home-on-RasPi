@@ -4,7 +4,6 @@ export SHELL=/bin/bash
 export PATH=.:$HOME/bin:$PATH:$HOME/.local/bin
 export EDITOR=emacs # @TODO Adapt to your own choice
 export BROWSER=chromium
-export TERM=lxterminal
 unset  MAIL
 export TEXINPUTS=".:"
 if [ -f .ssh/SSH_ENV ] ; then . .ssh/SSH_ENV ; fi
