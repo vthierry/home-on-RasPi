@@ -40,8 +40,9 @@ then
   while true ; do cat <<EOF
 What to backup:
  b: Backups the /home/$USER directory to the external backup disk.
- s: Syncs all git repositories with default commit message.
  i: Creates an image of the SD-card on the external backup disk.
+ s: Syncs all git repositories with default commit message.
+ u: Updates and upgrades the installation, using apt.
  q: Quit
 EOF
     read -p "Option: " -n 1 -e rep
@@ -55,13 +56,6 @@ else
       askForSSD
       mkdir -p $SSD/home
       rsync  -a -z --info=progress2 --delete-excluded --exclude '.config/chromium/Singleton*' --archive "/home/$USER/" "$SSD/home/"
-      ;;
-    
-    s ) ### Syncs all git repositories with default message.
-      git_sync
-      ;;
-    
-    r ) ### [TO BE DONE] Rclone synchronize local and remote files.
       ;;
     
     c ) ### [Hidden, because to be tested] Creates a bootable spare SD-card.
@@ -78,35 +72,53 @@ else
       fi
       ;;
     
-    v ) ### [Hidden] Backups the 'vthierry' user specific smartphone, although you may get inspired to adapt to your own usage.
-      SmartPhone="/run/user/`id -u $USER`/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
-      ls "$SmartPhone"
+    r ) ### [TO BE DONE] Rclone synchronize local and remote files.
+      ;;
+    
+    s ) ### Syncs all git repositories with default message.
+      git_sync
+      ;;
+    
+    u ) ### Updates and upgrades the installation, using apt.
+      (sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y ; sudo apt-file update)  2>&1 | grep -E -v '(^[HGRW]|configured multiple times|^ *$)'
+      ;;
+
+    U ) ### [Hidden] Uploads the 'vthierry' smartphone's picture, specific to this user, although it may inspire for your own usage.
       if [ "$USER" = "vthierry" ] ; then
+	SmartPhone="/run/user/`id -u $USER`/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
+	(pcmanfm "/run/user/`id -u $USER`/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne" >/dev/null 2>&1 &) ; sleep 1
 	if [ -d "$SmartPhone" ] ; then
-	  if confirm 'Uploads smart-phone {DCIM|Pictures} for local use' ; then
-	    bakfile ~/Desktop/medias -d
-	    for d in "$SmartPhone/DCIM/" "$SmartPhone/Pictures/"
-	    do if [ -d "$d" ] ; then $rsync --exclude=".thumbnails" "$d" ~/Desktop/medias ; fi
-	    done
-	    #### Proposes small size versions of the camera photos.
-	    if [ \! -z "`ls -A  ~/Desktop/medias/Camera/*.jpg 2>/dev/null`" ] ; then					  
-	      mkdir -p ~/Desktop/medias/Camera400
-	      mogrify -auto-orient -resize 400 -path ~/Desktop/medias/Camera400 ~/Desktop/medias/Camera/*.jpg
-	      pcmanfm /home/vthierry/Desktop/medias/Camera400 >/dev/null 2>&1 &
-	    fi
- 	  fi
-	  if confirm 'Backups my music' ; then
-	    askForSSD
-	    $rsync --delete-excluded "$SmartPhone/my-music" "$SSD"
+	  echo 'Uploads smart-phone {DCIM|Pictures} for local use'
+	  bakfile ~/Desktop/medias -d
+	  for d in "$SmartPhone/DCIM/" "$SmartPhone/Pictures/"
+	  do if [ -d "$d" ] ; then $rsync --exclude=".thumbnails" "$d" ~/Desktop/medias ; fi
+	  done
+	  #### Proposes small size versions of the camera photos.
+	  if [ \! -z "`ls -A  ~/Desktop/medias/Camera/*.jpg 2>/dev/null`" ] ; then					  
+	    mkdir -p ~/Desktop/medias/Camera400
+	    mogrify -auto-orient -resize 400 -path ~/Desktop/medias/Camera400 ~/Desktop/medias/Camera/*.jpg
+	    pcmanfm /home/vthierry/Desktop/medias/Camera400 >/dev/null 2>&1 &
 	  fi
-	  if confirm 'Backups WhatsApp media files' ; then
-	    askForSSD
-	    WhatsApp="$SmartPhone/Android/media/com.whatsapp/WhatsApp/Media/"
-	    mkdir -p  "$SSD/my-medias/WhatsApp"
-	    $rsync "$WhatsApp/WhatsApp Images/" "$SSD/my-medias/WhatsApp/Media/"
-	    $rsync "$WhatsApp/WhatsApp Audio/" "$SSD/my-medias/WhatsApp/Media/"
-	    $rsync "$WhatsApp/WhatsApp Video/" "$SSD/my-medias/WhatsApp/Media/"
-	  fi
+	else
+	  echo "The Smartphone file system is not connected"
+	fi
+      fi
+      ;;
+    
+    V ) ### [Hidden] Backups the 'vthierry' smartphone medias, specific to this user, although it may inspire for your own usage.
+      if [ "$USER" = "vthierry" ] ; then
+	SmartPhone="/run/user/`id -u $USER`/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
+	(pcmanfm "/run/user/`id -u $USER`/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne" >/dev/null 2>&1 &) ; sleep 1
+	if [ -d "$SmartPhone" ] ; then
+	  askForSSD
+	  echo 'Backups my-music'
+	  $rsync --delete-excluded "$SmartPhone/my-music" "$SSD"
+	  echo 'Backups WhatsApp media files'
+	  WhatsApp="$SmartPhone/Android/media/com.whatsapp/WhatsApp/Media/"
+	  mkdir -p  "$SSD/my-medias/WhatsApp"
+	  $rsync "$WhatsApp/WhatsApp Images/" "$SSD/my-medias/WhatsApp/Media/"
+	  $rsync "$WhatsApp/WhatsApp Audio/" "$SSD/my-medias/WhatsApp/Media/"
+	  $rsync "$WhatsApp/WhatsApp Video/" "$SSD/my-medias/WhatsApp/Media/"
 	else
 	  echo "The Smartphone file system is not connected"
 	fi

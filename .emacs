@@ -67,6 +67,12 @@
   (compile "~/bin/make")
   )
 
+(defun my-make-build ()
+  (interactive)  
+  (my-kill-buffer "*compilation*")
+  (compile "~/bin/make build")
+  )
+
 (defun my-show-compilation ()
   (interactive)
   (display-buffer "*compilation*")
@@ -85,6 +91,11 @@
 (defun my-save ()
   (interactive)  
   (save-some-buffers)
+)
+
+(defun my-split ()
+  (interactive)  
+  (split-window-right)
 )
 
 (defun my-clean ()
@@ -140,35 +151,37 @@
   (load-file user-init-file)
 )
 
-(define-key global-map (kbd "<f1>") 'my-term)
-(define-key global-map (kbd "<f2>") 'ispell)
-(define-key global-map (kbd "<f3>") 'my-reload)
-(define-key global-map (kbd "<f4>") 'my-make)
-(define-key global-map (kbd "<f5>") 'my-show-compilation)
-(define-key global-map (kbd "<f6>") 'my-terminal)
-(define-key global-map (kbd "<f7>") 'my-filer)
-(define-key global-map (kbd "<f8>") 'my-save)
-(define-key global-map (kbd "<f9>") 'split-window-right)
-;(define-key global-map (kbd "<f10>") 'menu-bar-open)
-;(define-key global-map (kbd "<f11>") 'toggle-frame-fullscreen)
-(define-key global-map (kbd "<f12>") 'my-clean)
+(define-key global-map [(f1)] 'my-term)
+(define-key global-map [(f2)] 'ispell)
+(define-key global-map [(f3)] 'my-reload)
+(define-key global-map [(f4)] 'my-make)
+(define-key global-map [(shift f4)] 'my-make-build)
+(define-key global-map [(f5)] 'my-show-compilation)
+(define-key global-map [(f6)] 'my-terminal)
+(define-key global-map [(f7)] 'my-filer)
+(define-key global-map [(f8)] 'my-save)
+(define-key global-map [(f9)] 'my-split)
+;(define-key global-map [(f10)] 'menu-bar-open)
+;(define-key global-map [(f11)] 'toggle-frame-fullscreen)
+(define-key global-map [(f12)] 'my-clean)
 
 (require 'easymenu)
 (easy-menu-define my-menu nil "Functions"
   `("Functions"
-    ["<f1> Shell" my-term t]
-    ["<f2> Spell" ispell t]
-    ["<f3> Reload" my-reload t]
-    ["<f4> Make" my-make t]
-    ["<f5> Show compilation" my-show-compilation t]
-    ["<f6> Terminal" my-terminal t]
-    ["<f7> Filer" my-filer t]
-    ["<f8> Save" my-save t]
+    ["Shell" my-term t]
+    ["Spell" ispell t]
+    ["Reload" my-reload t]
+    ["Make" my-make t]
+    ["Make build" my-make-build t]
+    ["Show compilation" my-show-compilation t]
+    ["Terminal" my-terminal t]
+    ["Filer" my-filer t]
+    ["Save" my-save t]
     "----------------"
-    ["<f9> Split" split-window-right t]
-    ["<f10> Menu" menu-bar-open t]
-    ["<f11> Fullscreen" toggle-frame-fullscreen t]
-    ["<f12> Clean" my-clean t]
+    ["Split" my-split t]
+    ["Menu" menu-bar-open t]
+    ["Fullscreen" toggle-frame-fullscreen t]
+    ["Clean" my-clean t]
     "----------------"
     [".emacs" my-emacs t]
  ))
