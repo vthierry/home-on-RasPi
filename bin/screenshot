@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ "$1" = -h -o "$1" = --help ]
+then cat <<EOU
+Usage: screenshot
+Starts the gimp's screenhot window.
+EOU
+exit
+fi
+
+gimp -b '(plug-in-screenshot 0 FALSE 0 0 0 0 0)'
+sleep 1
+xdotool search --sync --onlyvisible --name "*Image Manipulation Program" windowminimize

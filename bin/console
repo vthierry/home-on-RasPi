@@ -1,0 +1,40 @@
+#!/bin/bash
+. ~/.bashrc
+
+usage() {
+ cat <<EOU
+Usage: console [-t \$title] [-g \$widthx\$height] [-b] \$command [\$arguments]
+  Runs a command in an interactive console window.
+  -t: The window title; default is the command basename.
+  -g: The window column count x line count; default is 80x16.
+  -b: Echoes '…done.' and close the window on keyboard return; else close the window at program end.
+EOU
+ exit
+}
+
+geometry="80x16"
+bye=""
+while [ \! -z "$1" ] ; do case "$1" in
+ -h | --help ) usage ; exit;;
+ -t ) title="$2"; shift ; shift;;
+ -g ) geometry="$2"; shift ; shift;;
+ -b ) bye="; echo …done. ; read cont"; shift;;
+ * ) break;;
+esac ; done
+if [ -z "$1" ] ; then usage ; exit ; fi
+if [ -z "$title" ] ; then title="`basename $1`" ; fi
+command="bash -c '$*$bye'"
+
+if [ \! -z "`which lxterminal`" ]
+then lxterminal --profile='xterm' --geometry=$geometry --title="$title" --command="$command"
+elif [ \! -z "`which xfce4-terminal`" ]
+then xfce4-terminal --hide-menubar --geometry=$geometry --title="$title" --command="$command"
+elif [ \! -z "`which gnome-terminal`" ]
+then gnome-terminal --hide-menubar --geometry=$geometry --title="$title" -- "$command"
+elif [ \! -z "`which konsole`" ]
+then konsole −−nomenubar −−notabbar −−notoolbar --geometry=$geometry -title "$title" -e "$command"
+elif [ \! -z "`which xterm`" ]
+then xterm +tb --geometry=$geometry -T "$title" -e "$command"
+else echo "No known terminal installed! Are you on a strange LinuX system? Please report this caveat: We will upgrade"
+fi
+
