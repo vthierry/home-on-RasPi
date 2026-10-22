@@ -1,22 +1,21 @@
 #!/bin/bash
 . ~/.bashrc
-## Installs the oackage via atp if not yet done
+## Installs the package via atp if not yet done
 needfor yt-dlp
 ## Enforces a recent release from https://github.com/yt-dlp/yt-dlp/releases
-yt-dlp --update > /dev/null
-### Notes:
-# - It is important to first install the package via apt to manage properly dependences, eventual removal, etc…
-# - The release evolves with and becomes useless as soon the apt version is updated.
-# - The program itself manages the update, that's cool :)
-# - Manuel updating: release=2026.08.19 ; if ! yt-dlp --version | grep $release > /dev/null ; then sudo ~/urlget https://github.com/yt-dlp/yt-dlp/releases/download/$release/yt-dlp_linux /usr/bin/yt-dlp ; sudo chmod a+rx /usr/bin/yt-dlp ; fi
+echo "Video-downloading starting …"
+sudo yt-dlp --update > /dev/null
 
-if [ -z "$1" ]
+if [ "$1" = -h -o "$1" = --help ]
 then cat <<EOU
-Usage: videodownload \$url
+Usage: videodownload [\$url]
 - Downloads a video.
+- If the \$url is not given, runs in interactive mode. 
 EOU
 exit
 fi
 
-yt-dlp --js-runtimes node:/usr/bin/node $* 2>&1 | grep '^\[download\]'
+if [ -z "$1" ] ; then read -p "URL ? " url ; else url="$*" ; fi
+
+yt-dlp --js-runtimes node:/usr/bin/node $url 2>&1 | grep '^\[download\]'
 

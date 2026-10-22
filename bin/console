@@ -3,27 +3,45 @@
 
 usage() {
  cat <<EOU
-Usage: console [-t \$title] [-g \$widthx\$height] [-b] \$command [\$arguments]
-  Runs a command in an interactive console window.
+Usage: console [-t \$title] [-g \${width}x\${height}] [-d \$directory] [-b|-s \$delay] [\$command [\$arguments]]
+Runs a command in an interactive console window.
+- Options:
   -t: The window title; default is the command basename.
-  -g: The window column count x line count; default is 80x16.
-  -b: Echoes '…done.' and close the window on keyboard return; else close the window at program end.
+  -g: The window column-count x line-count; position can also be set (WxH+Left+Top); default is 80x16.
+  -d: The working directory; default is \`~/Desktop\`, use \`-d .\` to work in the current directory.
+  -b: Echoes '…done.' and close the window on keyboard return; else close the window straight at program end.
+  -s: Closes the window after a given delay in second.
+- The default \$command is \`bash\`, i.e., a terminal emulation.
+- Notification: The `console -n \$message\` displays a desktop notification.
+  - It is a shortcut for \`console -t '' -g 64x2-1+40 -s 5 echo \$message\`
 EOU
  exit
 }
 
+if [ "$1" = "-n" ] ; then shift ; ($0 -t ' ' -g 64x2-1+40 -s 5 echo $* &) ; exit ; fi
+
 geometry="80x16"
 bye=""
+cd ~/Desktop
 while [ \! -z "$1" ] ; do case "$1" in
  -h | --help ) usage ; exit;;
  -t ) title="$2"; shift ; shift;;
  -g ) geometry="$2"; shift ; shift;;
+ -d )
+   myid="`id -u $USER`"
+   # Sets the correct gvfs mounted volumes
+   mydir="`echo $2 | sed "s/^mtp:\/\/\(.*\)/\/run\/user\/$myid\/gvfs\/mtp\\:host\\=\1/" | sed 's/%20/ /g'`"
+   cd "$mydir" ; shift ; shift;;
+ -s ) bye="; sleep $2" ; shift ; shift;;
  -b ) bye="; echo …done. ; read cont"; shift;;
  * ) break;;
 esac ; done
-if [ -z "$1" ] ; then usage ; exit ; fi
+if [ -z "$1" ] ;
+then command="bash" ; if [ -z "$title" ] ; then title="Terminal: `pwd | sed s/^.home.$USER/~/`" ; fi
+else command="bash -c '$*$bye'"
+fi
 if [ -z "$title" ] ; then title="`basename $1`" ; fi
-command="bash -c '$*$bye'"
+
 
 if [ \! -z "`which lxterminal`" ]
 then lxterminal --profile='xterm' --geometry=$geometry --title="$title" --command="$command"

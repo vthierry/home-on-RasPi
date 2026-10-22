@@ -5,7 +5,8 @@ Icon=utilities-terminal
 Profiles=default;
 
 [X-Action-Profile default]
-Exec=lxterminal --title="Terminal: %d"
+Exec=/home/vthierry/bin/console -d %d
+Path=/home/vthierry/Desktop
 Name=Default profile
 MimeTypes=inode/directory;
 Comment=Opens a terminal here

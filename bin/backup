@@ -86,6 +86,7 @@ else
     U ) ### [Hidden] Uploads the 'vthierry' smartphone's picture, specific to this user, although it may inspire for your own usage.
       if [ "$USER" = "vthierry" ] ; then
 	SmartPhone="/run/user/`id -u $USER`/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
+	# This allows to mount the device :)
 	(pcmanfm "/run/user/`id -u $USER`/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne" >/dev/null 2>&1 &) ; sleep 1
 	if [ -d "$SmartPhone" ] ; then
 	  echo 'Uploads smart-phone {DCIM|Pictures} for local use'
@@ -100,7 +101,7 @@ else
 	    pcmanfm /home/vthierry/Desktop/medias/Camera400 >/dev/null 2>&1 &
 	  fi
 	else
-	  echo "The Smartphone file system is not connected"
+	  echo "The Smartphone file system is not connected, you must manually allow the connection."
 	fi
       fi
       ;;
@@ -108,6 +109,7 @@ else
     V ) ### [Hidden] Backups the 'vthierry' smartphone medias, specific to this user, although it may inspire for your own usage.
       if [ "$USER" = "vthierry" ] ; then
 	SmartPhone="/run/user/`id -u $USER`/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
+	# This allows to mount the device :)
 	(pcmanfm "/run/user/`id -u $USER`/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne" >/dev/null 2>&1 &) ; sleep 1
 	if [ -d "$SmartPhone" ] ; then
 	  askForSSD
@@ -120,7 +122,7 @@ else
 	  $rsync "$WhatsApp/WhatsApp Audio/" "$SSD/my-medias/WhatsApp/Media/"
 	  $rsync "$WhatsApp/WhatsApp Video/" "$SSD/my-medias/WhatsApp/Media/"
 	else
-	  echo "The Smartphone file system is not connected"
+	  echo "The Smartphone file system is not connected, you must manually allow the connection."
 	fi
       fi
       ;;
