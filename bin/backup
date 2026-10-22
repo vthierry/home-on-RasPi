@@ -24,6 +24,7 @@ askForDisk() { # askForDisk $diskName; Asks for a disk reference.
       diskTarget="`head /tmp/df$$.txt -n $((rep+1)) | tail -1 | awk '{ print $3}'`"
       return
     fi
+    sudo mount $diskSource
   done      
 }
 
@@ -41,6 +42,7 @@ then
 What to backup:
  b: Backups the /home/$USER directory to the external backup disk.
  i: Creates an image of the SD-card on the external backup disk.
+ r: Repairs a SSD disk (e.g., mounted in read-only mode after an abrupt disconnection).
  s: Syncs all git repositories with default commit message.
  u: Updates and upgrades the installation, using apt.
  q: Quit
@@ -72,7 +74,12 @@ else
       fi
       ;;
     
-    r ) ### [TO BE DONE] Rclone synchronize local and remote files.
+    r ) ### Repairs the disk (e.g., mounted in read-only mode after an abrupt disconnection).
+      echo -e 'Notice: If the device is blocked "busy":\n- check that all application (filer, terminal) working on the disk are closed\n- if after a while, it persists, you may have to reboot first and rerun this command'
+      askForSSD
+      sudo umount $diskSource
+      sudo fsck -y $diskSource
+      sudo mount $diskSource
       ;;
     
     s ) ### Syncs all git repositories with default message.
