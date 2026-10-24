@@ -8,6 +8,11 @@ EOU
 exit
 fi
 
-gimp -b '(plug-in-screenshot 0 FALSE 0 0 0 0 0)'
-sleep 1
-xdotool search --sync --onlyvisible --name "*Image Manipulation Program" windowminimize
+gimp -b '(plug-in-screenshot 0 2 0 0 0 0 0)'
+
+if [ \! -z "`which xdotool`" ]
+then xdotool search --sync --onlyvisible --name 'GNU Image Manipulation Program' windowminimize
+fi
+if [ \! -z "`which wlctrl`" ]
+then while \! wlrctl window minimize gimp ; do sleep 1 ; done
+fi
