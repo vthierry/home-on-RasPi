@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Ayatana Indicator Session
+Exec=/usr/libexec/ayatana-indicator-session/ayatana-indicator-session-service
+OnlyShowIn=Unity;MATE;XFCE;Budgie:GNOME;
+NoDisplay=true
+StartupNotify=false
+Terminal=false
+Hidden=true
