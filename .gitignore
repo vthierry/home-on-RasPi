@@ -11,9 +11,7 @@
 /.sudo_as_admin_successful
 /.xsession-errors*
 /.config/*
-!/.config/autostart
-!/.config/dconf
-!/.config/GIMP
+!.config/dconf/user
 !/.config/labwc/rx.xml
 !/.config/GIMP
 !/.config/lxterminal

@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Exec=pcmanfm --desktop
-Hidden=false
-Name[en_US]=Desktop by pcmanfm
-Name=Desktop
-Comment[en_US]=Manage desktop icons
-Comment=Manage desktop icons
-X-MATE-Autostart-Delay=0

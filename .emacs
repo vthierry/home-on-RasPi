@@ -2,6 +2,8 @@
 
 ;; Adjusts emacs aspect
 
+(setq frame-title-format "Emacs")
+      
 (setq inhibit-splash-screen t)
 (setq bell-volume 0)
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))

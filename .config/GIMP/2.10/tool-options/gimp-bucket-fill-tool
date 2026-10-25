@@ -1,9 +1,0 @@
-# GIMP gimp-bucket-fill-tool options
-
-(pattern "Pastel Stuff")
-(brush-size 51)
-(brush-hardness 0.5)
-(fill-mode bg)
-(threshold 32.5)
-
-# end of gimp-bucket-fill-tool options

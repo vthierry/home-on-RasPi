@@ -1,1 +1,19 @@
-https://man.archlinux.org/man/wf-recorder.1.en
+#!/bin/bash
+. ~/.bashrc
+
+if [ "$1" = -h ] ; then cat <<EOU
+Usage: screencast [\$options]
+ Starts recording the screen
+ - Stops with Ctrl+C.
+ - Records in ~/Desktop/recording.mkv file.
+ - Uses \`-g x,y WxH\` option to record a specific part of the screen.
+    - Other wf-recorders options can be used.
+EOU
+exit
+fi
+
+
+echo "Starting (CRTL+C to close)"
+bakfile ~/Desktop/recording.mkv
+console wf-recorder -a -f ~/Desktop/recording.mkv $* -g >/dev/null 2>&1
+

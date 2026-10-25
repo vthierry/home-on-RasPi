@@ -31,21 +31,23 @@ sudo apt remove -qq -y firefox                 # Chromium has better performance
 sudo apt remove -qq -y rpi-connect # No need a priori to remotely control this Raspi, while it is possible via SSH.
 sudo apt remove -qq -y squeekboard             # No need to have a virtual keyboard on the screen.
 sudo apt remove -qq -y geany                   # A programmer's IDE, not very useful when using makefiles (see below).
-sudo apt remove -qq -y thonny                  # A Python IDE for beginners only useful for .. Python beginners.
+sudo apt remove -qq -y thonny                  # A Python IDE for beginners only useful for .. Python beginners, https://editor.raspberrypi.org is a very nice alternative.
 sudo apt remove -qq -y piclone rpi-imager      # Using a better tool to backup/restore the SD-card.
 sudo apt remove -qq -y rp-bookshelf yelp       # No need to browse the Raspberry Pi Press  in this context.
 sudo apt remove -qq -y rp-prefapps pi-package  # Better not choose to install applications from a menu, but in this file, for reproducibility.
 sudo apt remove -qq -y realvnc-vnc-server         # No use of VNC in this context.
 sudo apt remove -qq -y libvncclient1 libneatvnc0 wayvnc
-#sudo apt remove -qq -y mousepad               # Do NOT suppress it unless you have chosen your favorite editor.
+#sudo apt remove -qq -y mousepad               # Do NOT suppress it unless you have chosen your favorite editor instead.
 sudo apt autoremove -qq -y
 
 ## Adds useful system packages.
 sudo apt update -qq -y
 sudo apt install -qq -y git                    # Git is preinstalled (thus a simple reminder here).
 sudo apt install -qq -y nodejs                 # JavaScript is used for Web interaction and many useful tools.
-sudo apt install -qq -y rclone                 # Rclone is used for file interaction with on-line cloud systems.
+#sudo apt install -qq -y rclone                 # Rclone is used for file interaction with on-line cloud systems.
 sudo apt install -qq -y speedtest-cli          # Very useful to test the internet speed test.
+sudo apt install -qq -y wlrctl		# Used to automatized GUI actions.
+#
 ## Adds useful multimedia packages.
 sudo apt install -qq -y pdftk                  # Every day PDF file manipulation.
 sudo apt install -qq -y gimp                   # A reference for image editing.
@@ -55,16 +57,23 @@ sudo apt install -qq -y ffmpeg                 # Everyday video/audio file manip
 sudo apt install -qq -y yt-dlp                 # A tool for video downloading
 sudo apt install -qq -y simple-scan            # A suitable image scanner.
 sudo apt install -qq -y wf-recorder            # A … simple powerful screen recorder.
+#sudo apt install -qq -y screenruler   # Measures pixel lengths on screen (heavy installation because based on KDE).
+#sudo apt install -qq -y kruler   # Measures pixel lengths on screen (heavy installation because based on ruby).
+#sudo apt install -qq -y color-picker # Measures a color everywhere in the screen
+#
 ## Adds office packages, if not working online.
 ### Note: The key point is that there is no need to install the whole LibreOffice productivity software, if only partially used.
-#sudo apt install -q -y libreoffice-writer     # The reference textual document editor.
-#sudo apt install -q -y libreoffice-calc       # The spreadsheet document editor.
-#sudo apt install -q -y libreoffice-draw       # The reference drawing editor.
-#sudo apt install -q -y libreoffice-impress    # The reference slide presentation editor.
+#sudo apt install -qq -y libreoffice-writer     # The reference textual document editor.
+#sudo apt install -qq -y libreoffice-calc       # The spreadsheet document editor.
+#sudo apt install -qq -y libreoffice-draw       # The reference drawing editor.
+#sudo apt install -qq -y libreoffice-impress    # The reference slide presentation editor.
+#sudo apt install -qq -y libreoffice-impress    # The reference slide presentation editor.
+#sudo apt install -qq -y inkscape                  # The reference vectorial graphics SVG editor.
+
 ## Adds useful development packages, in the https://github.com/vthierry/idnai context.
-sudo apt install -qq -y emacs                  # The best universal computer editor of the … XXe century :), choose your one.
-sudo apt install -qq -y arduino                # The toolchain for developing on the ESP32 processor as well.
-sudo apt install -qq -y kicad                  # The tool to develop printed circuit boards.
+#sudo apt install -qq -y emacs                  # The best universal computer editor of the … XXe century :), choose your one.
+#sudo apt install -qq -y arduino                # The toolchain for developing on the ESP32 processor as well.
+#sudo apt install -qq -y kicad                  # The tool to develop printed circuit boards.
 
 ## Finalizes package updates
 sudo apt update -qq -y ; sudo apt full-upgrade -qq -y; sudo apt autoremove -qq -y
