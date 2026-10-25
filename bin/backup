@@ -15,13 +15,13 @@ EOU
 
 askForDisk() { # askForDisk $diskName; Asks for a disk reference.
   while true ; do
-    (sudo df -a -H --output=source,target,used,avail | grep -E '^(/dev/sd|Filesystem)' | awk 'NR == 1 { print "   "  $0 } NR > 1 { print NR-1 ": "  $0 }' ; echo '0: Quit') | tee /tmp/df$$.txt ; n="`cat /tmp/df$$.txt | wc -l`"
+    (sudo df -a -H --output=source,target,used,avail | grep -E '^(/dev/sd|Filesystem)' | awk 'NR == 1 { print "   "  $0 } NR > 1 { print NR-1 ": "  $0 }' ; echo '0: Quit') | tee /tmp/$$~ ; n="`cat /tmp/$$~ | wc -l`"
     if [ "$n" -lt 3 ] ; then echo "No disk mounted, please proceed and rerun" ; exit ; fi
     read -p "Select the $1 between 1 and $((n-2)) : " -n 1 -e rep
     if [ "$rep" = 0 ] ; then exit ; fi
     if [ \( 0 -lt "$rep" \) -a \( "$rep" -lt "$((n-1))" \) ] ; then 
-      diskSource="`head /tmp/df$$.txt -n $((rep+1)) | tail -1 | awk '{ print $2}'`"
-      diskTarget="`head /tmp/df$$.txt -n $((rep+1)) | tail -1 | awk '{ print $3}'`"
+      diskSource="`head /tmp/$$~ -n $((rep+1)) | tail -1 | awk '{ print $2}'`"
+      diskTarget="`head /tmp/$$~ -n $((rep+1)) | tail -1 | awk '{ print $3}'`"
       return
     fi
     sudo mount $diskSource

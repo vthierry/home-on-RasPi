@@ -11,9 +11,16 @@
 /.sudo_as_admin_successful
 /.xsession-errors*
 /.config/*
+<<<<<<< HEAD
 !.config/dconf/user
 !/.config/labwc/rx.xml
 !/.config/GIMP
+=======
+!/.config/autostart
+!/.config/dconf
+!/.config/GIMP
+!/.config/labwc
+>>>>>>> cd9147bff7652cd9d30102bda29cf00a1325d01b
 !/.config/lxterminal
 !/.config/libfm
 !/.config/pcmanfm
@@ -21,6 +28,6 @@
 !/.config/user-dirs.dirs
 !/.config/wf-panel-pi
 /.local/*
+!/.local/share/file-managera
 !/.local/share/applications
-!/.local/share/file-manager
 /bin/.*
