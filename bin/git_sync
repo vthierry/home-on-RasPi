@@ -11,21 +11,24 @@ EOU
 exit
 fi
 
+## Default commit message
 if [ -z "$*" ] ; then m="minor modification" ; else m="$*" ; fi
 
-#echo -n "Cleaning … " ; "`dirname $0`"/clean ; echo "done"
+## Checks for the id_rsa key
+#if [ -f "`dirname $0`/ssh-add_id_rsa" ] ; then . "`dirname $0`/ssh-add_id_rsa" ; fi
 
+## Implements the git synchronisation
 git_sync_here() {
-  echo "Sync `basename $PWD` repository:"
+  echo "Sync `basename $PWD` repository:" 
   git pull -q --allow-unrelated-histories
   if [ \! -z "`git status -s`" ] ; then git commit -q -a -m "$m" ; git push -q ; fi
   git status -s
 }
 
+## Synchronize the current repository
+git_sync_here
+## … and any sub-repository
 gits="`find . -type d -a -regex '.*/\.git'`"
-
-if [ -z "$gits" ] ; then echo 'No git directory here'; exit 1 ; fi
-
-for g in $gits ; do pushd "`dirname $g`" > /dev/null ; git_sync_here ; popd > /dev/null ; done
+for g in $gits ; do if [ "$g" \! = "./.git" ] ; then pushd "`dirname $g`" > /dev/null ; git_sync_here ; popd > /dev/null ; fi ; done
 
 
