@@ -30,7 +30,6 @@ get_git_root() { # Usage: get_git_root $directory ; Gets the git root directory 
   if [ -d "$1/.git" ] ; then echo "$1" ; elif [ "$1" \!= "/" ] ; then get_git_root "`dirname \"$1\"`" ; fi
 }
 
-
 ## Synchronize the current repository
 git_sync_here "`get_git_root \"$(pwd)\"`"
 ## … and any sub-repository
