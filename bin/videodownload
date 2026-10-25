@@ -1,10 +1,14 @@
 #!/bin/bash
 . ~/.bashrc
-## Installs the package via atp if not yet done
+## Installs the package via atp if not yet done.
 needfor yt-dlp
-## Enforces a recent release from https://github.com/yt-dlp/yt-dlp/releases
+## Enforces a recent release from https://github.com/yt-dlp/yt-dlp/releases.
+## - Echoes a message since it may take a few seconds.
 echo "Video-downloading starting …"
-sudo yt-dlp --update > /dev/null
+## - Updates only if no other yt-dlp instance is running.
+if [ -z "`ps -ef | grep yt-dlp | grep -v grep`" ]
+then sudo yt-dlp --update > /dev/null
+fi
 
 if [ "$1" = -h -o "$1" = --help ]
 then cat <<EOU
@@ -15,7 +19,11 @@ EOU
 exit
 fi
 
+## Ask for URL if not given in argument.
 if [ -z "$1" ] ; then read -p "URL ? " url ; else url="$*" ; fi
 
-yt-dlp --js-runtimes node:/usr/bin/node $url 2>&1 | grep '^\[download\]'
+## Downloads ...
+yt-dlp --js-runtimes node:/usr/bin/node $url 2>&1 | grep -E '^(\[download\]|ERROR)' | tee /tmp/$$~
 
+## Detects if an error (yt-dlp does not exit on error for all of them).
+if grep ERROR /tmp/$$~ > /dev/null ; then exit 1 ; else exit 0 ; fi

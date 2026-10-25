@@ -12,6 +12,7 @@ Runs a command in an interactive console window.
   -b: Echoes '…done.' and close the window on keyboard return; else close the window straight at program end.
   -s: Closes the window after a given delay in second.
 - The default \$command is \`bash\`, i.e., a terminal emulation.
+- If an error occurs the \`-b\` option is enforced.
 - Notification: The `console -n \$message\` displays a desktop notification.
   - It is a shortcut for \`console -t '' -g 64x2-1+40 -s 5 echo \$message\`
 EOU
@@ -21,7 +22,7 @@ EOU
 if [ "$1" = "-n" ] ; then shift ; ($0 -t ' ' -g 64x2-1+40 -s 5 echo $* &) ; exit ; fi
 
 geometry="80x16"
-bye=""
+bye='; if [ "$?" \!= 0 ] ; then echo …done. ; read cont ; fi'
 cd ~/Desktop
 while [ \! -z "$1" ] ; do case "$1" in
  -h | --help ) usage ; exit;;
@@ -32,7 +33,7 @@ while [ \! -z "$1" ] ; do case "$1" in
    # Sets the correct gvfs mounted volumes
    mydir="`echo $2 | sed "s/^mtp:\/\/\(.*\)/\/run\/user\/$myid\/gvfs\/mtp\\:host\\=\1/" | sed 's/%20/ /g'`"
    cd "$mydir" ; shift ; shift;;
- -s ) bye="; sleep $2" ; shift ; shift;;
+ -s ) bye="$bye ; sleep $2" ; shift ; shift;;
  -b ) bye="; echo …done. ; read cont"; shift;;
  * ) break;;
 esac ; done

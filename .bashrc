@@ -25,6 +25,8 @@ alias c='$HOME/bin/clean; clear' # Usage: c ; Cleans temporary files and clean t
 alias s='xdg-open' # Usage: s $file ; Shows a file with the default application.
 alias f='pcmanfm' # Usage: f ; Opens the file manager for the current directory.
 alias m='~/bin/make' # Usage: m ; Runs make in the current directory.
+alias k='killall' # Usage: k ; Kill all processes of a given name.
+alias w='console man' # Usage: w ; Opens the man page of a given command.
 update() { # Usage: update ; Performs the proper apt update.
   ## Note: Also avoids to use bin/update by mistake.
   sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y
