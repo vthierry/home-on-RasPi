@@ -14,8 +14,7 @@
 !/.config/autostart
 !/.config/dconf
 !/.config/GIMP
-!/.config/labwc/rx.xml
-!/.config/GIMP
+!/.config/labwc
 !/.config/lxterminal
 !/.config/libfm
 !/.config/pcmanfm
@@ -23,6 +22,6 @@
 !/.config/user-dirs.dirs
 !/.config/wf-panel-pi
 /.local/*
+!/.local/share/file-managera
 !/.local/share/applications
-!/.local/share/file-manager
 /bin/.*
