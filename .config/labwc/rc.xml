@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+Switching left/right "office" and "studio" desktops using Ctrl+left/right cursor keys.
+-->
+
+<labwc_config>
+   <desktops>
+    <popupTime>1000</popupTime>
+    <names>
+      <name>Office</name>
+      <name>Studio</name>
+    </names>
+  </desktops>
+  <keyboard>
+    <keybind key="C-Left">
+      <action name="GoToDesktop" to="left" />
+    </keybind>
+    <keybind key="C-Right">
+      <action name="GoToDesktop" to="right"/>
+    </keybind>
+    <keybind key="W-Left">
+     <action name="SendToDesktop" to="left"/>
+   </keybind>
+   <keybind key="W-Right">
+     <action name="SendToDesktop" to="right"/>
+   </keybind>
+  </keyboard>
+</labwc_config>
