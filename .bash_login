@@ -1,4 +1,4 @@
 # Login bash commands
 . ~/.bashrc
 
-ssh-add_id_rsa
+id_rsa_add

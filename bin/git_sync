@@ -15,7 +15,7 @@ fi
 if [ -z "$*" ] ; then m="minor modification" ; else m="$*" ; fi
 
 ## Checks for the id_rsa key
-#if [ -f "`dirname $0`/ssh-add_id_rsa" ] ; then . "`dirname $0`/ssh-add_id_rsa" ; fi
+if [ -f ~/bin/id_rsa_add ] ; then ~/bin/id_rsa_add  ; fi
 
 ## Implements the git synchronisation
 git_sync_here() {
