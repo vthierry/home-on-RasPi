@@ -29,6 +29,6 @@ git_sync_here() {
 git_sync_here
 ## … and any sub-repository
 gits="`find . -type d -a -regex '.*/\.git'`"
-for g in $gits ; do if [ "$g" \! = "./.git" ] ; then pushd "`dirname $g`" > /dev/null ; git_sync_here ; popd > /dev/null ; fi ; done
+for g in $gits ; do if [ "$g" \!= "./.git" ] ; then pushd "`dirname $g`" > /dev/null ; git_sync_here ; popd > /dev/null ; fi ; done
 
 
