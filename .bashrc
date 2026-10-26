@@ -2,7 +2,7 @@ PS1="\W>"
 
 export SHELL=/bin/bash
 export PATH=.:$HOME/bin:$PATH:$HOME/.local/bin
-export EDITOR=mousepad # TO BE ADAPTED TO YOUR PREFERED EDITOR
+export EDITOR=mousepad
 export BROWSER=chromium
 unset  MAIL
 export TEXINPUTS=".:"

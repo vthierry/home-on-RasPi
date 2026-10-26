@@ -3,13 +3,9 @@
 if [ "$1" = -h -o "$1" = --help ]
 then cat <<EOU
 Usage: screenshot
-Starts the gimp's screenhot window.
+ Makes a screen shot in a Desktop file, using grim.
 EOU
 exit
 fi
 
-gimp --batch-interpreter plug-in-script-fu-eval -b '(plug-in-screenshot 0 2 0 0 0 0 0)'
-
-if [ \! -z "`which xdotool`" ]
-then xdotool search --sync --onlyvisible --name 'GNU Image Manipulation Program' windowminimize
-fi
+grim
