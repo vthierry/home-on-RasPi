@@ -17,11 +17,12 @@
 !/.config/labwc
 !/.config/lxterminal
 !/.config/libfm
+!/.config/menus
 !/.config/pcmanfm
-!/.config/rpc
+!/.config/rpcc
 !/.config/user-dirs.dirs
 !/.config/wf-panel-pi
 /.local/*
-!/.local/share/file-managera
+!/.local/share/file-manager
 !/.local/share/applications
 /bin/.*

@@ -5,7 +5,6 @@ export PATH=.:$HOME/bin:$PATH:$HOME/.local/bin
 export EDITOR=mousepad # TO BE ADAPTED TO YOUR PREFERED EDITOR
 export BROWSER=chromium
 unset  MAIL
-unset  TERM
 export TEXINPUTS=".:"
 
 alias cp='cp -i' # Usage: cp $source $target ; Force interactive copy to avoid error.

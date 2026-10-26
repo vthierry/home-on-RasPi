@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<Menu>
+  <Name>Applications</Name>
+  <MergeFile type="parent">/etc/xdg/menus/rpd-applications.menu</MergeFile>
+  <Layout>
+    <Merge type="menus"/>
+    <Menuname>Development</Menuname>
+    <Menuname>Education</Menuname>
+    <Menuname>Science</Menuname>
+    <Menuname>Office</Menuname>
+    <Menuname>Network</Menuname>
+    <Menuname>AudioVideo</Menuname>
+    <Menuname>Graphics</Menuname>
+    <Menuname>Game</Menuname>
+    <Menuname>Other</Menuname>
+    <Menuname>Utility</Menuname>
+    <Menuname>System</Menuname>
+    <Menuname>Electronics</Menuname>
+    <Menuname>Hamradio</Menuname>
+    <Separator/>
+    <Menuname>Help</Menuname>
+    <Separator/>
+    <Menuname>Settings</Menuname>
+    <Separator/>
+    <Filename>pishutdown.desktop</Filename>
+    <Merge type="files"/>
+  </Layout>
+  <Menu>
+    <Name>AudioVideo</Name>
+    <Layout>
+      <Merge type="menus"/>
+      <Filename>audacity.desktop</Filename>
+      <Filename>org.gnome.Cheese.desktop</Filename>
+      <Filename>org.shotcut.Shotcut.desktop</Filename>
+      <Filename>vlc.desktop</Filename>
+      <Merge type="files"/>
+    </Layout>
+  </Menu>
+  <Menu>
+    <Name>Utility</Name>
+    <Layout>
+      <Merge type="menus"/>
+      <Filename>org.xfce.mousepad.desktop</Filename>
+      <Filename>galculator.desktop</Filename>
+      <Filename>xarchiver.desktop</Filename>
+      <Filename>org.gnome.Evince.desktop</Filename>
+      <Filename>emacs-term.desktop</Filename>
+      <Filename>yelp.desktop</Filename>
+      <Filename>org.gnome.Evince-previewer.desktop</Filename>
+      <Filename>gui-runcmd.desktop</Filename>
+      <Merge type="files"/>
+    </Layout>
+  </Menu>
+  <Menu>
+    <Name>Graphics</Name>
+    <Layout>
+      <Merge type="menus"/>
+      <Filename>0.desktop</Filename>
+      <Filename>gimp.desktop</Filename>
+      <Filename>simple-scan.desktop</Filename>
+      <Filename>eom.desktop</Filename>
+      <Merge type="files"/>
+    </Layout>
+  </Menu>
+  <Menu>
+    <Name>System</Name>
+    <Layout>
+      <Merge type="menus"/>
+      <Filename>pcmanfm.desktop</Filename>
+      <Filename>lxterminal.desktop</Filename>
+      <Filename>mozo-made.desktop</Filename>
+      <Filename>lxtask.desktop</Filename>
+      <Filename>3.desktop</Filename>
+      <Filename>org.freedesktop.Xwayland.desktop</Filename>
+      <Merge type="files"/>
+    </Layout>
+  </Menu>
+  <Menu>
+    <Name>Development</Name>
+    <Layout>
+      <Merge type="menus"/>
+      <Filename>emacs.desktop</Filename>
+      <Filename>arduino.desktop</Filename>
+      <Filename>org.kicad.kicad.desktop</Filename>
+      <Filename>python3.13.desktop</Filename>
+      <Filename>emacsclient.desktop</Filename>
+      <Filename>emacs-term.desktop</Filename>
+      <Merge type="files"/>
+    </Layout>
+  </Menu>
+</Menu>

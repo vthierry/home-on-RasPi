@@ -41,7 +41,7 @@ then
   while true ; do cat <<EOF
 What to backup:
  b: Backups the /home/$USER directory to the external backup disk.
- i: Creates an image of the SD-card on the external backup disk.
+ c: Creates a bootable spare SD-card.
  r: Repairs a SSD disk (e.g., mounted in read-only mode after an abrupt disconnection).
  s: Syncs all git repositories with default commit message.
  u: Updates and upgrades the installation, using apt.
@@ -60,17 +60,10 @@ else
       rsync  -a -z --info=progress2 --delete-excluded --exclude '.config/chromium/Singleton*' --archive "/home/$USER/" "$SSD/home/"
       ;;
     
-    c ) ### [Hidden, because to be tested] Creates a bootable spare SD-card.
+    c ) ### Creates a bootable spare SD-card.
       askForDisk 'Bootable SD-card (will be erased !)'
       if confirm "Erases and make a bootable image on $diskSource" "OK, bye" ; then
 	sudo dd if=/dev/mmcblk0 of=$diskSource bs=4M status=progress conv=fsync
-      fi
-      ;;
-    
-    i ) ### Creates an image of the SD-card on the external backup disk.
-      askForSSD
-      if confirm "Creates a system image on /media/$USER/$SSD/sd-card-copy.img\n\t (this will take about half-an-hour for a 64GB card)" ; then
-	sudo dd if=/dev/mmcblk0 of=$SSD/backup/sd-card-copy.img bs=1M status=progress
       fi
       ;;
     
