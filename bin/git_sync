@@ -17,23 +17,31 @@ if [ -z "$*" ] ; then m="minor modification" ; else m="$*" ; fi
 ## Checks for the id_rsa key
 if [ -f ~/bin/id_rsa_add ] ; then ~/bin/id_rsa_add  ; fi
 
-git_sync_here() { # Usage: git_sync_there $root-directory ; Implements the synchronization of git repository from its root directory.
-  pushd "$1" > /dev/null
+git_sync_here() { # Usage: git_sync_here : Git syncs in the current directory
   echo "Sync `basename $(pwd)` repository:" 
   git pull -q --allow-unrelated-histories
   if [ \! -z "`git status -s`" ] ; then git commit -q -a -m "$m" ; git push -q ; fi
   git status -s
+}
+
+git_sync_there() { # Usage: git_sync_there : Git syncs in the given directory
+  pushd "$1" > /dev/null
+  git_sync_here
   popd > /dev/null 
 }
 
-get_git_root() { # Usage: get_git_root $directory ; Gets the git root directory of the current location.
-  if [ -d "$1/.git" ] ; then echo "$1" ; elif [ "$1" \!= "/" ] ; then get_git_root "`dirname \"$1\"`" ; fi
+git_sync_root() { # Usage: git_sync_root : Git syncs in the current git root directory
+  if [ -d "$1/.git" ]
+  then git_sync_there "$1"
+  elif [ "$1" \!= "/" ]
+  then git_sync_root "`dirname \"$1\"`"
+  fi
 }
 
 ## Synchronize the current repository
-git_sync_here "`get_git_root \"$(pwd)\"`"
+git_sync_root "`pwd`"
 ## … and any sub-repository
 gits="`find . -type d -a -regex '.*/\.git'`"
-for g in $gits ; do if [ "$g" \!= "./.git" ] ; then git_sync_here "`dirname $g`" ; fi ; done
+for g in $gits ; do if [ "$g" \!= "./.git" ] ; then git_sync_there "`dirname $g`" ; fi ; done
 
 

@@ -1,78 +1,126 @@
 #!/bin/bash
 . ~/.bashrc
 
-usage() {
-  cat <<EOU
-  Usage: backup [\$w ... ]
-Backups user file on external devices.
- - With no argument runs interactively.
-Options:
- - \$w ... : One or more backup choice·s (see interactive menu).
-EOU
+## Implements the command usage, parsed from the script itself
+
+commands() {
+  grep '[a-z] *[)] *###' $0 | sed 's/ *\([a-z]\)[^#]*#* */  \1: /'
 }
 
+usage() {
+  cat <<EOU
+  Usage: backup [\$option ... ]
+Backups user file and manages external volumes.
+ - With no argument runs interactively.
+Options:
+EOU
+  commands
+}
+
+if [ "$1" = -h -o "$1" = --help ] ; then usage ; exit ; fi
+   
 ## Manages backup functions.
 
-askForDisk() { # askForDisk $diskName; Asks for a disk reference.
+askForVolume() { # askForVolume $prompt; Asks for a volume reference.
   while true ; do
     (sudo df -a -H --output=source,target,used,avail | grep -E '^(/dev/sd|Filesystem)' | awk 'NR == 1 { print "   "  $0 } NR > 1 { print NR-1 ": "  $0 }' ; echo '0: Quit') | tee /tmp/$$~ ; n="`cat /tmp/$$~ | wc -l`"
-    if [ "$n" -lt 3 ] ; then echo "No disk mounted, please proceed and rerun" ; exit ; fi
+    if [ "$n" -lt 3 ] ; then echo "No volume mounted, please proceed and rerun" ; exit ; fi
     read -p "Select the $1 between 1 and $((n-2)) : " -n 1 -e rep
     if [ "$rep" = 0 ] ; then exit ; fi
     if [ \( 0 -lt "$rep" \) -a \( "$rep" -lt "$((n-1))" \) ] ; then 
-      diskSource="`head /tmp/$$~ -n $((rep+1)) | tail -1 | awk '{ print $2}'`"
-      diskTarget="`head /tmp/$$~ -n $((rep+1)) | tail -1 | awk '{ print $3}'`"
+      volumeSource="`head /tmp/$$~ -n $((rep+1)) | tail -1 | awk '{ print $2}'`"
+      volumeTarget="`head /tmp/$$~ -n $((rep+1)) | tail -1 | awk '{ print $3}'`"
       return
     fi
-    sudo mount $diskSource
+    sudo mount $volumeSource
   done      
 }
 
-askForSSD() { # askForSSD ; Asks for the external backup disk, if not yet defined.
-  if [ -z "$SSD" ] ; then askForDisk 'external backup disk' ; SSD="$diskTarget" ; fi
+askForDisk() { # askForDisk $prompt; Asks for a disk reference.
+  while true ;do
+    ((echo 'Disk device' ; sudo ls -1d /dev/* | grep -E '^(/dev/sd|/dev/mm.*0$)') | awk 'NR == 1 { print "   "  $0 } NR > 1 { print NR-1 ": "  $0 }' ; echo '0: Quit')  | tee /tmp/$$~ ; n="`cat /tmp/$$~ | wc -l`"
+    if [ "$n" -lt 3 ] ; then echo "No volume mounted, please proceed and rerun" ; exit ; fi
+    read -p "Select the $1 between 1 and $((n-2)) : " -n 1 -e rep
+    if [ "$rep" = 0 ] ; then exit ; fi
+    if [ \( 0 -lt "$rep" \) -a \( "$rep" -lt "$((n-1))" \) ] ; then 
+      volumeSource="`head /tmp/$$~ -n $((rep+1)) | tail -1 | awk '{ print $2}'`"
+      return
+    fi
+  done
+}
+
+askForSSD() { # askForSSD ; Asks for the external backup volume, if not yet defined.
+  if [ -z "$SSD" ] ; then askForVolume 'external backup volume' ; SSD="$volumeTarget" ; fi
 }
 
 rsync="rsync -a -z --archive --info=progress2"
 
-## Implements the interactive backup menu.
 
 if [ -z "$1" ]
 then
-  while true ; do cat <<EOF
-What to backup:
- b: Backups the /home/$USER directory to the external backup disk.
- c: Creates a bootable spare SD-card.
- r: Repairs a SSD disk (e.g., mounted in read-only mode after an abrupt disconnection).
- s: Syncs all git repositories with default commit message.
- u: Updates and upgrades the installation, using apt.
- q: Quit
-EOF
+  ## Implements the interactive backup menu.
+  while true ; do
+    echo 'What to backup:' ; commands ; echo '  q: Quit' 
     read -p "Option: " -n 1 -e rep
     if [ "$rep" = q ] ; then exit ; fi
     $0 $rep
   done
 else
   while [ \! -z "$1" ] ; do case "$1" in
+  ## Implements backup commands, each command with lower-case letter.
 
-    b ) ### Backups the home directory to the external backup disk.
+    b ) ### Backups the home directory on an external backup volume.
       askForSSD
       mkdir -p $SSD/home
       rsync  -a -z --info=progress2 --delete-excluded --exclude '.config/chromium/Singleton*' --archive "/home/$USER/" "$SSD/home/"
       ;;
     
-    c ) ### Creates a bootable spare SD-card.
-      askForDisk 'Bootable SD-card (will be erased !)'
-      if confirm "Erases and make a bootable image on $diskSource" "OK, bye" ; then
-	sudo dd if=/dev/mmcblk0 of=$diskSource bs=4M status=progress conv=fsync
+    c ) ### Creates a volume from a disk image.
+      askForDisk 'Volume to write (will be erased !)'
+      #### Makes a backup of the present bootable SD-card
+      if [ "`uname -s`" = "armv7l" -a -e /dev/mmcblk0 ]
+      then if confirm "Backup the present system SD-card ?" ; then sd_card_source='/dev/mmcblk0' ; fi
+      fi
+      if [ -z "$sd_card_source" ] && confirm "Download a disk image on the Desktop, and confirm"
+      then
+	img="`ls -t1 *.img *.xz 2>/dev/null | head -1`"
+	if confirm "Use $img as disk image"
+	then
+	  if [ "${img##*.}" = "xz" ]
+	  then
+	    if [ \! -z "`which unxz`" ]
+	    then echo -n "Uncompress $img ..." ; unxz $img ; img="${img%.*}" ; echo ' done'
+	    else echo "The $img file must be uncompressed first, and the unxz program is missing" ; exit 1
+	  fi
+	  sd_card_source="$img"
+	fi
+      fi
+      if [ -z "$sd_card_source" ]
+      then read -p "Enter the disk image '*.img' file name:" sd_card_source
+      fi
+      if [ -e "$sd_card_source" ]
+      then if confirm "Erases and make a bootable image on $volumeSource"
+	   then sudo dd if="$sd_card_source" of=$volumeSource bs=4M status=progress conv=fsync
+	   fi
+      else echo "Sorry $sd_card_source not found."
+      fi
+      ;;
+
+    f ) ### Formats a mounted volume.
+      askForDisk 'Volume to format (will be erased !)'
+      if confirm "Formats that volume and erase all data" "OK, bye" ; then
+	sudo umount $volumeSource* 2>/dev/null
+	sudo mkfs.ext4 $volumeSource
       fi
       ;;
     
-    r ) ### Repairs the disk (e.g., mounted in read-only mode after an abrupt disconnection).
-      echo -e 'Notice: If the device is blocked "busy":\n- check that all application (filer, terminal) working on the disk are closed\n- if after a while, it persists, you may have to reboot first and rerun this command'
+    r ) ### Repairs the volume (e.g., mounted in read-only).
+      echo -e 'Notice: It is often mounted in read-only mode after an abrupt disconnection'
+      echo -e 'Notice: If the device is blocked "busy":\n- check that all application (filer, terminal) working on the volume are closed\n- if after a while, it persists, you may have to reboot first and then rerun this command'
       askForSSD
-      sudo umount $diskSource
-      sudo fsck -y $diskSource
-      sudo mount $diskSource
+      sudo umount $volumeSource
+      sudo fsck -y $volumeSource
+      sudo mount $volumeSource
       ;;
     
     s ) ### Syncs all git repositories with default message.
@@ -82,6 +130,8 @@ else
     u ) ### Updates and upgrades the installation, using apt.
       (sudo apt update -q -y  ; sudo apt full-upgrade -q -y ; sudo apt autoremove -q -y ; sudo apt-file update)  2>&1 | grep -E -v '(^[HGRW]|configured multiple times|^ *$)'
       ;;
+
+    ## Implements hidden commands, using upper-case letters.
 
     U ) ### [Hidden] Uploads the 'vthierry' smartphone's picture, specific to this user, although it may inspire for your own usage.
       if [ "$USER" = "vthierry" ] ; then

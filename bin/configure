@@ -84,10 +84,14 @@ sudo apt update -qq -y ; sudo apt full-upgrade -qq -y; sudo apt autoremove -qq -
 ## Cleans not useful application's loaders
 sudo /bin/rm -f /usr/share/applications/{emacsclient,emacsclient-mail,emacs-mail,emacs-term,org.kicad.{bitmap2component,eeschema,gerbview,pcbcalculator,pcbnew}}.desktop
 
-## Adapts the author username to your username
+## Adapts the author username to your username, after download
 for f in grep -lr vthierry .local/share/{applications,file-manager} .config/{GIMP,labwc,lxterminal,libfm,menus,pcmanfm,rpcc,wf-panel-pi}
 do subst vthierry $USER $f $f
 done
+
+## Considers ~/.local/share/applications/default.list as the mime associations root file and updates ~/{.config,.local/share/applications}/mimeapps.list accordingly
+cp ~/.local/share/applications/default.list ~/.local/share/applications/mimeapps.list
+cp ~/.local/share/applications/default.list ~/.config/mimeapps.list
 
 ## Asks for reboot
 read -p "Shall we reboot ? (y/n): " -n 1 -e rep ; if [ "$rep" = y ] ; then sudo reboot ; fi

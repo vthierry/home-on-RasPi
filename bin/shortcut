@@ -2,9 +2,21 @@
 . ~/.bashrc
 
 # Internal usage: wraps Ctrl+F* to applications:
-## - On the Menu => System => Control Center => Hardware => Keyboard Shortcuts => Custom Shortcuts ...
-## - Ctrl+F* are mapped on ./bin/shortcut F* to have a ease the definition of global desktop shortcuts.
-## - Undefined shortcuts are mapped on the shortcut's usage panel display.
+## - On RaspberryPi, in `./.config/labwc/rc.xml`
+##```
+## <keyboard>
+##   <keybind key="C-F1">
+##     <action name="Execute">
+##       <command>/home/user/bin/shortcut F1</command>
+##     </action>
+##   </keybind>
+## ../..
+## </keyboard>
+##```
+## - On mate and gnome
+##   - On the Menu => System => Control Center => Hardware => Keyboard Shortcuts => Custom Shortcuts ...
+##   - Ctrl+F* are mapped on ./bin/shortcut F* to have a ease the definition of global desktop shortcuts.
+##   - Undefined shortcuts are mapped on the shortcut's usage panel display.
 
 ## Defines commands with a suitable name, since it is grepped to show the shortcut's usage.
 
@@ -14,12 +26,6 @@ backup() {
 scan() {
   simple-scan
 }
-vpn () {
-  /opt/cisco/secureclient/bin/vpnui
-}
-maple() {
-  console -g 120x80-1-1 /local/data/linux-install/maple2026/bin/maple
-}
 
 ## Implements the Ctrl+F1 to Ctrl+F12 shortcuts, if any
 if [ -z "$1" ] ; then
@@ -28,13 +34,10 @@ if [ -z "$1" ] ; then
   grep '.* ).*;;' < $0 | grep -v grep | sed 's/_* *&.*//'
 else
   case "$1" in
-    F1 ) thunderbird &;;
-    F2 ) screenshot &;;
+    F2 ) kazam &;;
     F3 ) gimp &;;
     F4 ) scan &;;
     F5 ) backup &;;
-    F6 ) vpn &;;
-    F7 ) maple &;;
     #### We need to write '*)' and not '* )'for the automatic usage greeping.
     *) lxterminal --profile=xterm --geometry=32x10+10+32 -e "bash -c '$0 ; read cont'" ;;
   esac

@@ -13,10 +13,12 @@
 /.config/*
 !/.config/dconf
 !/.config/GIMP
+!/.config/kazam
 !/.config/labwc
 !/.config/lxterminal
 !/.config/libfm
 !/.config/menus
+!/.config/mimeapps.list
 !/.config/pcmanfm
 !/.config/rpcc
 !/.config/user-dirs.dirs
