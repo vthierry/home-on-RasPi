@@ -46,9 +46,7 @@ sudo apt autopurge -qq -y
 sudo apt update -qq -y
 sudo apt install -qq -y git                    # Git is preinstalled (thus a simple reminder here).
 sudo apt install -qq -y nodejs                 # JavaScript is used for Web interaction and many useful tools.
-#sudo apt install -qq -y rclone                 # Rclone is used for file interaction with on-line cloud systems.
 sudo apt install -qq -y speedtest-cli          # Very useful to test the internet speed test.
-sudo apt install -qq -y wlrctl		# Used to automatized GUI actions.
 #
 ## Adds useful multimedia packages.
 sudo apt install -qq -y pdftk                  # Every day PDF file manipulation.
@@ -58,10 +56,6 @@ sudo apt install -qq -y shotcut                # A good solution for video editi
 sudo apt install -qq -y ffmpeg                 # Everyday video/audio file manipulation (needed by Shotcut).
 sudo apt install -qq -y yt-dlp                 # A tool for video downloading
 sudo apt install -qq -y simple-scan            # A suitable image scanner.
-sudo apt install -qq -y wf-recorder            # A … simple powerful screen recorder.
-#sudo apt install -qq -y screenruler   # Measures pixel lengths on screen (heavy installation because based on KDE).
-#sudo apt install -qq -y kruler   # Measures pixel lengths on screen (heavy installation because based on ruby).
-#sudo apt install -qq -y color-picker # Measures a color everywhere in the screen
 #
 ## Adds office packages, if not working online.
 ### Note: The key point is that there is no need to install the whole LibreOffice productivity software, if only partially used.
@@ -71,7 +65,7 @@ sudo apt install -qq -y wf-recorder            # A … simple powerful screen re
 #sudo apt install -qq -y libreoffice-impress    # The reference slide presentation editor.
 #sudo apt install -qq -y libreoffice-impress    # The reference slide presentation editor.
 #sudo apt install -qq -y inkscape                  # The reference vectorial graphics SVG editor.
-
+#
 ## Adds useful development packages, in the https://github.com/vthierry/idnai context.
 #sudo apt install -qq -y emacs                  # The best universal computer editor of the … XXe century :), choose your one.
 #sudo apt install -qq -y arduino                # The toolchain for developing on the ESP32 processor as well.
