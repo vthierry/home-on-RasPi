@@ -81,16 +81,16 @@ else
       if [ "`uname -s`" = "armv7l" -a -e /dev/mmcblk0 ]
       then if confirm "Backup the present system SD-card ?" ; then sd_card_source='/dev/mmcblk0' ; fi
       fi
-      if [ -z "$sd_card_source" ] && confirm "Download a disk image on the Desktop, and confirm"
+      if [ -z "$sd_card_source" ] && confirm "Download a disk image on the Desktop, and confirm, ok"
       then
 	img="`ls -t1 *.img *.xz 2>/dev/null | head -1`"
-	if confirm "Use $img as disk image"
+	if confirm "Use '$img' as disk image"
 	then
 	  if [ "${img##*.}" = "xz" ]
 	  then
 	    if [ \! -z "`which unxz`" ]
-	    then echo -n "Uncompress $img ..." ; unxz $img ; img="${img%.*}" ; echo ' done'
-	    else echo "The $img file must be uncompressed first, and the unxz program is missing" ; exit 1
+	    then echo -n "Uncompress $img ..." ; unxz $img ; img="${img%.*}" ; echo " done."
+	    else echo "The '$img' file must be uncompressed first, and the unxz program is missing." ; exit 1
 	  fi
 	  sd_card_source="$img"
 	fi
@@ -99,10 +99,10 @@ else
       then read -p "Enter the disk image '*.img' file name:" sd_card_source
       fi
       if [ -e "$sd_card_source" ]
-      then if confirm "Erases and make a bootable image on $volumeSource"
+      then if confirm "Erases and make a bootable image on $volumeSource."
 	   then sudo dd if="$sd_card_source" of=$volumeSource bs=4M status=progress conv=fsync
 	   fi
-      else echo "Sorry $sd_card_source not found."
+      else echo "Sorry '$sd_card_source' not found."
       fi
       ;;
 
