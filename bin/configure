@@ -4,7 +4,7 @@
 
 if [ "$1" = -h -o "$1" = --help ]
 then cat <<EOU
-Usage: update
+Usage: configure
 - Installs or updates the home directory to work as a tiny workstation.
   - This is "your" personal update script allowing to maintain a reproducible configuration.
   - You have to READ it and ADAPT it BEFORE running it (though nothing catastrophic happens, if not).
@@ -80,7 +80,7 @@ sudo /bin/rm -f /usr/share/applications/{emacsclient,emacsclient-mail,emacs-mail
 
 ## Adapts the author username to your username, after download
 for f in grep -lr vthierry .local/share/{applications,file-manager} .config/{GIMP,labwc,lxterminal,libfm,menus,pcmanfm,rpcc,wf-panel-pi}
-do subst vthierry $USER $f $f
+do ~/bin/subst vthierry $USER $f $f
 done
 
 ## Considers ~/.local/share/applications/default.list as the mime associations root file and updates ~/{.config,.local/share/applications}/mimeapps.list accordingly
@@ -88,4 +88,5 @@ cp ~/.local/share/applications/default.list ~/.local/share/applications/mimeapps
 cp ~/.local/share/applications/default.list ~/.config/mimeapps.list
 
 ## Asks for reboot
-read -p "Shall we reboot ? (y/n): " -n 1 -e rep ; if [ "$rep" = y ] ; then sudo reboot ; fi
+sudo reboot
+
