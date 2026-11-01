@@ -76,33 +76,18 @@ else
       ;;
     
     c ) ### Creates a volume from a disk image.
-      askForDisk 'Volume to write (will be erased !)'
-      #### Makes a backup of the present bootable SD-card
-      if [ "`uname -s`" = "armv7l" -a -e /dev/mmcblk0 ]
-      then if confirm "Backup the present system SD-card ?" ; then sd_card_source='/dev/mmcblk0' ; fi
-      fi
-      if [ -z "$sd_card_source" ] && confirm "Download a disk image on the Desktop, and confirm, ok"
-      then
-	img="`ls -t1 *.img *.xz 2>/dev/null | head -1`"
-	if confirm "Use '$img' as disk image"
-	then
-	  if [ "${img##*.}" = "xz" ]
-	  then
-	    if [ \! -z "`which unxz`" ]
-	    then echo -n "Uncompress $img ..." ; unxz $img ; img="${img%.*}" ; echo " done."
-	    else echo "The '$img' file must be uncompressed first, and the unxz program is missing." ; exit 1
-	  fi
-	  sd_card_source="$img"
+      if uname -a | grep -q rpi && [ -e /dev/mmcblk0 ] && confirm "Backup the present system SD-card ?"
+      then sd_card_source='/dev/mmcblk0'
+      else
+	confirm "Download a disk image on the Desktop, is it done"
+	if [ \! -z "`ls *.img.xy 2>/dev/null`" ]
+	then needfor xz-utils ; for f in *.img.xy ; do unxz $f ; done
 	fi
+	sd_card_source="`ls -t1 *.img 2>/dev/null | head -1`"
       fi
-      if [ -z "$sd_card_source" ]
-      then read -p "Enter the disk image '*.img' file name:" sd_card_source
-      fi
-      if [ -e "$sd_card_source" ]
-      then if confirm "Erases and make a bootable image on $volumeSource."
-	   then sudo dd if="$sd_card_source" of=$volumeSource bs=4M status=progress conv=fsync
-	   fi
-      else echo "Sorry '$sd_card_source' not found."
+      askForDisk 'Volume to write (will be erased !)'
+      if confirm "Erases and make a bootable image from $sd_card_source on $volumeSource"
+      then sudo dd if="$sd_card_source" of=$volumeSource bs=4M status=progress conv=fsync
       fi
       ;;
 
@@ -115,10 +100,9 @@ else
       ;;
     
     r ) ### Repairs the volume (e.g., mounted in read-only).
-      echo -e 'Notice: It is often mounted in read-only mode after an abrupt disconnection'
-      echo -e 'Notice: If the device is blocked "busy":\n- check that all application (filer, terminal) working on the volume are closed\n- if after a while, it persists, you may have to reboot first and then rerun this command'
+      echo -e '- It is often mounted in read-only mode after an abrupt disconnection.\n- If the device is blocked "busy" now:\n  - check that all application (filer, terminal) working on the volume are closed,\n  - wait a few seconds and rerun;\n  - if it persists, you may have to reboot first and then rerun this command.'
       askForSSD
-      sudo umount $volumeSource
+      sudo umount $volumeSource 
       sudo fsck -y $volumeSource
       sudo mount $volumeSource
       ;;
