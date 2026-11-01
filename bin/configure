@@ -40,6 +40,7 @@ sudo apt purge -qq -y realvnc-vnc-server         # No use of VNC in this context
 sudo apt purge -qq -y libvncclient1 libneatvnc0 wayvnc # In link with VNC.
 sudo apt purge -qq -y rpd-wallpaper-trixie  # Not used for a sober environment.
 sudo apt purge -qq -y scrot                      # A screenshot not used … and not worlking ;(.
+sudo apt purge -qq -y grim                       # A screenshot not used … and not that efficient.
 sudo apt autopurge -qq -y
 
 ## Adds useful system packages.
@@ -56,7 +57,7 @@ sudo apt install -qq -y shotcut                # A good solution for video editi
 sudo apt install -qq -y ffmpeg                 # Everyday video/audio file manipulation (needed by Shotcut).
 sudo apt install -qq -y yt-dlp                 # A tool for video downloading.
 sudo apt install -qq -y simple-scan            # A suitable image scanner.
-sudo apt install -qq -y kazam                  # A optimal tool for screenshot and screencast.
+sudo apt install -qq -y kazam                  # An optimal tool for screenshot and screencast.
 #
 ## Adds office packages, if not working online.
 ### Note: The key point is that there is no need to install the whole LibreOffice productivity software, if only partially used.
