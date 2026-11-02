@@ -12,7 +12,67 @@ Switching left/right "office" and "studio" desktops using Ctrl+left/right cursor
     </names>
   </desktops>
   <keyboard>
-    <keybind key="C-Left">
+    <keybind key="C-F1">
+      <action name="Execute">
+	<command>/home/user/bin/shortcut F1</command>
+      </action>
+    </keybind>
+   <keybind key="C-F2">
+      <action name="Execute">
+	<command>/home/user/bin/shortcut F2</command>
+      </action>
+    </keybind>
+   <keybind key="C-F3">
+      <action name="Execute">
+	<command>/home/user/bin/shortcut F3</command>
+      </action>
+    </keybind>
+   <keybind key="C-F4">
+      <action name="Execute">
+	<command>/home/user/bin/shortcut F4</command>
+      </action>
+    </keybind>
+   <keybind key="C-F5">
+      <action name="Execute">
+	<command>/home/user/bin/shortcut F5</command>
+      </action>
+    </keybind>
+   <keybind key="C-F6">
+      <action name="Execute">
+	<command>/home/user/bin/shortcut F6</command>
+      </action>
+    </keybind>
+   <keybind key="C-F7">
+      <action name="Execute">
+	<command>/home/user/bin/shortcut F7</command>
+      </action>
+    </keybind>
+   <keybind key="C-F8">
+      <action name="Execute">
+	<command>/home/user/bin/shortcut F8</command>
+      </action>
+    </keybind>
+   <keybind key="C-F9">
+      <action name="Execute">
+	<command>/home/user/bin/shortcut F9</command>
+      </action>
+    </keybind>
+   <keybind key="C-F10">
+      <action name="Execute">
+	<command>/home/user/bin/shortcut F19</command>
+      </action>
+    </keybind>
+   <keybind key="C-F11">
+      <action name="Execute">
+	<command>/home/user/bin/shortcut F11</command>
+      </action>
+    </keybind>
+   <keybind key="C-F12">
+      <action name="Execute">
+	<command>/home/user/bin/shortcut F12</command>
+      </action>
+    </keybind>
+     <keybind key="C-Left">
       <action name="GoToDesktop" to="left" />
     </keybind>
     <keybind key="C-Right">

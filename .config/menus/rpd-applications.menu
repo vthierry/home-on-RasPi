@@ -26,17 +26,6 @@
     <Merge type="files"/>
   </Layout>
   <Menu>
-    <Name>AudioVideo</Name>
-    <Layout>
-      <Merge type="menus"/>
-      <Filename>audacity.desktop</Filename>
-      <Filename>org.gnome.Cheese.desktop</Filename>
-      <Filename>org.shotcut.Shotcut.desktop</Filename>
-      <Filename>vlc.desktop</Filename>
-      <Merge type="files"/>
-    </Layout>
-  </Menu>
-  <Menu>
     <Name>Utility</Name>
     <Layout>
       <Merge type="menus"/>
@@ -63,19 +52,6 @@
     </Layout>
   </Menu>
   <Menu>
-    <Name>System</Name>
-    <Layout>
-      <Merge type="menus"/>
-      <Filename>pcmanfm.desktop</Filename>
-      <Filename>lxterminal.desktop</Filename>
-      <Filename>mozo-made.desktop</Filename>
-      <Filename>lxtask.desktop</Filename>
-      <Filename>3.desktop</Filename>
-      <Filename>org.freedesktop.Xwayland.desktop</Filename>
-      <Merge type="files"/>
-    </Layout>
-  </Menu>
-  <Menu>
     <Name>Development</Name>
     <Layout>
       <Merge type="menus"/>
@@ -85,6 +61,33 @@
       <Filename>python3.13.desktop</Filename>
       <Filename>emacsclient.desktop</Filename>
       <Filename>emacs-term.desktop</Filename>
+      <Merge type="files"/>
+    </Layout>
+  </Menu>
+  <Menu>
+    <Name>AudioVideo</Name>
+    <Layout>
+      <Merge type="menus"/>
+      <Filename>audacity.desktop</Filename>
+      <Filename>vokoscreenNG.desktop</Filename>
+      <Filename>org.shotcut.Shotcut.desktop</Filename>
+      <Filename>vlc.desktop</Filename>
+      <Merge type="files"/>
+    </Layout>
+  </Menu>
+  <Menu>
+    <Name>System</Name>
+    <Layout>
+      <Merge type="menus"/>
+      <Filename>pcmanfm.desktop</Filename>
+      <Filename>lxterminal.desktop</Filename>
+      <Filename>2.desktop</Filename>
+      <Separator/>
+      <Filename>lxtask.desktop</Filename>
+      <Filename>3.desktop</Filename>
+      <Filename>org.freedesktop.Xwayland.desktop</Filename>
+      <Filename>agnostics.desktop</Filename>
+      <Filename>ca.desrt.dconf-editor.desktop</Filename>
       <Merge type="files"/>
     </Layout>
   </Menu>

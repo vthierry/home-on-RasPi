@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Speedtest
+Exec=/home/user/bin/console -b speedtest
+StartupNotify=false
+Terminal=false
+Icon=/usr/share/icons/PiXtrix/scalable/places/network.svg
+Categories=System

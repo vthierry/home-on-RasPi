@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Backup
+Exec=/home/user/bin/console backup
+StartupNotify=false
+Terminal=false
+Icon=/usr/share/icons/PiXtrix/scalable/apps/xarchiver-extract.svg
+Categories=System

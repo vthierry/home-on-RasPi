@@ -13,7 +13,7 @@
 /.config/*
 !/.config/dconf
 !/.config/GIMP
-!/.config/kazam
+!/.config/kanshi
 !/.config/labwc
 !/.config/lxterminal
 !/.config/libfm

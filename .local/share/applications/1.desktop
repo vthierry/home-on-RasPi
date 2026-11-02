@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Videodownload
+Exec=/home/user/bin/console videodownload
+StartupNotify=false
+Terminal=false
+Icon=/usr/share/icons/PiXtrix/scalable/places/folder-videos.svg
+Categories=AudioVideo
