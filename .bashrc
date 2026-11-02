@@ -15,7 +15,6 @@ rm() { # Usage: rm $files ; Removes files by moving them into the desktop trash.
     f="`basename $p`" ; while [ -e "$t/files/$f" ] ; do f="+$f" ; done
     echo -e "[Trash Info]\nPath=`realpath $p`\nDeletionDate=`date -Iminutes`" > $t/info/$f.trashinfo
     /bin/mv $p $t/files/$f
-    ls $t/*/*
   else echo "rm: cannot remove '$p': No such file or directory" ; fi ; done
 }
 pushd() { # Usage: pushd $directory ; Silent pushd.
