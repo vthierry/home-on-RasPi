@@ -43,17 +43,20 @@ else command="bash -c '$*$bye'"
 fi
 if [ -z "$title" ] ; then title="`basename $1`" ; fi
 
+terminal() {
+  if [ \! -z "`which lxterminal`" ]
+  then lxterminal --profile='xterm' --geometry=$geometry --title="$title" --command="$command"
+  elif [ \! -z "`which xfce4-terminal`" ]
+  then xfce4-terminal --hide-menubar --geometry=$geometry --title="$title" --command="$command"
+  elif [ \! -z "`which gnome-terminal`" ]
+  then gnome-terminal --hide-menubar --geometry=$geometry --title="$title" -- "$command"
+  elif [ \! -z "`which konsole`" ]
+  then konsole −−nomenubar −−notabbar −−notoolbar --geometry=$geometry -title "$title" -e "$command"
+  elif [ \! -z "`which xterm`" ]
+  then xterm +tb --geometry=$geometry -T "$title" -e "$command"
+  else echo "No known terminal installed! Are you on a strange LinuX system? Please report this caveat: We will upgrade"
+  fi
+}
 
-if [ \! -z "`which lxterminal`" ]
-then lxterminal --profile='xterm' --geometry=$geometry --title="$title" --command="$command"
-elif [ \! -z "`which xfce4-terminal`" ]
-then xfce4-terminal --hide-menubar --geometry=$geometry --title="$title" --command="$command"
-elif [ \! -z "`which gnome-terminal`" ]
-then gnome-terminal --hide-menubar --geometry=$geometry --title="$title" -- "$command"
-elif [ \! -z "`which konsole`" ]
-then konsole −−nomenubar −−notabbar −−notoolbar --geometry=$geometry -title "$title" -e "$command"
-elif [ \! -z "`which xterm`" ]
-then xterm +tb --geometry=$geometry -T "$title" -e "$command"
-else echo "No known terminal installed! Are you on a strange LinuX system? Please report this caveat: We will upgrade"
-fi
+terminal &
 

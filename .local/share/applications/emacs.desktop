@@ -13,4 +13,4 @@ Categories=Utility;Development;TextEditor;
 StartupNotify=true
 StartupWMClass=Emacs
 Keywords=Text;Editor;
-NoDisplay=true
+NoDisplay=false
