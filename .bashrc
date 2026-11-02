@@ -7,15 +7,19 @@ export BROWSER=google-chrome
 unset  MAIL
 export TEXINPUTS=".:"
 
-alias cp='cp -i' # Usage: cp $source $target ; Force interactive copy to avoid error.
-alias mv='mv -i' # Usage: mv $source $target ; Force interactive move to avoid error.
-rm() { # Usage: rm $files ; Removes files by moving them to the desktop trask.
-  TRASH=$HOME/.local/share/Trash/files
-  mkdir -p $TRASH
-  /bin/mv $* $TRASH
+alias cp='cp -i' # Usage: cp $source $target ; Forces interactive copy to avoid error.
+alias mv='mv -i' # Usage: mv $source $target ; Forces interactive move to avoid error.
+rm() { # Usage: rm $files ; Removes files by moving them into the desktop trash.
+  t=~/.local/share/Trash
+  for p in $* ; do if [ -e "$p" ] ; then
+    f="`basename $p`" ; while [ -e "$t/files/$f" ] ; do f="+$f" ; done
+    echo -e "[Trash Info]\nPath=`realpath $p`\nDeletionDate=`date -Iminutes`" > $t/info/$f.trashinfo
+    /bin/mv $p $t/files/$f
+    ls $t/*/*
+  else echo "rm: cannot remove '$p': No such file or directory" ; fi ; done
 }
 pushd() { # Usage: pushd $directory ; Silent pushd.
-  command pushd "$@" > /dev/null
+  command pushd "$*" > /dev/null
 }
 popd() { # Usage: popd : Silent popd.
   command popd > /dev/null
