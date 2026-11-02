@@ -53,6 +53,17 @@ askForSSD() { # askForSSD ; Asks for the external backup volume, if not yet defi
   if [ -z "$SSD" ] ; then askForVolume 'external backup volume' ; SSD="$volumeTarget" ; fi
 }
 
+forSmartPhone() { # forSmartPhone $command … ; Executes a command w.r.t to smart-phone
+  SmartPhone='SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF'
+  SmartPhoneDir="/run/user/`id -u $USER`/gvfs/mtp:host=$SmartPhone/Stockage interne"
+  (pcmanfm "$SmartPhoneDir" >/dev/null 2>&1 &) ; sleep 1 # This allows to mount the device :)
+  if [ -d "$SmartPhoneDir" ] ; then
+    for c in $* ; do $c ; done
+  else
+    echo "The Smartphone file system is not connected, you must manually allow the connection."
+  fi
+}
+
 rsync="rsync -a -z --archive --info=progress2"
 
 
@@ -80,10 +91,10 @@ else
       then sd_card_source='/dev/mmcblk0'
       else
 	confirm "Download a disk image on the Desktop, is it done"
-	if [ \! -z "`ls *.img.xy 2>/dev/null`" ]
-	then needfor xz-utils ; for f in *.img.xy ; do unxz $f ; done
+	if [ \! -z "`ls ~/Desktop/*.img.xy 2>/dev/null`" ]
+	then needfor xz-utils ; for f in  ~/Desktop/*.img.xy ; do unxz $f ; done
 	fi
-	sd_card_source="`ls -t1 *.img 2>/dev/null | head -1`"
+	sd_card_source="`ls -t1  ~/Desktop/*.img 2>/dev/null | head -1`"
       fi
       askForDisk 'Volume to write (will be erased !)'
       if confirm "Erases and make a bootable image from $sd_card_source on $volumeSource"
@@ -91,6 +102,16 @@ else
       fi
       ;;
 
+    d ) ### Downloads a disk as a volume image.
+      askForDisk 'Volume to download'
+      img="~/Desktop/disk-`basename $volumeSource`-`date --iso=seconds`-$$.img"
+      if confirm "Makes an image '$img' from $volumeSource"
+      then
+	sudo dd if=$volumeSource of="$img" bs=4M status=progress
+	if [ \! -z "`which xz`" ] ; then xz -9q "$img" ; fi
+      fi
+      ;;
+    
     f ) ### Formats a mounted volume.
       askForDisk 'Volume to format (will be erased !)'
       if confirm "Formats that volume and erase all data" "OK, bye" ; then
@@ -118,47 +139,35 @@ else
     ## Implements hidden commands, using upper-case letters.
 
     U ) ### [Hidden] Uploads the 'vthierry' smartphone's picture, specific to this user, although it may inspire for your own usage.
-      if [ "$USER" = "vthierry" ] ; then
-	SmartPhone="/run/user/`id -u $USER`/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
-	# This allows to mount the device :)
-	(pcmanfm "/run/user/`id -u $USER`/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne" >/dev/null 2>&1 &) ; sleep 1
-	if [ -d "$SmartPhone" ] ; then
-	  echo 'Uploads smart-phone {DCIM|Pictures} for local use'
-	  bakfile ~/Desktop/medias -d
-	  for d in "$SmartPhone/DCIM/" "$SmartPhone/Pictures/"
-	  do if [ -d "$d" ] ; then $rsync --exclude=".thumbnails" "$d" ~/Desktop/medias ; fi
-	  done
-	  #### Proposes small size versions of the camera photos.
-	  if [ \! -z "`ls -A  ~/Desktop/medias/Camera/*.jpg 2>/dev/null`" ] ; then					  
-	    mkdir -p ~/Desktop/medias/Camera400
-	    mogrify -auto-orient -resize 400 -path ~/Desktop/medias/Camera400 ~/Desktop/medias/Camera/*.jpg
-	    pcmanfm /home/vthierry/Desktop/medias/Camera400 >/dev/null 2>&1 &
-	  fi
-	else
-	  echo "The Smartphone file system is not connected, you must manually allow the connection."
+      uploadsSmartphoneMedias () {
+	echo 'Uploads smart-phone {DCIM|Pictures} for local use'
+	bakfile ~/Desktop/medias -d
+	for d in "$SmartPhoneDir/DCIM/" "$SmartPhoneDir/Pictures/"
+	do if [ -d "$d" ] ; then $rsync --exclude=".thumbnails" "$d" ~/Desktop/medias ; fi
+	done
+	#### Proposes small size versions of the camera photos.
+	if [ \! -z "`ls -A  ~/Desktop/medias/Camera/*.jpg 2>/dev/null`" ] ; then					  
+	  mkdir -p ~/Desktop/medias/Camera400
+	  mogrify -auto-orient -resize 400 -path ~/Desktop/medias/Camera400 ~/Desktop/medias/Camera/*.jpg
+	  pcmanfm ~/Desktop/medias/Camera400 >/dev/null 2>&1 &
 	fi
-      fi
+      }
+      forSmartPhone uploadsSmartphoneMedias
       ;;
     
     V ) ### [Hidden] Backups the 'vthierry' smartphone medias, specific to this user, although it may inspire for your own usage.
-      if [ "$USER" = "vthierry" ] ; then
-	SmartPhone="/run/user/`id -u $USER`/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne"
-	# This allows to mount the device :)
-	(pcmanfm "/run/user/`id -u $USER`/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_R58Y60DJ3AF/Stockage interne" >/dev/null 2>&1 &) ; sleep 1
-	if [ -d "$SmartPhone" ] ; then
-	  askForSSD
-	  echo 'Backups my-music'
-	  $rsync --delete-excluded "$SmartPhone/my-music" "$SSD"
-	  echo 'Backups WhatsApp media files'
-	  WhatsApp="$SmartPhone/Android/media/com.whatsapp/WhatsApp/Media/"
-	  mkdir -p  "$SSD/my-medias/WhatsApp"
-	  $rsync "$WhatsApp/WhatsApp Images/" "$SSD/my-medias/WhatsApp/Media/"
-	  $rsync "$WhatsApp/WhatsApp Audio/" "$SSD/my-medias/WhatsApp/Media/"
-	  $rsync "$WhatsApp/WhatsApp Video/" "$SSD/my-medias/WhatsApp/Media/"
-	else
-	  echo "The Smartphone file system is not connected, you must manually allow the connection."
-	fi
-      fi
+      backupMediaFiles() {
+	askForSSD
+	echo 'Backups my-music'
+	$rsync --delete-excluded "$SmartPhoneDir/my-music" "$SSD"
+	echo 'Backups WhatsApp media files'
+	WhatsApp="$SmartPhoneDir/Android/media/com.whatsapp/WhatsApp/Media/"
+	mkdir -p  "$SSD/my-medias/WhatsApp"
+	$rsync "$WhatsApp/WhatsApp Images/" "$SSD/my-medias/WhatsApp/Media/"
+	$rsync "$WhatsApp/WhatsApp Audio/" "$SSD/my-medias/WhatsApp/Media/"
+	$rsync "$WhatsApp/WhatsApp Video/" "$SSD/my-medias/WhatsApp/Media/"
+      }
+      forSmartPhone backupMediaFiles
       ;;
     esac ; shift
   done

@@ -26,6 +26,9 @@ backup() {
 scan() {
   simple-scan
 }
+screenshot() {
+  vokoscreenNG
+}
 
 ## Implements the Ctrl+F1 to Ctrl+F12 shortcuts, if any
 if [ -z "$1" ] ; then
@@ -34,7 +37,7 @@ if [ -z "$1" ] ; then
   grep '.* ).*;;' < $0 | grep -v grep | sed 's/_* *&.*//'
 else
   case "$1" in
-    F2 ) kazam &;;
+    F2 ) screenshot &;;
     F3 ) gimp &;;
     F4 ) scan &;;
     F5 ) backup &;;
