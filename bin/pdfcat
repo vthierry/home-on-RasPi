@@ -1,0 +1,17 @@
+#!/bin/bash
+. ~/.bashrc
+needfor pdftk
+
+if [ -z "$1" -o "$1" = -h -o "$1" = --help ]
+then cat <<EOU
+Usage: pdfcat \$input_pdf_files … \$output_pdf_file
+- Cat pdf files onto the last one
+EOU
+exit
+fi
+
+in="${@:1:$#-1}" ; input="" ; output="${!#}"
+
+bakfile $output
+for i in $in ; do if [ "$i" = "$output" ] ; then input="$input $i~" ; else input="$input $i" ; fi ; done
+pdftk $input cat output "$output" 
