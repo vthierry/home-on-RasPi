@@ -13,17 +13,19 @@ fi
 if [ "$1" = -h -o "$1" = --help ]
 then cat <<EOU
 Usage: videodownload [\$url]
-- Downloads a video.
+- Downloads a video from an URL.
 - If the \$url is not given, runs in interactive mode. 
 EOU
 exit
 fi
 
+ytdlpdownload() { # download \$url ; Downloads a video from an URL.
+  yt-dlp --js-runtimes node:/usr/bin/node $1 2>&1 | grep -E '^(\[download\]|ERROR)' | tee /tmp/$$~
+  ## Detects if an error (yt-dlp does not exit on error for all of them).
+  if grep ERROR /tmp/$$~ > /dev/null ; then exit 1 ; else exit 0 ; fi
+}
+
 ## Ask for URL if not given in argument.
-if [ -z "$1" ] ; then read -p "URL ? " url ; else url="$*" ; fi
+if [ -z "$1" ] ; then while true ; do read -p "URL (Enter to leave) ? " url ; if [ -z "$url" ] ; then exit 0 ; else $0 "$url" ; fi ; done ; fi
 
-## Downloads ...
-yt-dlp --js-runtimes node:/usr/bin/node $url 2>&1 | grep -E '^(\[download\]|ERROR)' | tee /tmp/$$~
-
-## Detects if an error (yt-dlp does not exit on error for all of them).
-if grep ERROR /tmp/$$~ > /dev/null ; then exit 1 ; else exit 0 ; fi
+ytdlpdownload "$*"
