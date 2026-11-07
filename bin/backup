@@ -135,14 +135,14 @@ backup() { # backup $c ; Implements the backup interactive commands.
     
     V ) ### [Hidden] Backups the 'vthierry' smartphone medias, specific to this user, although it may inspire for your own usage.
       backupMediaFiles() {
-	echo 'Backups my-music'
-	$rsync --delete-excluded "$SmartPhoneDir/my-music" "$volume"
 	echo 'Backups WhatsApp media files'
 	WhatsApp="$SmartPhoneDir/Android/media/com.whatsapp/WhatsApp/Media/"
 	mkdir -p  "$volume/my-medias/WhatsApp"
 	$rsync "$WhatsApp/WhatsApp Images/" "$volume/my-medias/WhatsApp/Media/"
 	$rsync "$WhatsApp/WhatsApp Audio/" "$volume/my-medias/WhatsApp/Media/"
 	$rsync "$WhatsApp/WhatsApp Video/" "$volume/my-medias/WhatsApp/Media/"
+	echo 'Backups my-music'
+	$rsync --delete-excluded "$SmartPhoneDir/my-music" "$volume"
       }
       if chooseVolume ; then forSmartPhone backupMediaFiles ; fi
       ;;
