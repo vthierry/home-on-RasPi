@@ -20,52 +20,37 @@ if [ "$1" = -h -o "$1" = --help ] ; then usage ; exit ; fi
    
 ## Implements backup utilitaries.
 
-choose() { # . choose $what $listing ; Asks for an option defined by $listing (The 1st row is a header. Other rows define each option. Maximum 9 choices).
-  unset choice
-  l="`echo -e '$2' | awk 'NR == 1 { print "   " $0 } NR > 1 { print NR-1 ": " $0 }' ; echo '0: None'`"
-  n="`echo -e '$2' | wc -l`"
-  echo -e "$l"
-  if [ "$n" -gt 11 ] ; then echo "Too many options for the choose function, this is a programming bug" ; return 1 ; fi
-  if [ "$n" -lt 3 ] ; then echo "Nothing to choose" ; return 1 ; fi
-  if [ "$n" = 3 ] ; then return confirm "Ok with choice 1 for '$1'" ; fi
-  read -p "Choose '$1' between 1 and $((n-2)) : " -n 1 -e rep
-  if [ "$rep" = 0 ] ; then return 1 ; fi
-  if [ \( 0 -lt "$rep" \) -a \( "$rep" -lt "$((n-1))" \) ] ; then
-    choice="`head /tmp/$$~ -n $((rep+1)) | tail -1`" ; return 0
-  else
-    echo "Spurious choice" ; return 1
-  fi
-}
-
 chooseVolume() { # chooseVolume ; for the backup volume reference, if not yet defined.
-  if [ -z "$volume" ] && confirm "Is the volume connected (it takes a few seconds to be mounted)" ; then
-    if choose "backup volume" "`sudo df -a -H --output=source,target,used,avail | grep -E '^(/dev/sd|Filesystem)'`" ; then
-      volumeDev="`echo $choice | awk '{ print $2 }'`"
-      volume="`echo $choice | awk '{ print $3 }'`"
-    fi
+  if [ -z "$volume" ] && choose "backup volume" "`sudo df -a -H --output=source,target,used,avail | grep -E '^(/dev/sd|Filesystem)'`" ; then
+    volumeDev="`echo $choice | awk '{ print $1 }'`"
+    volume="`echo $choice | awk '{ print $2}'`"
+    echo "volumeDev : $volumeDev ; volume : $volume"
   fi
   if [ -z "$volume" ] ; then return 1 ; else return 0 ; fi
 }
+volume=""
 
 setDisks() { # setDisk ; Sets the available disk's list, recognized by size
   if [ -z "disks" ]
   then disks="`lsblk -n -r -o NAME,SIZE,TYPE /dev/sd* | grep disk | sed 's/^\([^ ]*\) *\(.*\)disk/\/dev\/\1 of size \2/'`"
   fi
 }
+disks=""
 
-forSmartPhone() { # forSmartPhone $command … ; Executes a command w.r.t to a unique connected and mounted smart-phone
-  gfvs_root="/run/user/`id -u $USER`/gvfs/"
-  gfvs_mnt="`ls -t1 $gvfs_root 2>/dev/null | head -1`"
-  if [ \! -z "$gfvs_mnt" ]
+forSmartPhone() { # forSmartPhone $command ; Executes a command w.r.t to a unique connected and mounted smart-phone
+  gvfs_root="/run/user/`id -u $USER`/gvfs/"
+  gvfs_mnt="`ls -t1 $gvfs_root 2>/dev/null | head -1`"
+  SmartPhoneDir="$gvfs_root/$gvfs_mnt/`ls $gvfs_root/$gvfs_mnt/`"
+  if [ -d "$SmartPhoneDir" ]
   then 
-    SmartPhoneDir="$gvfs/`ls $gvfs`"
-    for c in $* ; do $c ; done
+    $1
     return 0
   else
-    echo "The Smartphone file system is not connected, you must manually allow the connection."
+    echo "The Android Smartphone file internal storage system is not connected, you must manually allow the connection."
     return 1
   fi
 }
+SmartPhoneDir=""
 
 ### Synchronization command
 rsync="rsync -a -z --archive --info=progress2"
@@ -145,7 +130,7 @@ backup() { # backup $c ; Implements the backup interactive commands.
 	  pcmanfm ~/Desktop/medias/Camera400 >/dev/null 2>&1 &
 	fi
       }
-      if chooseVolume ; then forSmartPhone uploadsSmartphoneMedias ; fi
+      forSmartPhone uploadsSmartphoneMedias
       ;;
     
     V ) ### [Hidden] Backups the 'vthierry' smartphone medias, specific to this user, although it may inspire for your own usage.
@@ -167,7 +152,7 @@ backup() { # backup $c ; Implements the backup interactive commands.
 
 ## Implements the interactive backup menu.
 while true ; do
-  echo 'What to backup:' ; commands ; echo '  q: Quit' 
+  echo 'Menu:' ; commands ; echo '  q: Quit' 
   read -p "Option: " -n 1 -e rep
   if [ "$rep" = q ] ; then exit ; fi
   backup $rep

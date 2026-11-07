@@ -1,0 +1,34 @@
+#!/bin/bash
+
+if [ -z "$1" -o "$1" = -h -o "$1" = --help ]
+then cat <<EOU
+Usage: choose \$name \$values
+Asks a for an option between 1 up to 9 values.
+- \$name: The value's name.
+- \$values: A multiline string with:
+  - (i) The choice header in the 1st row,
+  - (ii) One option by row.
+On return:
+- Returns 0 if a proper choice is made, else 1.
+- Sets the 'choice' environment temporary variable, if a choice is made.
+EOU
+exit
+fi
+
+export choice=""
+l="`echo -e \"$2\" | awk 'NR == 1 { print "   " $0 } NR > 1 { print NR-1 ": " $0 }' ; echo '0: None'`"
+n="`echo -e \"$l\" | wc -l`"
+echo -e "$l"
+if [ "$n" -gt 11 ] ; then echo "Too many options for the choose function, this is a programmer bug" ; return 1 ; fi
+if [ "$n" -lt 3 ] ; then echo "Nothing to choose" ; return 1 ; fi
+if [ "$n" = 3 ]
+then if confirm "Ok with choice 1 for '$1'" ; then rep=1 ; else rep=0 ; fi
+else read -p "Choose '$1' between 1 and $((n-2)) : " -n 1 -e rep
+fi
+if [ "$rep" = 0 ] ; then return 1 ; fi
+if [ \( 0 -lt "$rep" \) -a \( "$rep" -lt "$((n-1))" \) ] ; then
+  export choice="`echo -e \"$l\" | head -n $((rep+1)) | tail -1 | sed 's/[1-9]: //'`" ; echo "HIHIHI $choice" ; return 0
+else
+  echo "Spurious choice" ; return 1
+fi
+
