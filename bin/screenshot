@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ "$1" = -h -o "$1" = --help ]
+then cat <<EOU
+Usage: screenshot
+- Grabs the screen and open gimp for edition.
+EOU
+exit
+fi
+
+file="~/Desktop/screenshot-`date --iso=second`.png"
+screen_size"`xrandr | grep current | sed 's/.* current *\([0-9x]*\).*/\1/'`"
+
+ffmpeg -f x11grab -video_size $screen_size -vframes 1 $file 2>&1 >/dev/null
+gimp $file 2>&1 >/dev/null &
+
+

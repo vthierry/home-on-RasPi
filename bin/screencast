@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [ "$1" = -h -o "$1" = --help ]
+then cat <<EOU
+Usage: screencast [-t|-s]
+- Records the entire screen but the top menu bar.
+Option:
+- -t: Runs in terminal instead of opening a console.
+- -s: Controls the recording from the system tray.
+EOU
+exit
+fi
+
+case "$1" in
+  -s )
+    simplescreenrecorder --settingsfile=~/.ssr/screencast.conf --start-hidden >/dev/null 2>/dev/null &
+    ;;
+  -t )
+    echo 'Type Enter to finish the recording'
+    (read cont ; echo record-save ; echo quit) | simplescreenrecorder --settingsfile=$HOME/.ssr/screencast.conf --start-hidden --no-systray --start-recording >/dev/null 2>/dev/null
+    ;;
+  "" )
+    console -g 36x1-1-1 `realpath $0` -t
+    ;;
+  * )
+    $0 -h
+esac
+
+
+
+
