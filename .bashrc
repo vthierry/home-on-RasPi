@@ -36,6 +36,4 @@ alias s='xdg-open' # Usage: s $file ; Shows a file with the default application.
 w() { # Usage: w ; Opens the man page of a given command.
   console man $1
 }
-choose() {
-  . ~/bin/.choose
-}
+alias choose=". ~/bin/choose" # Allows to call choose without the dot construct

@@ -20,6 +20,8 @@ if [ "$1" = -h -o "$1" = --help ] ; then usage ; exit ; fi
    
 ## Implements backup utilitaries.
 
+alias choose=". ~/bin/choose"
+
 chooseVolume() { # chooseVolume ; for the backup volume reference, if not yet defined.
   if [ -z "$volume" ] && choose "backup volume" "`sudo df -a -H --output=source,target,used,avail | grep -E '^(/dev/sd|Filesystem)'`" ; then
     volumeDev="`echo $choice | awk '{ print $1 }'`"
