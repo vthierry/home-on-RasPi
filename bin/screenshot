@@ -3,15 +3,15 @@
 if [ "$1" = -h -o "$1" = --help ]
 then cat <<EOU
 Usage: screenshot
-- Grabs the screen and open gimp for edition.
+- Grabs the first screen and open gimp for edition.
 EOU
 exit
 fi
 
-file="~/Desktop/screenshot-`date --iso=second`.png"
-screen_size"`xrandr | grep current | sed 's/.* current *\([0-9x]*\).*/\1/'`"
+file="$HOME/Desktop/screenshot-`date +%Y-%m-%dT%H-%M-%S`.png"
 
-ffmpeg -f x11grab -video_size $screen_size -vframes 1 $file 2>&1 >/dev/null
-gimp $file 2>&1 >/dev/null &
+( ffmpeg -f x11grab -framerate 1 -video_size "`xrandr | awk '/*/ {print $1}' | head -1`" -i "$DISPLAY" -vframes 1 /tmp/$$-%3d.png ;
+  mv /tmp/$$-001.png $file ; gimp $file) # > /dev/null 2> /dev/null &
+
 
 
