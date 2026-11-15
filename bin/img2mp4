@@ -23,11 +23,11 @@ while [ \! -z "$1" ] ; do case "$1" in
 esac ; done
 
 ## Creates a numbering compatible with ffmpeg
-e=${1#*.} ; /bin/rm -f input-img-$$-*.$e ; n='0' ; for f in $* ; do ln -s $f input-img-$$-$n.$e ; n=$((n+1)) ; done
+e=${1#*.} ; /bin/rm -f input-img-$$-*.$e ; n='0' ; for f in $* ; do ln -s $f input-img-$$-"`printf '%3d' $n | sed 's/ /0/g'`".$e ; n=$((n+1)) ; done
 ## Creates a mp4 or gif output
 if [ -z "$gif" ]
-then bakfile output.mp4 ; ffmpeg -loglevel quiet -framerate 1 -i input-img-$$-%3d.$e -c:v libx264 -pix_fmt yuv420p output.mp4
-else bakfile output.gif ; ffmpeg -loglevel quiet -framerate 1 -i input-img-$$-%3d.$e output.gif
+then bakfile output.mp4 ; ffmpeg -loglevel quiet -framerate "$framerate" -i input-img-$$-%3d.$e -c:v libx264 -pix_fmt yuv420p output.mp4
+else bakfile output.gif ; ffmpeg -loglevel quiet -framerate "$framerate" -i input-img-$$-%3d.$e output.gif
 fi
 
 ## Cleans files

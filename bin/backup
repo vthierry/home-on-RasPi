@@ -23,9 +23,9 @@ alias choose=". ~/bin/choose"
 
 chooseVolume() { # chooseVolume ; for the backup volume reference, if not yet defined.
   if [ -z "$volume" ] && choose "backup volume" "`sudo df -a -H --output=source,target,used,avail | grep -E '^(/dev/sd|Filesystem)'`" ; then
+    echo "$choice"
     volumeDev="`echo $choice | awk '{ print $1 }'`"
     volume="`echo $choice | awk '{ print $2}'`"
-    echo "volumeDev : $volumeDev ; volume : $volume"
   fi
   if [ -z "$volume" ] ; then return 1 ; else return 0 ; fi
 }
@@ -100,9 +100,9 @@ backup() { # backup $c ; Implements the backup interactive commands.
       ;;
     
     r ) ### Repairs the volume (e.g., mounted in read-only).
-      echo -e '- It is often mounted in read-only mode after an abrupt disconnection.\n- If the device is blocked "busy" now:\n  - check that all application (filer, terminal) working on the volume are closed,\n  - wait a few seconds and rerun;\n  - if it persists, you may have to reboot first and then rerun this command.'
+      echo -e '- It is often mounted in read-only mode after an abrupt disconnection.\n- If the device is blocked "busy" now:\n  - check that all application (filer, terminal) using the volume are closed,\n  - wait a few seconds and rerun;\n  - if it persists, you may have to reboot first and then rerun this command.'
       if chooseVolume ; then 
-	sudo umount $volumeDev
+	sudo umount $volumeDev 2>/dev/null
 	sudo fsck -y $volumeDev
       fi
       ;;
