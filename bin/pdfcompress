@@ -1,5 +1,5 @@
 #!/bin/bash
-. ~/.bashrc
+
 needfor pdftk
 
 if [ -z "$1" -o "$1" = -h -o "$1" = --help ]

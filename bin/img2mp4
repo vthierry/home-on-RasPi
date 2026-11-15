@@ -1,0 +1,37 @@
+#!/bin/bash
+needfor ffmpeg
+
+usage() {
+  cat <<EOU
+Usage: img2mp4 [-g] [-f \$framerate] \$images … 
+- Generates the output.mp4 file concatenating an image sequence.
+   - Images must be of the same format with same file extension.
+Option:
+  -f: Frame rates is sec, default is \`1\`.
+  -g: Generates the output.gif instead.
+EOU
+}
+
+if [ -z "$1" ] ; then usage ; exit ; fi
+unset gif
+framerate="1"
+while [ \! -z "$1" ] ; do case "$1" in
+   -g ) shift ; gif=true ;;
+   -f ) shift ; framerate="$1" ; shift ;;			   
+   -* ) usage ; exit ;;
+   * ) break;;
+esac ; done
+
+## Creates a numbering compatible with ffmpeg
+e=${1#*.} ; /bin/rm -f input-img-$$-*.$e ; n='0' ; for f in $* ; do ln -s $f input-img-$$-$n.$e ; n=$((n+1)) ; done
+## Creates a mp4 or gif output
+if [ -z "$gif" ]
+then bakfile output.mp4 ; ffmpeg -loglevel quiet -framerate 1 -i input-img-$$-%3d.$e -c:v libx264 -pix_fmt yuv420p output.mp4
+else bakfile output.gif ; ffmpeg -loglevel quiet -framerate 1 -i input-img-$$-%3d.$e output.gif
+fi
+
+## Cleans files
+/bin/rm -f input-img-$$-*.$e
+
+   
+

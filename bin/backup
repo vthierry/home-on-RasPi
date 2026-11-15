@@ -1,5 +1,4 @@
 #!/bin/bash
-. ~/.bashrc
 
 ## Implements the command usage, parsed from the script itself
 

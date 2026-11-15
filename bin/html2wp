@@ -1,5 +1,4 @@
 #!/bin/bash
-. ~/.bashrc
 
 if [ \! -z "$1" ]
 then cat <<EOU
@@ -9,7 +8,6 @@ Usage: html2wp < \$input > \$output
 EOU
 exit
 fi
-# Usage: html2wp < $input > $output ; 
 
 subst '</?(span|font)[^>]*>' '' | subst ' (class|style|align) *= *"[^"]*"' ''
 

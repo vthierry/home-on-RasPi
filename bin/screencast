@@ -1,15 +1,14 @@
 #!/bin/bash
 
-if [ "$1" = -h -o "$1" = --help ]
-then cat <<EOU
+usage() {
+  cat <<EOU
 Usage: screencast [-t|-s]
 - Records the entire screen but the top menu bar.
 Option:
 - -t: Runs in terminal instead of opening a console.
 - -s: Controls the recording from the system tray.
 EOU
-exit
-fi
+}
 
 case "$1" in
   -s )
@@ -22,8 +21,7 @@ case "$1" in
   "" )
     console -g 36x1-1-1 `realpath $0` -t
     ;;
-  * )
-    $0 -h
+  * ) usage ; exit ;;
 esac
 
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-. ~/.bashrc
+
 ## Installs the package via atp if not yet done.
 needfor yt-dlp
 ## Enforces a recent release from https://github.com/yt-dlp/yt-dlp/releases.

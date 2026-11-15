@@ -1,5 +1,4 @@
 #!/bin/bash
-. ~/.bashrc
 
 if [ "$1" = -h -o "$1" = --help ]
 then cat <<EOU

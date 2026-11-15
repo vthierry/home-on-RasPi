@@ -4,14 +4,15 @@ if [ "$1" = -h -o "$1" = --help ]
 then cat <<EOU
 Usage: screenshot
 - Grabs the first screen and open gimp for edition.
+  - With multiple screen, only the 1st one is grabbed (e.g., the one on the left).
 EOU
 exit
 fi
 
 file="$HOME/Desktop/screenshot-`date +%Y-%m-%dT%H-%M-%S`.png"
 
-( ffmpeg -f x11grab -framerate 1 -video_size "`xrandr | awk '/*/ {print $1}' | head -1`" -i "$DISPLAY" -vframes 1 /tmp/$$-%3d.png ;
-  mv /tmp/$$-001.png $file ; gimp $file) # > /dev/null 2> /dev/null &
+(ffmpeg -f x11grab -framerate 1 -video_size "`xrandr | awk '/*/ {print $1}' | head -1`" -i "$DISPLAY" -vframes 1 /tmp/$$-%3d.png ;
+ mv /tmp/$$-001.png $file ; gimp $file) > /dev/null 2> /dev/null &
 
 
 
