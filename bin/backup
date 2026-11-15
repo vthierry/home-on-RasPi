@@ -108,7 +108,15 @@ backup() { # backup $c ; Implements the backup interactive commands.
       ;;
     
     s ) ### Syncs all git repositories with default message.
-      git_sync
+      #### Reinstalls a ssh-agent if not in the environment (when using a key shortcut)
+      if ssh-add -l 2>&1 | grep 'Could not open a connection to your authentication agent.' >/dev/null
+      then ssh-agent > /tmp/$$~ ; . /tmp/$$~
+      fi
+      #### Redefines an identity if not yet defined.
+      if ssh-add -l 2>&1 | grep 'The agent has no identities.' >/dev/null
+      then ssh-add
+      fi
+      cd ; git_sync
       ;;
     
     u ) ### Updates and upgrades the installation, using apt.
