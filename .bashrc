@@ -9,7 +9,7 @@ export TEXINPUTS=".:"
 
 alias cp='cp -i' # Usage: cp $source $target ; Forces interactive copy to avoid error.
 alias mv='mv -i' # Usage: mv $source $target ; Forces interactive move to avoid error.
-rm() { # Usage: rm $files ; Removes files by moving them into the desktop trash.
+rm() { # Usage: rm $files ; Removes files by properly moving them into the desktop trash.
   t=~/.local/share/Trash
   for p in $* ; do if [ -e "$p" ] ; then
     #### Finds an unused basename
@@ -30,10 +30,11 @@ alias c='clean; clear' # Usage: c ; Cleans temporary files and clean the termina
 alias e='($EDITOR &)' # Usage e ; Starts the prefered editor.
 alias f='pcmanfm' # Usage: f ; Opens the file manager for the current directory.
 alias k='killall' # Usage: k ; Kill all processes of a given name.
+alias l='find ~ -regextype egrep -type f -a -mmin -60 -a ! -regex "$HOME/\.(cache|config/(chromium|GIMP|google-chrome)|thunderbird)/.*"' # Usage: l ; Lists files modified since less than 60 minutes. 
 alias m='~/bin/make' # Usage: m ; Runs make in the current directory.
-alias r='find -type f -a -mmin -60 -a ! -path "*/.cache/*" -a ! -path "*/.config/google-chrome/*" -a ! -path "*/.config/chromium/*" -a ! -path "*/.config/GIMP/*" -a ! -path "*/.thunderbird/*"' # Usage: r ; Lists files modified since less than 60 minutes.
+alias i='echo -e "Local netwok scan:\n|       IP      |       MAC       | HOSTNAME                            | VENDOR                                    |\n|---------------|-----------------|-------------------------------------|-------------------------------------------|" ; sudo arp-scan -r 5 --l -g -d -x --format="|\${ip;-15}|\${mac;17}| \${name;-36}| \${vendor;-42}|"' # Usage: i ; Inspects the local network and provides the human readable information.
 alias s='xdg-open' # Usage: s $file ; Shows a file with the default application.
-w() { # Usage: w ; Opens the man page of a given command.
+u() { # Usage: u $command ; Usage (man page) of a given command opens in a popup window.
   console man $1
 }
 alias choose=". ~/bin/choose" # Allows to call choose without the dot construct
