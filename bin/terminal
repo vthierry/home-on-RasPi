@@ -3,7 +3,7 @@
 
 usage() {
  cat <<EOU
-Usage: console [-t \$title] [-g \${width}x\${height}] [-d \$directory] [-b|-s \$delay] [\$command [\$arguments]]
+Usage: terminal [-t \$title] [-g \${width}x\${height}] [-d \$directory] [-b|-s \$delay] [\$command [\$arguments]]
 Runs a command in an interactive console window.
 - Options:
   -t: The window title; default is the command basename.
@@ -14,8 +14,8 @@ Runs a command in an interactive console window.
   -s: Closes the window after a given delay in second.
 - The default \$command is \`bash\`, i.e., a terminal emulation.
 - If an error occurs the \`-b\` option is enforced.
-- Notification: The \`console -n \$message\` displays a desktop notification.
-  - It is a shortcut for \`console -t '' -g 64x2-1+40 -s 5 echo \$message\`
+- Notification: The \`terminal -n \$message\` displays a desktop notification.
+  - It is a shortcut for \`terminal -t '' -g 64x2-1+40 -s 5 echo \$message\`
 EOU
 }
 

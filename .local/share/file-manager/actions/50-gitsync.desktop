@@ -5,7 +5,7 @@ Icon=pcmanfm-qt
 Profiles=default;
 
 [X-Action-Profile default]
-Exec=lxterminal --profile=xterm --geometry=64x4 --title='git sync' --command='bash -c "git_sync ; echo done ; read cont"'
+Exec=/home/vthierry/bin/terminal -g 64x4 -t 'git sync' -b git_sync
 Name=Default profile
 MimeTypes=inode/directory;
 Comment=Syncs the git repository

@@ -36,6 +36,7 @@ i() { # Usage: i ; Inspects the local network and provides the available human r
   sudo arp-scan -r 5 --l -g -d -x --format="|\${ip;-15}|\${mac;17}| \${name;-36}| \${vendor;-42}|"
 }
 alias s='xdg-open' # Usage: s $file ; Shows a file with the default application.
+alias t='terminal' # Usage: t [-t $title] [-g ${width}x${height}] [-d $directory] [-b|-s $delay] [$command [$arguments]] ; Runs in terminal'
 u() { # Usage: u $command ; Usage (man page) of a given command opens in a popup window.
   if [ \! -z "$1" ] ; then console man $1 ; fi
 }

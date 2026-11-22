@@ -5,8 +5,8 @@ Icon=utilities-terminal
 Profiles=default;
 
 [X-Action-Profile default]
-Exec=/home/user/bin/console -d %d
-Path=/home/user/Desktop
+Exec=/home/vthierry/bin/terminal -d %d
+Path=/home/vthierry/Desktop
 Name=Default profile
 MimeTypes=inode/directory;
 Comment=Opens a terminal here
