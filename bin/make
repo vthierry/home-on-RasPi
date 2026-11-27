@@ -14,14 +14,10 @@ for d in "." ".." "../.." "../../.." "../../../.."
 do
   if [ -f $d/makefile ]
   then
-    if [ \( -z "$1" \) -o \( \! -z "`grep \"^$1 *:\" $d/makefile`" \) ]
-    then
-      /usr/bin/make -s --no-print-directory -C $d $* ; exit $?
-    fi
+    /usr/bin/make -s --no-print-directory -C $d $* ; exit $?
   elif [ -f $d/make ]
   then
-    chmod a+rx $d/make
-    $d/make $* ; exit $?
+    chmod a+rx $d/make ; $d/make $* ; exit $?
   fi
 done
 

@@ -19,7 +19,7 @@ case "$1" in
     (read cont ; echo record-save ; echo quit) | simplescreenrecorder --settingsfile=$HOME/.ssr/screencast.conf --start-hidden --no-systray --start-recording >/dev/null 2>/dev/null
     ;;
   "" )
-    console -g 36x1-1-1 `realpath $0` -t
+    terminal -g 36x1-1-1 `realpath $0` -t
     ;;
   * ) usage ; exit ;;
 esac

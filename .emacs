@@ -82,7 +82,7 @@
 
 (defun my-terminal ()
   (interactive)
-  (shell-command "(nohup console ; /bin/rm -f nohup.out) &")
+  (shell-command "(nohup terminal ; /bin/rm -f nohup.out) &")
 )
 
 (defun my-filer ()

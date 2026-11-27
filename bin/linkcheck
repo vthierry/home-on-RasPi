@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ "$1" = -h -o "$1" = --help ]
+then cat <<EOU
+Usage: linkcheck [\$directory…]
+Checks links in a local directory architecture of .html files.
+EOU
+exit
+fi
+
+linkcheck()
+{
+  find "$*" -name '*.html' -exec cat {} \; | tr ">" "\n" | tr "<" "\n" | grep -E '(href|src) *= *.http' | sed 's/.*http/http/' | sed "s/[\"'].*//" | sort -u > /tmp/$$~
+  for l in `cat /tmp/$$~` ; do if [ \! -z "`urlexists $$l`" ] ; then echo "Broken link: $$l" ; fi ; done
+}
+
