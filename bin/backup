@@ -20,7 +20,7 @@ if [ "$1" = -h -o "$1" = --help ] ; then usage ; exit ; fi
 ## Implements backup utilitaries.
 
 chooseVolume() { # chooseVolume ; for the backup volume reference, if not yet defined.
-  if [ -z "$volume" ] && . ~/bin/choose "backup volume" "`sudo df -a -H --output=source,target,used,avail | grep -E '^(/dev/sd|Filesystem)'`" ; then
+  if . ~/bin/choose "backup volume" "`sudo df -a -H --output=source,target,used,avail | grep -E '^(/dev/sd|Filesystem)'`" ; then
     echo "$choice"
     volumeDev="`echo $choice | awk '{ print $1 }'`"
     volume="`echo $choice | awk '{ print $2}'`"
@@ -96,6 +96,14 @@ backup() { # backup $c ; Implements the backup interactive commands.
 	if confirm "Erases all data and formats volume \"$volumeDev\", really" ; then 
 	  sudo umount $volumeDev* 2>/dev/null
 	  sudo mkfs.ext4 $volumeDev
+	  while true ; do
+	    read -p "Volume name ? : " volumeName
+	    if confirm "Is \"$volumeName\" as volume name OK" ; then break ; fi
+	  done
+	  sudo e2label $volumeDev $volumeName
+	  sudo mkdir -p /media/$USER/$volumeName
+	  sudo mount $volumeDev /media/$USER/$volumeName
+	  sudo /bin/rm -rf /media/$USER/$volumeName/lost+found
 	fi
       fi
       ;;
@@ -105,6 +113,8 @@ backup() { # backup $c ; Implements the backup interactive commands.
       if chooseVolume ; then 
 	sudo umount $volumeDev 2>/dev/null
 	sudo fsck -y $volumeDev
+      else
+	echo "Manually run \`fsck -y \$dev \` to repair the volume, knowing the corresponding device \$dev"
       fi
       ;;
     
